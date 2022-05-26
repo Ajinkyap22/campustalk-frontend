@@ -30,7 +30,7 @@ function ReplyOptions({
 
     axios
       .delete(
-        `/api/forums/${forumId}/posts/${postId}/comments/${commentId}/replies/${replyId}/delete-reply`,
+        `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${commentId}/replies/${replyId}/delete-reply`,
         headers
       )
       .then((res) => {

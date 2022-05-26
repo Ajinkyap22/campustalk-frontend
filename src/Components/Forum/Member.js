@@ -34,7 +34,11 @@ function Member({
     };
 
     axios
-      .post("/api/chats/new-chat", { members: [member._id, user._id] }, headers)
+      .post(
+        "https://campustalk-api.herokuapp.com/api/chats/new-chat",
+        { members: [member._id, user._id] },
+        headers
+      )
       .then((res) => {
         setChats([...chats, res.data]);
         setActiveChat(res.data);

@@ -21,7 +21,7 @@ function JoinRequests({
 
     axios
       .put(
-        `/api/forums/${forum._id}/approve_join`,
+        `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/approve_join`,
         { id: request._id },
         headers
       )
@@ -57,7 +57,11 @@ function JoinRequests({
     };
 
     axios
-      .put(`/api/forums/${forum._id}/reject_join`, { id: request._id }, headers)
+      .put(
+        `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/reject_join`,
+        { id: request._id },
+        headers
+      )
       .then((res) => {
         // update join requests
         let newJoinRequests = joinRequests.filter(
@@ -87,7 +91,11 @@ function JoinRequests({
     };
 
     axios
-      .post("/api/notifications/join-request-approved", body, headers)
+      .post(
+        "https://campustalk-api.herokuapp.com/api/notifications/join-request-approved",
+        body,
+        headers
+      )
       .catch((err) => {
         console.error(err);
       });
@@ -101,9 +109,14 @@ function JoinRequests({
       forumId,
     };
 
-    axios.post("/api/mail/join-request-approved", body).catch((err) => {
-      console.error(err);
-    });
+    axios
+      .post(
+        "https://campustalk-api.herokuapp.com/api/mail/join-request-approved",
+        body
+      )
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   return (

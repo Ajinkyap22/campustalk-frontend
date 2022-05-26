@@ -63,16 +63,24 @@ function Forum({ forum, title, defaultTab = "posts", history }) {
       setTab(defaultTab);
 
       // get posts
-      axios.get(`/api/forums/${forum._id}/posts`).then((res) => {
-        setForumPosts(res.data);
-        setLoading(false);
-      });
+      axios
+        .get(
+          `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/posts`
+        )
+        .then((res) => {
+          setForumPosts(res.data);
+          setLoading(false);
+        });
 
       // get post requests
-      axios.get(`/api/forums/${forum._id}/posts/postRequests`).then((res) => {
-        setPostRequests(res.data);
-        setPostRequestLoading(false);
-      });
+      axios
+        .get(
+          `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/posts/postRequests`
+        )
+        .then((res) => {
+          setPostRequests(res.data);
+          setPostRequestLoading(false);
+        });
     }
 
     return () => {
@@ -100,17 +108,21 @@ function Forum({ forum, title, defaultTab = "posts", history }) {
       }
 
       // get all join requests
-      axios.get(`/api/forums/${forum._id}/join_requests`).then((res) => {
-        setJoinRequests(res.data);
-        setJoinRequestLoading(false);
+      axios
+        .get(
+          `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/join_requests`
+        )
+        .then((res) => {
+          setJoinRequests(res.data);
+          setJoinRequestLoading(false);
 
-        // chec if user is in the join requests
-        if (res.data.find((request) => request._id === user._id)) {
-          setRequestSent(true);
-        } else {
-          setRequestSent(false);
-        }
-      });
+          // chec if user is in the join requests
+          if (res.data.find((request) => request._id === user._id)) {
+            setRequestSent(true);
+          } else {
+            setRequestSent(false);
+          }
+        });
     }
 
     return () => {
@@ -132,7 +144,11 @@ function Forum({ forum, title, defaultTab = "posts", history }) {
     };
 
     axios
-      .post(`/api/forums/${forum._id}/members/delete`, body, headers)
+      .post(
+        `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/members/delete`,
+        body,
+        headers
+      )
       .then((res) => {
         let newForums = [...forums];
         newForums = newForums.map((f) =>
@@ -162,7 +178,11 @@ function Forum({ forum, title, defaultTab = "posts", history }) {
     };
 
     axios
-      .post(`/api/forums/${forum._id}/moderators/make`, body, headers)
+      .post(
+        `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/moderators/make`,
+        body,
+        headers
+      )
       .then((res) => {
         console.log(res.data, forums);
         let newForums = [...forums];
@@ -193,7 +213,11 @@ function Forum({ forum, title, defaultTab = "posts", history }) {
     };
 
     axios
-      .post(`/api/forums/${forum._id}/moderators/dismiss`, body, headers)
+      .post(
+        `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/moderators/dismiss`,
+        body,
+        headers
+      )
       .then((res) => {
         let newForums = [...forums];
         newForums = newForums.map((f) =>

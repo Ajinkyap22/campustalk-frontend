@@ -29,7 +29,11 @@ function AddRules({ forumRules, forumId, title, history }) {
     };
 
     axios
-      .put(`/api/forums/${forumId}/rules`, body, headers)
+      .put(
+        `https://campustalk-api.herokuapp.com/api/forums/${forumId}/rules`,
+        body,
+        headers
+      )
       .then((res) => {
         console.log(res.data);
 

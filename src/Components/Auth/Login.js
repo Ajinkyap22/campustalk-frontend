@@ -44,7 +44,11 @@ function Login({ title, ...props }) {
     };
 
     axios
-      .post("/api/users/google", body, headers)
+      .post(
+        "https://campustalk-api.herokuapp.com/api/users/google",
+        body,
+        headers
+      )
       .then((res) => {
         localStorage.setItem("user", JSON.stringify(res.data));
         setUser(res.data.user);
@@ -70,7 +74,10 @@ function Login({ title, ...props }) {
     setShowOverlay(true);
 
     axios
-      .post("/api/users/login", { email, password })
+      .post("https://campustalk-api.herokuapp.com/api/users/login", {
+        email,
+        password,
+      })
       .then((res) => {
         localStorage.setItem("user", JSON.stringify(res.data));
         setUser(res.data.user);

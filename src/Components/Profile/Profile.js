@@ -36,10 +36,12 @@ function Profile({ ...props }) {
   }, []);
 
   useEffect(() => {
-    axios.get(`/api/users/${user?._id}/posts`).then((res) => {
-      setPosts(res.data);
-      setLoading(false);
-    });
+    axios
+      .get(`https://campustalk-api.herokuapp.com/api/users/${user?._id}/posts`)
+      .then((res) => {
+        setPosts(res.data);
+        setLoading(false);
+      });
   }, []);
 
   return (

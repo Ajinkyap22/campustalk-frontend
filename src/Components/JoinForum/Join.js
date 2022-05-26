@@ -20,7 +20,7 @@ function JoinForum({ title, forums, setForums, ...props }) {
 
   useEffect(() => {
     axios
-      .get("/api/forums/")
+      .get("https://campustalk-api.herokuapp.com/api/forums/")
       .then((res) => {
         setForums(res.data);
         setLoading(false);
@@ -55,7 +55,11 @@ function JoinForum({ title, forums, setForums, ...props }) {
     // send join requests to each selected forum after confirming rather than sending on selection & then cancelling
     joinList.forEach((forumId) => {
       axios
-        .post(`/api/forums/${forumId}/join`, body, headers)
+        .post(
+          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/join`,
+          body,
+          headers
+        )
         .then(() => {
           sendMail(forumId);
         })
@@ -83,7 +87,7 @@ function JoinForum({ title, forums, setForums, ...props }) {
     };
 
     axios
-      .post("/api/mail/requests", body)
+      .post("https://campustalk-api.herokuapp.com/api/mail/requests", body)
       .then((res) => {
         console.log(res.data);
       })

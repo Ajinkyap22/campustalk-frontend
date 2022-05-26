@@ -104,7 +104,7 @@ function ReplyForm({
     if (fileType === "image" || !fileType) {
       axios
         .post(
-          `/api/forums/${forumId}/posts/${postId}/comments/${commentId}/replies/create-reply`,
+          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${commentId}/replies/create-reply`,
           formData,
           headers
         )
@@ -114,7 +114,7 @@ function ReplyForm({
     } else if (fileType === "video") {
       axios
         .post(
-          `/api/forums/${forumId}/posts/${postId}/comments/${commentId}/replies/create-vid-reply`,
+          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${commentId}/replies/create-vid-reply`,
           formData,
           headers
         )
@@ -124,7 +124,7 @@ function ReplyForm({
     } else if (fileType === "doc") {
       axios
         .post(
-          `/api/forums/${forumId}/posts/${postId}/comments/${commentId}/replies/create-doc-reply`,
+          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${commentId}/replies/create-doc-reply`,
           formData,
           headers
         )
@@ -160,7 +160,11 @@ function ReplyForm({
     };
 
     axios
-      .post(`/api/notifications/activityNotification`, body, headers)
+      .post(
+        `https://campustalk-api.herokuapp.com/api/notifications/activityNotification`,
+        body,
+        headers
+      )
       .then(() => {
         let body = {
           author: `${user.firstName} ${user.lastName}`,
@@ -179,9 +183,11 @@ function ReplyForm({
   }
 
   function sendMail(body) {
-    axios.post("/api/mail/reply", body).catch((err) => {
-      console.error(err);
-    });
+    axios
+      .post("https://campustalk-api.herokuapp.com/api/mail/reply", body)
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   function handleRemoveFile(e, index) {

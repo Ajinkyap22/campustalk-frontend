@@ -19,7 +19,7 @@ function ChatList({
     if (mounted) {
       user &&
         axios
-          .get(`/api/chats/${user?._id}`)
+          .get(`https://campustalk-api.herokuapp.com/api/chats/${user?._id}`)
           .then((res) => {
             setChats(res.data);
 

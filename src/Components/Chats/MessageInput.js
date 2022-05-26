@@ -112,7 +112,11 @@ function MessageInput({
 
     if (type === "text") {
       axios
-        .post(`/api/chats/send-message`, formData, headers)
+        .post(
+          `https://campustalk-api.herokuapp.com/api/chats/send-message`,
+          formData,
+          headers
+        )
         .then((res) => {
           onSuccess(res.data, type);
         })
@@ -121,7 +125,11 @@ function MessageInput({
         });
     } else {
       axios
-        .post(`/api/chats/send-${type}`, formData, headers)
+        .post(
+          `https://campustalk-api.herokuapp.com/api/chats/send-${type}`,
+          formData,
+          headers
+        )
         .then((res) => {
           onSuccess(res.data, type);
         })

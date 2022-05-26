@@ -11,7 +11,7 @@ export function ForumProvider({ children }) {
   // fetch forum list
   useEffect(() => {
     axios
-      .get("/api/forums/")
+      .get("https://campustalk-api.herokuapp.com/api/forums/")
       .then((res) => {
         setForums(res.data);
       })

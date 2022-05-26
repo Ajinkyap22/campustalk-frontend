@@ -34,7 +34,11 @@ function LeaveModal({
     };
 
     axios
-      .post(`/api/forums/${forumId}/members/delete`, body, headers)
+      .post(
+        `https://campustalk-api.herokuapp.com/api/forums/${forumId}/members/delete`,
+        body,
+        headers
+      )
       .then((res) => {
         // remove forum from users forums
         setUser({
@@ -63,14 +67,17 @@ function LeaveModal({
 
   function deleteForum() {
     axios
-      .delete(`/api/forums/delete/${forumId}`, {
-        data: { id: user._id },
-        headers: {
-          Authorization: `Bearer ${
-            JSON.parse(localStorage.getItem("user")).token
-          }`,
-        },
-      })
+      .delete(
+        `https://campustalk-api.herokuapp.com/api/forums/delete/${forumId}`,
+        {
+          data: { id: user._id },
+          headers: {
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("user")).token
+            }`,
+          },
+        }
+      )
       .then(() => {
         setShowModal(false);
         // update forums

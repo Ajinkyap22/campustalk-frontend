@@ -30,7 +30,10 @@ function Options({
     };
 
     axios
-      .delete(`/api/forums/${forum._id}/posts/delete/${postId}`, headers)
+      .delete(
+        `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/posts/delete/${postId}`,
+        headers
+      )
       .then(() => {
         // remove post from forum posts
         let newForumPosts = forum.posts.filter((post) => post._id !== postId);

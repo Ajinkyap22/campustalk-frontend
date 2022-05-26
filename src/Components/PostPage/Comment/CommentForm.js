@@ -113,7 +113,7 @@ function CommentForm({
     if (fileType === "image" || !fileType) {
       axios
         .post(
-          `/api/forums/${forumId}/posts/${postId}/comments/create-comment`,
+          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/create-comment`,
           formData,
           headers
         )
@@ -123,7 +123,7 @@ function CommentForm({
     } else if (fileType === "video") {
       axios
         .post(
-          `/api/forums/${forumId}/posts/${postId}/comments/create-vid-comment`,
+          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/create-vid-comment`,
           formData,
           headers
         )
@@ -133,7 +133,7 @@ function CommentForm({
     } else if (fileType === "doc") {
       axios
         .post(
-          `/api/forums/${forumId}/posts/${postId}/comments/create-doc-comment`,
+          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/create-doc-comment`,
           formData,
           headers
         )
@@ -182,7 +182,11 @@ function CommentForm({
     };
 
     axios
-      .post(`/api/notifications/activityNotification`, body, headers)
+      .post(
+        `https://campustalk-api.herokuapp.com/api/notifications/activityNotification`,
+        body,
+        headers
+      )
       .then(() => {
         let body = {
           author: `${user.firstName} ${user.lastName}`,
@@ -201,9 +205,11 @@ function CommentForm({
   }
 
   function sendMail(body) {
-    axios.post("/api/mail/comment", body).catch((err) => {
-      console.error(err);
-    });
+    axios
+      .post("https://campustalk-api.herokuapp.com/api/mail/comment", body)
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   return (

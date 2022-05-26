@@ -30,7 +30,10 @@ function Reset({ title, history, match }) {
     setShowOverlay(true);
 
     axios
-      .post("/api/users/reset-password", formData)
+      .post(
+        "https://campustalk-api.herokuapp.com/api/users/reset-password",
+        formData
+      )
       .then((res) => {
         console.log(res.data);
         setChanged(true);

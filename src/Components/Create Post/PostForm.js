@@ -166,7 +166,7 @@ function PostForm({
     } else {
       axios
         .post(
-          `/api/notifications/requestNotification`,
+          `https://campustalk-api.herokuapp.com/api/notifications/requestNotification`,
           { forum: forum || forum?._id, type: "postRequest" },
           headers
         )
@@ -210,7 +210,9 @@ function PostForm({
       if (fileType === "image" || !fileType) {
         axios
           .put(
-            `/api/forums/${forum || forum?._id}/posts/update/${postId}`,
+            `https://campustalk-api.herokuapp.com/api/forums/${
+              forum || forum?._id
+            }/posts/update/${postId}`,
             formData,
             headers
           )
@@ -223,7 +225,7 @@ function PostForm({
       } else if (fileType === "video") {
         axios
           .put(
-            `/api/forums/${
+            `https://campustalk-api.herokuapp.com/api/forums/${
               forum || forum?._id
             }/posts/update-vid-post/${postId}`,
             formData,
@@ -238,7 +240,7 @@ function PostForm({
       } else if (fileType === "doc") {
         axios
           .put(
-            `/api/forums/${
+            `https://campustalk-api.herokuapp.com/api/forums/${
               forum || forum?._id
             }/posts/update-doc-post/${postId}`,
             formData,
@@ -256,7 +258,9 @@ function PostForm({
       if (fileType === "image" || !fileType) {
         axios
           .post(
-            `/api/forums/${forum || forum?._id}/posts/create-post`,
+            `https://campustalk-api.herokuapp.com/api/forums/${
+              forum || forum?._id
+            }/posts/create-post`,
             formData,
             headers
           )
@@ -269,7 +273,9 @@ function PostForm({
       } else if (fileType === "video") {
         axios
           .post(
-            `/api/forums/${forum || forum?._id}/posts/create-vid-post`,
+            `https://campustalk-api.herokuapp.com/api/forums/${
+              forum || forum?._id
+            }/posts/create-vid-post`,
             formData,
             headers
           )
@@ -282,7 +288,9 @@ function PostForm({
       } else if (fileType === "doc") {
         axios
           .post(
-            `/api/forums/${forum || forum?._id}/posts/create-doc-post`,
+            `https://campustalk-api.herokuapp.com/api/forums/${
+              forum || forum?._id
+            }/posts/create-doc-post`,
             formData,
             headers
           )
@@ -313,9 +321,11 @@ function PostForm({
       type: "post",
     };
 
-    axios.post("/api/mail/requests", body).catch((err) => {
-      console.error(err);
-    });
+    axios
+      .post("https://campustalk-api.herokuapp.com/api/mail/requests", body)
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   return (

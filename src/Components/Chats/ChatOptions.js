@@ -27,7 +27,10 @@ function ChatOptions({
     };
 
     axios
-      .delete(`/api/chats/delete-chat/${chat._id}`, headers)
+      .delete(
+        `https://campustalk-api.herokuapp.com/api/chats/delete-chat/${chat._id}`,
+        headers
+      )
       .then((res) => {
         setChats(chats.filter((c) => c._id !== chat._id));
         setActiveChat(null);
@@ -53,7 +56,10 @@ function ChatOptions({
     };
 
     axios
-      .delete(`/api/chats/clear-chat/${chat._id}`, headers)
+      .delete(
+        `https://campustalk-api.herokuapp.com/api/chats/clear-chat/${chat._id}`,
+        headers
+      )
       .then((res) => {
         setMessages([]);
         setShowOptions(false);

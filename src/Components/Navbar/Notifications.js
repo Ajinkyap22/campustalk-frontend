@@ -50,7 +50,11 @@ function Notifications({
     };
 
     axios
-      .put(`/api/notifications/${user._id}/clear`, {}, headers)
+      .put(
+        `https://campustalk-api.herokuapp.com/api/notifications/${user._id}/clear`,
+        {},
+        headers
+      )
       .then((res) => {
         setNotifications([]);
         setNotificationCount(0);

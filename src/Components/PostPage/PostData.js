@@ -12,7 +12,9 @@ function PostData({ post }) {
   useEffect(() => {
     if (post.comments) {
       axios
-        .get(`/api/forums/${post.forum._id}/posts/${post._id}/comments`)
+        .get(
+          `https://campustalk-api.herokuapp.com/api/forums/${post.forum._id}/posts/${post._id}/comments`
+        )
         .then((res) => {
           // only keep the comments that in the post's comments array
           setComments(res.data);

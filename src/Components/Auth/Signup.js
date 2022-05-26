@@ -43,7 +43,11 @@ function Signup({ title, ...props }) {
     };
 
     axios
-      .post("/api/users/google", body, headers)
+      .post(
+        "https://campustalk-api.herokuapp.com/api/users/google",
+        body,
+        headers
+      )
       .then((res) => {
         localStorage.setItem("user", JSON.stringify(res.data));
 
@@ -72,7 +76,7 @@ function Signup({ title, ...props }) {
     setShowOverlay(true);
 
     axios
-      .post("/api/users/signup", {
+      .post("https://campustalk-api.herokuapp.com/api/users/signup", {
         email,
         password,
         confirmPassword,

@@ -31,7 +31,7 @@ function UserModal({ receiver, hovering, setOverModal, history }) {
 
     axios
       .post(
-        "/api/chats/new-chat",
+        "https://campustalk-api.herokuapp.com/api/chats/new-chat",
         { members: [receiver._id, user._id] },
         headers
       )

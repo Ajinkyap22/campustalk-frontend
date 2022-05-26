@@ -13,7 +13,9 @@ export function PostProvider({ children }) {
   useEffect(() => {
     if (user) {
       axios
-        .get(`/api/forums/userPosts/${user._id}`)
+        .get(
+          `https://campustalk-api.herokuapp.com/api/forums/userPosts/${user._id}`
+        )
         .then((res) => {
           setPosts(
             res.data.sort((a, b) => -a.timestamp.localeCompare(b.timestamp))

@@ -58,7 +58,7 @@ function Comment({
 
     axios
       .get(
-        `/api/forums/${forumId}/posts/${postId}/comments/${comment._id}/replies`
+        `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${comment._id}/replies`
       )
       .then((res) => {
         setReplies(res.data);

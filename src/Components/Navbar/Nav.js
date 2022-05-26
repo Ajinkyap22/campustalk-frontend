@@ -26,22 +26,24 @@ function Nav() {
   useEffect(() => {
     if (!user) return;
 
-    axios.get(`/api/notifications/${user._id}`).then((res) => {
-      let newNotifications = res.data;
-      let count = 0;
+    axios
+      .get(`https://campustalk-api.herokuapp.com/api/notifications/${user._id}`)
+      .then((res) => {
+        let newNotifications = res.data;
+        let count = 0;
 
-      newNotifications.map((notification) => {
-        if (notification.seen.indexOf(user._id) === -1) {
-          notification.hasSeen = false;
-          count++;
-        } else {
-          notification.hasSeen = true;
-        }
+        newNotifications.map((notification) => {
+          if (notification.seen.indexOf(user._id) === -1) {
+            notification.hasSeen = false;
+            count++;
+          } else {
+            notification.hasSeen = true;
+          }
+        });
+
+        setNotifications(newNotifications);
+        setNotificationCount(count);
       });
-
-      setNotifications(newNotifications);
-      setNotificationCount(count);
-    });
   }, [user]);
 
   useEffect(() => {

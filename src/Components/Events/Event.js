@@ -70,7 +70,10 @@ function Event({ event, title, events, setEvents, history }) {
     };
 
     axios
-      .delete(`/api/events/${event._id}`, headers)
+      .delete(
+        `https://campustalk-api.herokuapp.com/api/events/${event._id}`,
+        headers
+      )
       .then((res) => {
         setEvents(events.filter((e) => e._id !== event._id));
 

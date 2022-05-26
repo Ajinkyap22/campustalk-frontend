@@ -89,7 +89,11 @@ function EventMedia({
     };
 
     axios
-      .post(`/api/events/${id}/upload-event-${type}`, formData, headers)
+      .post(
+        `https://campustalk-api.herokuapp.com/api/events/${id}/upload-event-${type}`,
+        formData,
+        headers
+      )
       .then((res) => {
         setEvents((prevEvents) =>
           prevEvents.map((e) => (e._id === res.data._id ? res.data : e))
@@ -117,8 +121,8 @@ function EventMedia({
 
     let path =
       type === "image"
-        ? `/api/events/${id}/delete-event-image`
-        : `/api/events/${id}/delete-event-media`;
+        ? `https://campustalk-api.herokuapp.com/api/events/${id}/delete-event-image`
+        : `https://campustalk-api.herokuapp.com/api/events/${id}/delete-event-media`;
 
     axios
       .post(path, body, headers)

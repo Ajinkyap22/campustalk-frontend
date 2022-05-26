@@ -34,7 +34,7 @@ function CommentOptions({
 
     axios
       .delete(
-        `/api/forums/${forumId}/posts/${postId}/comments/${commentId}/delete-comment`,
+        `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${commentId}/delete-comment`,
         headers
       )
       .then((res) => {

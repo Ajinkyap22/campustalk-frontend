@@ -69,7 +69,11 @@ function ForumForm({ forum, setShowOverlay, history }) {
 
   function createRequest(formData, headers) {
     axios
-      .post(`/api/forums/create-forum`, formData, headers)
+      .post(
+        `https://campustalk-api.herokuapp.com/api/forums/create-forum`,
+        formData,
+        headers
+      )
       .then((res) => {
         // update forums
         setForums((forums) => [...forums, res.data]);
@@ -89,7 +93,11 @@ function ForumForm({ forum, setShowOverlay, history }) {
 
   function editRequest(formData, headers) {
     axios
-      .put(`/api/forums/update/${forum._id}`, formData, headers)
+      .put(
+        `https://campustalk-api.herokuapp.com/api/forums/update/${forum._id}`,
+        formData,
+        headers
+      )
       .then((res) => {
         // update forums
         setForums((forums) =>

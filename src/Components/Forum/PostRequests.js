@@ -30,7 +30,7 @@ function PostRequests({
 
     axios
       .put(
-        `/api/forums/${forum._id}/posts/approve/${post._id}`,
+        `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/posts/approve/${post._id}`,
         { authorId: post.author._id },
         headers
       )
@@ -78,7 +78,11 @@ function PostRequests({
     };
 
     axios
-      .put(`/api/forums/${forum._id}/posts/reject/${post._id}`, {}, headers)
+      .put(
+        `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/posts/reject/${post._id}`,
+        {},
+        headers
+      )
       .then((res) => {
         setPostRequests(postRequests.filter((p) => p._id !== post._id));
       })

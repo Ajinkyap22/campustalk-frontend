@@ -98,7 +98,11 @@ function UserInfo({ title, ...props }) {
     };
 
     axios
-      .put(`/api/users/profile/${user._id}`, formData, headers)
+      .put(
+        `https://campustalk-api.herokuapp.com/api/users/profile/${user._id}`,
+        formData,
+        headers
+      )
       .then((res) => {
         setUser({
           ...user,
@@ -140,10 +144,16 @@ function UserInfo({ title, ...props }) {
       confirmationCode: id,
     };
 
-    axios.post("/api/mail/verification", body, headers).catch((err) => {
-      console.log(err.response);
-      console.error(err);
-    });
+    axios
+      .post(
+        "https://campustalk-api.herokuapp.com/api/mail/verification",
+        body,
+        headers
+      )
+      .catch((err) => {
+        console.log(err.response);
+        console.error(err);
+      });
   }
 
   return (

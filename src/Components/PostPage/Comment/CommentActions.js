@@ -40,7 +40,7 @@ function CommentActions({
     if (upvoted) {
       axios
         .put(
-          `/api/forums/${forumId}/posts/${postId}/comments/${comment._id}/unupvote`,
+          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${comment._id}/unupvote`,
           { id: user._id },
           headers
         )
@@ -54,7 +54,7 @@ function CommentActions({
     } else {
       axios
         .put(
-          `/api/forums/${forumId}/posts/${postId}/comments/${comment._id}/upvote`,
+          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${comment._id}/upvote`,
           {
             id: user._id,
           },
@@ -84,7 +84,7 @@ function CommentActions({
     if (downvoted) {
       axios
         .put(
-          `/api/forums/${forumId}/posts/${postId}/comments/${comment._id}/undownvote`,
+          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${comment._id}/undownvote`,
           { id: user._id },
           headers
         )
@@ -98,7 +98,7 @@ function CommentActions({
     } else {
       axios
         .put(
-          `/api/forums/${forumId}/posts/${postId}/comments/${comment._id}/downvote`,
+          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${comment._id}/downvote`,
           {
             id: user._id,
           },

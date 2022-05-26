@@ -25,7 +25,7 @@ function Notification({
 
       axios
         .put(
-          `/api/notifications/${notification._id}/mark`,
+          `https://campustalk-api.herokuapp.com/api/notifications/${notification._id}/mark`,
           { userId: user._id },
           headers
         )
@@ -80,7 +80,10 @@ function Notification({
     };
 
     axios
-      .delete(`/api/notifications/${notification._id}`, headers)
+      .delete(
+        `https://campustalk-api.herokuapp.com/api/notifications/${notification._id}`,
+        headers
+      )
       .then((res) => {
         setNotifications((notifications) =>
           notifications.filter((n) => n._id !== notification._id)

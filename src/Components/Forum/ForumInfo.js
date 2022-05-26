@@ -37,7 +37,11 @@ function ForumInfo({
     };
 
     axios
-      .post(`/api/forums/${forum._id}/join`, body, headers)
+      .post(
+        `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/join`,
+        body,
+        headers
+      )
       .then(() => {
         // update requestSent
         setRequestSent(true);
@@ -48,7 +52,7 @@ function ForumInfo({
 
         axios
           .post(
-            `/api/notifications/requestNotification`,
+            `https://campustalk-api.herokuapp.com/api/notifications/requestNotification`,
             { forum: forum._id || forum, type: "joinRequest" },
             headers
           )
@@ -86,9 +90,11 @@ function ForumInfo({
       type: "join",
     };
 
-    axios.post("/api/mail/requests", body).catch((err) => {
-      console.error(err);
-    });
+    axios
+      .post("https://campustalk-api.herokuapp.com/api/mail/requests", body)
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   return (
