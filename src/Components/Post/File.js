@@ -78,7 +78,7 @@ function File({
               file.endsWith(".png") ||
               file.endsWith(".gif")) && (
               <img
-                src={`/uploads/images/${file}`}
+                src={`https://campustalk-api.herokuapp.com/uploads/images/${file}`}
                 key={i}
                 alt=""
                 className="mx-auto w-full h-full object-cover"
@@ -90,7 +90,7 @@ function File({
               file.endsWith(".mkv") ||
               file.endsWith(".mpeg-4")) && (
               <video
-                src={`/uploads/videos/${file}`}
+                src={`https://campustalk-api.herokuapp.com/uploads/videos/${file}`}
                 key={i}
                 alt=""
                 className="mx-auto w-full h-full object-cover"
@@ -101,7 +101,7 @@ function File({
             // if file is a pdf
             (file.endsWith(".pdf") && (
               <Document
-                file={`/uploads/docs/${file}`}
+                file={`https://campustalk-api.herokuapp.com/uploads/docs/${file}`}
                 onLoadSuccess={onDocumentLoadSuccess}
                 options={options}
                 key={i}

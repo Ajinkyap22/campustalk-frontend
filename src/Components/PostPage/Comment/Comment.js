@@ -96,7 +96,7 @@ function Comment({
           src={
             comment.author.picture.includes("googleusercontent")
               ? comment.author.picture
-              : `/uploads/images/${comment.author.picture}`
+              : `https://campustalk-api.herokuapp.com/uploads/images/${comment.author.picture}`
           }
           alt=""
           className="rounded-full inline h-8 mx-1"

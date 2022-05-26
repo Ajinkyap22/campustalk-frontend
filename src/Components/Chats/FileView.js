@@ -29,7 +29,9 @@ function FileView({ file, name, type, title, history }) {
   }
 
   function handleDownload() {
-    fetch(`/uploads/${folder}/${file}`).then((response) => {
+    fetch(
+      `https://campustalk-api.herokuapp.com/uploads/${folder}/${file}`
+    ).then((response) => {
       response.blob().then((blob) => {
         let url = window.URL.createObjectURL(blob);
         let a = document.createElement("a");
@@ -57,13 +59,13 @@ function FileView({ file, name, type, title, history }) {
         {/* image */}
         {type === "image" ? (
           <img
-            src={`/uploads/images/${file}`}
+            src={`https://campustalk-api.herokuapp.com/uploads/images/${file}`}
             alt=""
             className="mx-auto max-h-screen object-cover"
           />
         ) : type === "doc" ? (
           <Document
-            file={`/uploads/docs/${file}`}
+            file={`https://campustalk-api.herokuapp.com/uploads/docs/${file}`}
             onLoadSuccess={onDocumentLoadSuccess}
             options={options}
           >
@@ -82,7 +84,7 @@ function FileView({ file, name, type, title, history }) {
         ) : (
           <div>
             <iframe
-              src={`https://view.officeapps.live.com/op/embed.aspx?src=https://campustalk-app.herokuapp.com/public/uploads/docs/${file}`}
+              src={`https://view.officeapps.live.com/op/embed.aspx?src=https://campustalk-app.herokuapp.com/publichttps://campustalk-api.herokuapp.com/uploads/docs/${file}`}
               title={name}
               width="1366px"
               height="623px"

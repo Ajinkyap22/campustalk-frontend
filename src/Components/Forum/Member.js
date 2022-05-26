@@ -66,7 +66,7 @@ function Member({
             src={
               member.picture.includes("googleusercontent")
                 ? member.picture
-                : `/uploads/images/${member.picture}`
+                : `https://campustalk-api.herokuapp.com/uploads/images/${member.picture}`
             }
             className="rounded-full object-cover w-8 md:w-10 2xl:w-12 3xl:w-14 h-auto inline mx-1 md:mx-2"
             alt=""

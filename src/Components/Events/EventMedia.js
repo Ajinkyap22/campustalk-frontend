@@ -27,15 +27,17 @@ function EventMedia({
   }
 
   function handleDownload() {
-    fetch(`/uploads/docs/${doc}`).then((response) => {
-      response.blob().then((blob) => {
-        let url = window.URL.createObjectURL(blob);
-        let a = document.createElement("a");
-        a.href = url;
-        a.download = name;
-        a.click();
-      });
-    });
+    fetch(`https://campustalk-api.herokuapp.com/uploads/docs/${doc}`).then(
+      (response) => {
+        response.blob().then((blob) => {
+          let url = window.URL.createObjectURL(blob);
+          let a = document.createElement("a");
+          a.href = url;
+          a.download = name;
+          a.click();
+        });
+      }
+    );
   }
 
   function handleFileInput(ref) {
@@ -298,7 +300,7 @@ function EventMedia({
 
         {video ? (
           <video
-            src={`/uploads/videos/${video}`}
+            src={`https://campustalk-api.herokuapp.com/uploads/videos/${video}`}
             controls
             className="w-[90%] mx-auto lg:w-full 2xl:w-[90%] h-full"
           />
@@ -354,7 +356,7 @@ function EventMedia({
                 className="relative w-full h-full dark:text-gray-300"
               >
                 <img
-                  src={`/uploads/images/${image}`}
+                  src={`https://campustalk-api.herokuapp.com/uploads/images/${image}`}
                   alt={image}
                   onClick={() => handleImageClick(i)}
                   className="m-2 cursor-pointer w-[90%] lg:w-full 2xl:w-[90%] 2xl:text-xl"

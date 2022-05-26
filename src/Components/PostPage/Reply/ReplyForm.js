@@ -221,7 +221,7 @@ function ReplyForm({
           src={
             user.picture.includes("googleusercontent")
               ? user.picture
-              : `/uploads/images/${user.picture}`
+              : `https://campustalk-api.herokuapp.com/uploads/images/${user.picture}`
           }
           alt=""
           className="rounded-full inline h-6 mx-1 mt-0.5"

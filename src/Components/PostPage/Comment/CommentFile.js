@@ -23,13 +23,13 @@ function CommentFile({ file, type, name, size, history, small = false }) {
     <div className="flex items-center cursor-pointer" onClick={handleClick}>
       {file && type === "image" ? (
         <img
-          src={`/uploads/images/${file}`}
+          src={`https://campustalk-api.herokuapp.com/uploads/images/${file}`}
           alt=""
           className="mx-auto p-2 rounded-xl w-full h-full object-cover"
         />
       ) : file && type === "video" ? (
         <video
-          src={`/uploads/videos/${file}`}
+          src={`https://campustalk-api.herokuapp.com/uploads/videos/${file}`}
           alt=""
           className="mx-auto p-2 rounded-xl w-full h-full object-cover"
           controls

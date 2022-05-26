@@ -44,7 +44,7 @@ function AuthorInfo({
         </svg>
       ) : (
         <img
-          src={`/uploads/images/${picture}`}
+          src={`https://campustalk-api.herokuapp.com/uploads/images/${picture}`}
           alt=""
           className="rounded-full inline h-10 mx-1"
         />

@@ -122,7 +122,7 @@ function MobileNav({ handleClick, activeTab, notificationCount }) {
                 src={
                   user.picture.includes("googleusercontent")
                     ? user.picture
-                    : `/uploads/images/${user.picture}`
+                    : `https://campustalk-api.herokuapp.com/uploads/images/${user.picture}`
                 }
                 alt=""
                 className="rounded-full w-6 md:w-7 mx-auto"

@@ -35,7 +35,7 @@ function PostRequest({ post, ...props }) {
             src={
               post.author.picture.includes("googleusercontent")
                 ? post.author.picture
-                : `/uploads/images/${post.author.picture}`
+                : `https://campustalk-api.herokuapp.com/uploads/images/${post.author.picture}`
             }
             alt=""
             className="rounded-full inline h-8 md:h-9 lg:h-8 xl:h-10 2xl:h-12 mx-1"

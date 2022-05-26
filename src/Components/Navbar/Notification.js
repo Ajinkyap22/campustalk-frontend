@@ -111,7 +111,7 @@ function Notification({
               src={
                 notification.from.picture.includes("googleusercontent")
                   ? notification.from.picture
-                  : `/uploads/images/${notification.from.picture}`
+                  : `https://campustalk-api.herokuapp.com/uploads/images/${notification.from.picture}`
               }
               className="rounded-full object-cover w-10 3xl:w-11 h-auto inline mx-2 md:mx-2.5 lg:mx-2"
               alt=""

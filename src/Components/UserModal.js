@@ -77,7 +77,7 @@ function UserModal({ receiver, hovering, setOverModal, history }) {
             src={
               receiver.picture.includes("googleusercontent")
                 ? receiver.picture
-                : `/uploads/images/${receiver.picture}`
+                : `https://campustalk-api.herokuapp.com/uploads/images/${receiver.picture}`
             }
             alt=""
             className="rounded-full inline lg:h-8 xl:h-10 2xl:h-12 mx-1"

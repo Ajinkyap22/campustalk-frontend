@@ -158,7 +158,7 @@ function Nav() {
               src={
                 user.picture.includes("googleusercontent")
                   ? user.picture
-                  : `/uploads/images/${user.picture}`
+                  : `https://campustalk-api.herokuapp.com/uploads/images/${user.picture}`
               }
               alt=""
               className="rounded-full inline h-6 2xl:h-9 3xl:h-10 w-auto ml-1 dropDownToggle"

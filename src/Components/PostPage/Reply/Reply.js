@@ -62,7 +62,7 @@ function Reply({
           src={
             reply.author.picture?.includes("googleusercontent")
               ? reply.author.picture
-              : `/uploads/images/${reply.author.picture}`
+              : `https://campustalk-api.herokuapp.com/uploads/images/${reply.author.picture}`
           }
           alt=""
           className="rounded-full inline h-8 mx-1"

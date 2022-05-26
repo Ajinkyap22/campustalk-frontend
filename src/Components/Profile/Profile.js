@@ -57,7 +57,7 @@ function Profile({ ...props }) {
                 src={
                   user?.picture.includes("googleusercontent")
                     ? user?.picture
-                    : `/uploads/images/${user?.picture}`
+                    : `https://campustalk-api.herokuapp.com/uploads/images/${user?.picture}`
                 }
                 alt=""
                 className="rounded-full inline h-28 2xl:h-32 3xl:h-36 w-auto mt-4 my-2"

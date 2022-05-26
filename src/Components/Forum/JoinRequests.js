@@ -151,7 +151,7 @@ function JoinRequests({
                       src={
                         joinRequest.picture.includes("googleusercontent")
                           ? joinRequest.picture
-                          : `/uploads/images/${joinRequest.picture}`
+                          : `https://campustalk-api.herokuapp.com/uploads/images/${joinRequest.picture}`
                       }
                       className="rounded-full object-cover w-8 md:w-10 h-auto inline mx-1 md:mx-2"
                       alt=""

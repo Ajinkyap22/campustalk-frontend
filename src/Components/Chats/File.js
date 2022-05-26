@@ -26,7 +26,7 @@ function File({
     >
       {type === "image" && (
         <img
-          src={`/uploads/images/${file}`}
+          src={`https://campustalk-api.herokuapp.com/uploads/images/${file}`}
           onClick={handleClick}
           alt=""
           className="mx-auto w-full h-full object-cover"
@@ -35,7 +35,7 @@ function File({
 
       {type === "video" && (
         <video
-          src={`/uploads/videos/${file}`}
+          src={`https://campustalk-api.herokuapp.com/uploads/videos/${file}`}
           alt=""
           className="mx-auto w-full h-full object-cover"
           controls

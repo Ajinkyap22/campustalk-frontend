@@ -178,7 +178,7 @@ function UserInfo({ title, ...props }) {
                 user.picture && user.picture.includes("googleusercontent")
                   ? user.picture
                   : user.picture
-                  ? `/uploads/images/${user.picture}`
+                  ? `https://campustalk-api.herokuapp.com/uploads/images/${user.picture}`
                   : avatar
               }
               alt="Profile pic upload"
