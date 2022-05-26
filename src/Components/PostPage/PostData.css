@@ -1,0 +1,16 @@
+/* width */
+@media (min-width: 768px) {
+  .postData::-webkit-scrollbar {
+    width: 0.6rem;
+  }
+
+  /* Track */
+  .postData::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  /* Handle */
+  .postData::-webkit-scrollbar-thumb {
+    background: rgb(197, 196, 196);
+  }
+}

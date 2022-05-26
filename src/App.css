@@ -1,0 +1,265 @@
+.App {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.bg-greek-vase {
+  background-image: url("./assets/greek-vase.png");
+  background-repeat: repeat;
+}
+
+.bg-picture {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    url("./assets/bg-picture.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.9;
+}
+
+.bg-bubble {
+  background-image: url("./assets/double-bubble.png");
+  background-repeat: repeat;
+}
+
+.dark .bg-bubble {
+  background: #191a19;
+}
+
+.shape {
+  position: relative;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.or {
+  display: flex;
+  align-items: center;
+}
+
+.or::before {
+  content: "";
+  flex: 0 1 100%;
+  border-bottom: 1px solid rgb(184, 196, 194);
+  margin: 0px 10px;
+  transform: translateY(-50%);
+}
+
+.or::after {
+  content: "";
+  flex: 0 1 100%;
+  border-bottom: 1px solid rgb(184, 196, 194);
+  margin: 0px 10px;
+  transform: translateY(-50%);
+}
+
+.slide-in-right {
+  animation: slide-in-right 0.5s;
+}
+
+.slide-in-left {
+  animation: slide-in-left 0.5s;
+}
+
+.slide-out-left {
+  animation: slide-out-left 0.5s forwards;
+}
+
+.slide-out-right {
+  animation: slide-out-right 0.5s forwards;
+}
+
+@keyframes slide-in-left {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-right {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-out-left {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes slide-out-right {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Position and sizing of burger button */
+.bm-burger-button {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  right: 25px;
+  top: 22px;
+}
+
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+  background: #0278e4;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+  background: white;
+}
+
+.bm-menu-wrap {
+  position: fixed;
+  height: 100%;
+}
+
+/* General sidebar styles */
+.bm-menu {
+  background: #0278e4;
+  padding: 2.5rem 1.5rem 0;
+  font-size: 1.15rem;
+}
+
+/* Wrapper for item list */
+.bm-item-list {
+  color: white;
+  padding: 0.8em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Individual item */
+.bm-item {
+  display: inline-block;
+}
+
+/* Styling of overlay */
+.bm-overlay {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.editor canvas {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+
+.shadow-base {
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0 1.2rem;
+}
+
+tbody tr {
+  background: #cfe2ff;
+}
+
+td {
+  border-bottom: 1rem solid white;
+}
+
+.dark td {
+  border-bottom: 1rem solid #2b2b2b;
+}
+
+@media (max-width: 768px) {
+  td {
+    border-bottom: 0.5rem solid white;
+  }
+
+  .dark td {
+    border-bottom: 0.5rem solid #2b2b2b;
+  }
+}
+
+thead tr th:first-child,
+tbody tr td:first-child {
+  width: 50%;
+  min-width: 50%;
+  max-width: 50%;
+}
+
+thead tr .row {
+  width: 40%;
+  min-width: 40%;
+  max-width: 40%;
+}
+
+thead tr .rowFirst {
+  width: 40% !important;
+  min-width: 40% !important;
+  max-width: 40% !important;
+}
+
+.requested:hover {
+  background: white !important;
+  border: 1px solid #0278e4 !important;
+  color: #0278e4;
+}
+
+.pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.reactour__close {
+  top: 1rem !important;
+  right: 1rem !important;
+}
+
+.helper {
+  max-width: 25rem !important;
+}
+
+[data-tour-elem="badge"] {
+  background-color: #0278e4 !important;
+  font-family: "Poppins", sans-serif !important;
+  font-size: 0.8rem !important;
+}
+
+@media (max-width: 768px) {
+  .helper {
+    max-width: 20rem !important;
+    font-size: 0.9rem !important;
+  }
+}
