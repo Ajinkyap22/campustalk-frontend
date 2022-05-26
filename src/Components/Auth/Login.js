@@ -96,6 +96,7 @@ function Login({ title, ...props }) {
         }
       })
       .catch((err) => {
+        setShowOverlay(false);
         if (err?.response?.status === 401) {
           setStatus(401);
         } else {

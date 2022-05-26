@@ -92,6 +92,7 @@ function Signup({ title, ...props }) {
         props.history.push("/user-info");
       })
       .catch((err) => {
+        setShowOverlay(false);
         if (err.response?.status === 409) {
           setStatus(409);
         } else if (err.response?.status === 401) {
