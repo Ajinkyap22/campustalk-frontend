@@ -40,6 +40,8 @@ const EditForum = lazy(() => import("./Components/Forum/EditForum"));
 const EditEvent = lazy(() => import("./Components/Events/EditEvent"));
 const AddRules = lazy(() => import("./Components/Forum/AddRules"));
 
+console.log("Welcome to CampusTalk");
+
 function App() {
   const [forums, setForums] = useContext(ForumContext);
   const [events, setEvents] = useContext(EventContext);
