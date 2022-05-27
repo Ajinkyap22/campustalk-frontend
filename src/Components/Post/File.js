@@ -35,10 +35,6 @@ function File({
     }
   }, []);
 
-  function handleDocClick(file) {
-    history.push(`/media/${file}`);
-  }
-
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
     setIsPDF(true);
@@ -56,6 +52,22 @@ function File({
       if (currentFile === files.length - 1) return;
       setCurrentFile(currentFile + 1);
     }
+  }
+
+  function handleDownload(e, name, file) {
+    e.stopPropagation();
+
+    fetch(`https://campustalk-api.herokuapp.com/uploads/docs/${file}`).then(
+      (response) => {
+        response.blob().then((blob) => {
+          let url = window.URL.createObjectURL(blob);
+          let a = document.createElement("a");
+          a.href = url;
+          a.download = name;
+          a.click();
+        });
+      }
+    );
   }
 
   return (
@@ -123,7 +135,6 @@ function File({
               <div
                 key={i}
                 className="flex items-center justify-center bg-[#cfe2ff] max-w-full p-2 doc dark:bg-[#3e3d3d]"
-                onClick={handleDocClick.bind(this, file)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -159,16 +170,28 @@ function File({
                   </span>
                 )}
 
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  className="fill-current w-5 text-primary-light ml-2 doc"
+                {/* download button */}
+                <button
+                  onClick={(e) =>
+                    handleDownload(e, originalFileNames[i].name, file)
+                  }
+                  title="Download"
                 >
-                  <path
-                    className="doc"
-                    d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"
-                  />
-                </svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="stroke-current w-5 text-primary-light ml-2 doc"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="white"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                    />
+                  </svg>
+                </button>
               </div>
             )
         )}

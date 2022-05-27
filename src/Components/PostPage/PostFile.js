@@ -38,7 +38,9 @@ function PostFile({ post, handleBack }) {
       } lg:col-span-3 bg-black relative`}
     >
       {/* file */}
-      {post.file.length ? (
+      {post.file.length &&
+      !post.file[0].endsWith(".docx") &&
+      !post.file[0].endsWith(".pptx") ? (
         <File
           classes="flex items-center relative mx-auto bg-black max-w-fit"
           files={post.file}
