@@ -93,7 +93,9 @@ function File({
                 src={`https://campustalk-api.herokuapp.com/uploads/images/${file}`}
                 key={i}
                 alt=""
-                className="mx-auto w-full h-full object-cover"
+                className={`mx-auto ${
+                  !fullScreen ? "w-full h-full" : "h-screen"
+                } object-cover`}
                 hidden={i !== currentFile}
               />
             )) ||
