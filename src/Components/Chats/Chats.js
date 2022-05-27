@@ -2,7 +2,7 @@ import { UserContext } from "../../Contexts/UserContext";
 import { TabContext } from "../../Contexts/TabContext";
 import { SocketContext } from "../../Contexts/SocketContext";
 import { ChatContext } from "../../Contexts/ChatContext";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import Nav from "../Navbar/Nav";
 import ChatList from "./ChatList";
 import ChatPage from "./ChatPage";

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 function Row({ event }) {
   return (
     <tr className="text-center text-sm py-4 dark:bg-[#89b8ff]">
-      <td className="text-xsm lg:text-sm 2xl:text-lg dark:text-dark rowFirst">
+      <td className="text-xsm lg:text-sm 2xl:text-lg dark:text-dark rowFirst px-2">
         {event.name}
       </td>
       <td className="text-xsm lg:text-sm 2xl:text-lg dark:text-dark row">

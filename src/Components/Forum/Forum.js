@@ -256,6 +256,7 @@ function Forum({ forum, title, defaultTab = "posts", history }) {
             postRequests={postRequests}
             joinRequests={joinRequests}
             forumName={forum.forumName}
+            setAction={setAction}
           />
 
           {/* if user exists & is a member of the forum */}
@@ -408,6 +409,7 @@ function Forum({ forum, title, defaultTab = "posts", history }) {
             setRequestSent={setRequestSent}
             joinRequests={joinRequests}
             setJoinRequests={setJoinRequests}
+            setAction={setAction}
             isModerator={isModerator}
             user={user}
           />

@@ -2,12 +2,19 @@ import { FileContext } from "../../Contexts/FileContext";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import ChatTitle from "./ChatTitle";
-import Message from "./Message";
 import MessageInput from "./MessageInput";
 import Loading from "../Loading";
 import Messages from "./Messages";
 
-function ChatPage({ chat, user, socket, setActiveChat, chats, setChats }) {
+function ChatPage({
+  chat,
+  user,
+  socket,
+  setActiveChat,
+  chats,
+  setChats,
+  setShowOverlay,
+}) {
   const [files, setFiles] = useContext(FileContext);
   const [receiver, setReceiver] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -129,7 +136,7 @@ function ChatPage({ chat, user, socket, setActiveChat, chats, setChats }) {
           <Loading />
         </div>
       ) : (
-        <div className="pt-2 2xl:pt-4 3xl:pt-6 lg:row-span-8 postData">
+        <div className="relative pt-2 2xl:pt-4 3xl:pt-6 lg:row-span-8 postData overflow-auto">
           {messages && messages.length ? (
             <Messages messages={messages} user={user} loading={loading} />
           ) : (

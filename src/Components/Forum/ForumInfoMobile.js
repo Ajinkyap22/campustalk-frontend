@@ -12,10 +12,12 @@ function ForumInfoMobile({
   joinRequests,
   setJoinRequests,
   isModerator,
+  setAction,
   ...props
 }) {
-  function toggleModal() {
+  function toggleModal(action) {
     setShowModal(!showModal);
+    setAction(action);
   }
 
   function joinForum() {
@@ -146,14 +148,17 @@ function ForumInfoMobile({
             </Link>
 
             <button
-              onClick={toggleModal}
+              onClick={() => toggleModal("Leave")}
               className="mx-auto w-1/2 md:w-1/3 block text-centr p-2 md:p-2.5 py-1.5 md:py-2 my-5 md:my-6 text-xs md:text-sm border border-red-500 bg-transparent text-red-500 dark:text-[#ff5656] rounded-full hover:bg-red-500 hover:text-white dark:hover:text-darkLight"
             >
               Leave Forum
             </button>
 
             {isModerator && (
-              <button className="mx-auto w-1/2 md:w-1/3 block text-centr p-2 md:p-2.5 py-1.5 md:py-2 my-5 md:my-6 text-xs md:text-sm border border-red-500 bg-transparent text-red-500 dark:text-[#ff5656] rounded-full hover:bg-red-500 hover:text-white dark:hover:text-darkLight">
+              <button
+                onClick={() => toggleModal("Delete")}
+                className="mx-auto w-1/2 md:w-1/3 block text-centr p-2 md:p-2.5 py-1.5 md:py-2 my-5 md:my-6 text-xs md:text-sm border border-red-500 bg-transparent text-red-500 dark:text-[#ff5656] rounded-full hover:bg-red-500 hover:text-white dark:hover:text-darkLight"
+              >
                 Delete Forum
               </button>
             )}
