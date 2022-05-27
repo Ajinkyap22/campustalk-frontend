@@ -167,11 +167,11 @@ function Feed({ title }) {
   }
 
   return (
-    <main className="w-full min-h-full bg-[#F0F2F5] dark:bg-dark">
+    <main className="w-full min-h-full relative bg-[#F0F2F5] dark:bg-dark">
       <Nav />
 
       {/* Feed content */}
-      <section className="flex justify-evenly items-start lg:w-full mx-auto h-full relative">
+      <section className="flex justify-evenly items-start lg:w-full mx-auto h-full lg:min-h-screen relative">
         <div className="sticky top-[5.5rem] 2xl:top-[6rem] 3xl:top-[6.5rem]">
           {/* faq */}
           <FAQ faqData={faqData} />

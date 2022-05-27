@@ -102,7 +102,7 @@ function ChatPage({
         `https://campustalk-api.herokuapp.com/api/chats/${chat._id}/update-unreadcount`,
         body
       )
-      .then((res) => {
+      .then(() => {
         setChats(
           chats.map((c) => {
             if (c._id === chat._id && user) {
