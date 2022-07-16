@@ -1,13 +1,23 @@
 import { UserContext } from "../../Contexts/UserContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import HeroImg from "../../assets/Hero.png";
+import Aos from "aos";
+import "aos/dist/aos.css";
 
 function Hero() {
   const [user] = useContext(UserContext);
 
+  useEffect(() => {
+    Aos.init({ duration: 2000 });
+  }, []);
+
   return (
-    <section className="m-3 mt-16 md:mt-10 flex flex-col p-3 py-5 md:py-20 2xl:py-20">
+    <section
+      data-aos="zoom-in-up"
+      data-aos-duration="1500"
+      className="m-3 mt-16 md:mt-10 flex flex-col p-3 py-5 md:py-20 2xl:py-20"
+    >
       <div className="flex items-center justify-around md:p-2">
         <div className="flex flex-col justify-between">
           <p className="uppercase text-secondary font-bold text-[.45rem] tracking-wider md:text-xs md:tracking-widest 2xl:text-lg">

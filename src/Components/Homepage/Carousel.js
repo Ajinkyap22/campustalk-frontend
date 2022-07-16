@@ -1,16 +1,17 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import Swipe from "react-easy-swipe";
-
-// null
-// if null in next add slideoutleft
-
-// if null in prev add slideoutleft
+import Aos from "aos";
+import "aos/dist/aos.css";
 
 function Carousel({ data }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(null);
   const slideRef = useRef();
+
+  useEffect(() => {
+    Aos.init({ duration: 2000 });
+  }, []);
 
   const nextSlide = () => {
     slideRef.current.classList.add("slide-out-left");
@@ -51,7 +52,11 @@ function Carousel({ data }) {
   };
 
   return (
-    <div className="lg:hidden grid grid-cols-1 md:mx-24 overflow-hidden relative">
+    <div
+      data-aos="fade-up"
+      data-aos-duration="1500"
+      className="lg:hidden grid grid-cols-1 md:mx-24 overflow-hidden relative"
+    >
       <AiOutlineLeft
         onClick={prevSlide}
         className="absolute left-0 text-3xl inset-y-1/2 text-white cursor-pointer"

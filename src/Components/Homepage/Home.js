@@ -4,10 +4,14 @@ import { NavLink } from "react-router-dom";
 import About from "./About";
 import Hero from "./Hero";
 import { useEffect } from "react";
+import Aos from "aos";
+import "aos/dist/aos.css";
 
 function Home() {
   useEffect(() => {
     document.title = "CampusTalk - Your College Life Made Easy!";
+
+    Aos.init({ duration: 2000 });
   }, []);
 
   return (
@@ -21,7 +25,12 @@ function Home() {
       <About />
 
       {/* How it works */}
-      <div className="relative text-center mt-20" id="working">
+      <div
+        data-aos="fade-up"
+        data-aos-duration="1500"
+        className="relative text-center mt-20"
+        id="working"
+      >
         <div className="shape flex flex-col">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -31,7 +40,7 @@ function Home() {
             <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z"></path>
           </svg>
 
-          <div className="bg-primary py-5 border border-primary text-white">
+          <div className="bg-[#0278e4] py-5 border border-primary text-white">
             <div className="mx-5 lg:mx-20 bg-light border-2 border-light rounded-xl 2xl:mx-40 2xl:p-5">
               <h1 className="text-2xl md:text-3xl lg:text-4xl p-5 2xl:text-5xl 2xl:p-10">
                 How does it work?
@@ -178,16 +187,16 @@ function Home() {
       </div>
 
       {/* FAQ */}
-      <section className="bg-primary py-20 text-white" id="faq">
-        <h1 className="text-2xl px-2 leading-normal md:leading-normal md:text-5xl text-center">
-          Frequently Asked Questions (FAQ)
-        </h1>
+      <section className="bg-[#0278e4] py-20 text-white" id="faq">
+        <div data-aos="fade-up" data-aos-duration="1500">
+          <h1 className="text-2xl px-2 leading-normal md:leading-normal md:text-5xl text-center">
+            Frequently Asked Questions (FAQ)
+          </h1>
 
-        <Accordion />
+          <Accordion />
+        </div>
       </section>
     </div>
-
-    // TODO - Add contact us button after creating mail
   );
 }
 

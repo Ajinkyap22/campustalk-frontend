@@ -1,5 +1,8 @@
 import AboutItem from "./AboutItem";
 import Carousel from "./Carousel";
+import { useEffect } from "react";
+import Aos from "aos";
+import "aos/dist/aos.css";
 
 const data1 = [
   "CampusTalk is a platform for institutes to host asynchronous online discussion forums where students can interact with their peers and teachers regarding academic and non academic activities in their institute.",
@@ -14,16 +17,28 @@ const data2 = [
 ];
 
 function About() {
+  useEffect(() => {
+    Aos.init({ duration: 2000 });
+  }, []);
+
   return (
     <section
       className="bg-picture text-center text-white mt-24 p-2 2xl:p-4"
       id="about"
     >
-      <h1 className="font-bold text-xl md:text-3xl 2xl:text-5xl 2xl:pt-16 pt-14">
+      <h1
+        data-aos="fade-up"
+        data-aos-duration="1500"
+        className="font-bold text-xl md:text-3xl 2xl:text-5xl 2xl:pt-16 pt-14"
+      >
         So, what is CampusTalk anyway?
       </h1>
 
-      <div className="hidden lg:grid lg:gap-x-20 lg:grid-cols-3 p-10 mt-2 2xl:gap-x-40 2xl:px-28 2xl:text-2xl">
+      <div
+        data-aos="fade-up"
+        data-aos-duration="1500"
+        className="hidden lg:grid lg:gap-x-20 lg:grid-cols-3 p-10 mt-2 2xl:gap-x-40 2xl:px-28 2xl:text-2xl"
+      >
         {data1.map((data, i) => (
           <AboutItem data={data} key={i} />
         ))}
@@ -31,13 +46,21 @@ function About() {
 
       <Carousel data={data1} />
 
-      <h1 className="font-bold text-xl md:text-3xl 2xl:text-5xl 2xl:pt-14 pt-8">
+      <h1
+        data-aos="fade-up"
+        data-aos-duration="1500"
+        className="font-bold text-xl md:text-3xl 2xl:text-5xl 2xl:pt-14 pt-8"
+      >
         Why do we need CampusTalk?
       </h1>
 
       <Carousel data={data2} />
 
-      <div className="hidden lg:grid lg:gap-x-20 lg:grid-cols-3 p-10 mt-2 2xl:gap-x-40 2xl:px-28 2xl:text-2xl">
+      <div
+        data-aos="fade-up"
+        data-aos-duration="1500"
+        className="hidden lg:grid lg:gap-x-20 lg:grid-cols-3 p-10 mt-2 2xl:gap-x-40 2xl:px-28 2xl:text-2xl"
+      >
         {data2.map((data, i) => (
           <AboutItem data={data} key={i} />
         ))}
