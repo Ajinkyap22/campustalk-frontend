@@ -140,7 +140,11 @@ function PostActions({
     >
       {/* upvotes */}
       <div className="my-1 inline">
-        <button onClick={handleUpvote} title="Upvote Post">
+        <button
+          onClick={handleUpvote}
+          title="Upvote Post"
+          className="hover:scale-110 transition-transform"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill={upvoted ? "#0F8CFF" : "#484848"}
@@ -167,7 +171,11 @@ function PostActions({
           {upvotes.length - downvotes.length}
         </span>
 
-        <button onClick={handleDownvote} title="Downvote Post">
+        <button
+          onClick={handleDownvote}
+          title="Downvote Post"
+          className="hover:scale-110 transition-transform"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill={downvoted ? "red" : "#484848"}
@@ -220,7 +228,7 @@ function PostActions({
 
       {/* comment number */}
       <button
-        className="text-xs md:text-mxs lg:text-xs xl:text-mxs 2xl:text-base my-1 text-right text-secondary dark:text-gray-400"
+        className="text-xs md:text-mxs lg:text-xs xl:text-mxs 2xl:text-base my-1 text-right text-secondary hover:underline dark:text-gray-400"
         title="See Comments"
         onClick={onPostClick}
       >

@@ -32,6 +32,7 @@ function MobileActions() {
   return (
     <div className="relative lg:hidden">
       <button
+        aria-label="Create button"
         className="mobileActions fixed right-4 bottom-5 z-20 dropDownToggle"
         onClick={toggleActions}
       >

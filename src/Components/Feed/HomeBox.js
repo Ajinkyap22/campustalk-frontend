@@ -47,7 +47,7 @@ function HomeBox({ user }) {
       <div className="actions">
         <Link
           to="/create-post"
-          className="w-1/2 mx-auto text-center block py-1.5 my-5 text-xs lg:text-sm 2xl:text-base border border-primary bg-primary-light text-white rounded-full hover:bg-blue-700 dark:hover:bg-primary"
+          className="w-1/2 mx-auto text-center block py-1.5 my-5 text-xs lg:text-sm 2xl:text-base border border-primary bg-primary-light text-white rounded-full hover:scale-105 transition-transform hover:bg-blue-700 dark:hover:bg-primary"
         >
           Create Post
         </Link>
@@ -55,7 +55,7 @@ function HomeBox({ user }) {
         {isModerator && (
           <Link
             to="/create-event"
-            className="w-1/2 mx-auto text-center block py-1.5 my-5 text-xs lg:text-sm 2xl:text-base border border-primary bg-primary text-white rounded-full hover:bg-blue-700 dark:hover:bg-primary-light"
+            className="w-1/2 mx-auto text-center block py-1.5 my-5 text-xs lg:text-sm 2xl:text-base border border-primary bg-primary text-white rounded-full hover:scale-105 transition-transform hover:bg-blue-700 dark:hover:bg-primary-light"
           >
             Create Event
           </Link>
@@ -63,7 +63,7 @@ function HomeBox({ user }) {
 
         <Link
           to="/create-forum"
-          className="w-1/2 mx-auto text-center block py-1.5 my-5 text-xs lg:text-sm 2xl:text-base border border-primary dark:border-[#389fff] bg-transparent text-primary dark:text-[#389fff] rounded-full hover:bg-primary-light dark:hover:bg-primary hover:text-white dark:hover:text-white"
+          className="w-1/2 mx-auto text-center block py-1.5 my-5 text-xs lg:text-sm 2xl:text-base border border-primary dark:border-[#389fff] bg-transparent text-primary dark:text-[#389fff] rounded-full hover:scale-105 transition-transform hover:bg-primary-light dark:hover:bg-primary hover:text-white dark:hover:text-white"
         >
           Create Forum
         </Link>

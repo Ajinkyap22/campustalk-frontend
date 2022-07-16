@@ -8,6 +8,7 @@ import Logo from "../Logo";
 import Notifications from "./Notifications";
 import MobileNav from "./MobileNav";
 import axios from "axios";
+import Toggle from "./Toggle";
 
 function Nav() {
   const [activeTab, setActiveTab] = useContext(TabContext);
@@ -129,7 +130,8 @@ function Nav() {
       <div className="hidden lg:flex items-center dropDownToggle">
         {/* notifications */}
         <button
-          className="h-auto relative notifications"
+          aria-label="Notifications"
+          className="h-auto relative notifications mx-2"
           onClick={toggleNotifications}
         >
           <svg
@@ -147,8 +149,12 @@ function Nav() {
           )}
         </button>
 
+        {/* dark mode toggle */}
+        <Toggle />
+
         {/* profile */}
         <button
+          aria-label="Profile Options"
           className="mx-2 2xl:mx-3 dropDownToggle profile"
           onClick={() => setShowDropdown(!showDropdown)}
         >

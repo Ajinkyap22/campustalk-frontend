@@ -39,7 +39,12 @@ function FAQ({ faqData }) {
                 </p>
 
                 {/* toggles */}
-                <button className="pr-3">
+                <button
+                  aria-label={
+                    currentFaq === index ? "Hide answer" : "Show answer"
+                  }
+                  className="pr-3"
+                >
                   {currentFaq === index ? (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
