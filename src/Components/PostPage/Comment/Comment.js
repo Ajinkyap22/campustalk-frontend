@@ -99,7 +99,7 @@ function Comment({
               : `https://campustalk-api.herokuapp.com/uploads/images/${comment.author.picture}`
           }
           alt=""
-          className="rounded-full inline h-8 mx-1"
+          className="rounded-full inline w-8 h-auto mx-1"
         />
       ) : (
         <svg

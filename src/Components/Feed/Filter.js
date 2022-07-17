@@ -72,7 +72,7 @@ function Filter({
           className={`${
             activeFilter === "latest"
               ? "bg-[#E2EEFF] text-primary"
-              : "dark:text-darkLight hover:bg-gray-200"
+              : "dark:text-darkLight hover:bg-gray-200 dark:hover:bg-neutral-700"
           } p-1 px-2 rounded-xl`}
         >
           <svg
@@ -103,7 +103,7 @@ function Filter({
           className={`${
             activeFilter === "important"
               ? "bg-[#E2EEFF] text-primary"
-              : "dark:text-darkLight hover:bg-gray-200"
+              : "dark:text-darkLight hover:bg-gray-200 dark:hover:bg-neutral-700"
           } p-1 px-2 rounded-xl`}
         >
           <svg
@@ -133,7 +133,7 @@ function Filter({
           className={`${
             activeFilter === "top"
               ? "bg-[#E2EEFF] text-primary"
-              : "dark:text-darkLight hover:bg-gray-200"
+              : "dark:text-darkLight hover:bg-gray-200 dark:hover:bg-neutral-700"
           } p-1 px-2 rounded-xl`}
         >
           <svg

@@ -33,7 +33,7 @@ function ChatTitle({
       {/* picture and name */}
       <div className="flex items-center">
         {/* back button for mobile */}
-        <button onClick={back}>
+        <button onClick={back} aria-label="Back">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="w-6 xl:w-7 xl:mx-1 2xl:w-9 3xl:w-10 stroke-darkLight"

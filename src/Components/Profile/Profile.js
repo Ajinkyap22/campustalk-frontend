@@ -60,7 +60,7 @@ function Profile({ ...props }) {
                     : `https://campustalk-api.herokuapp.com/uploads/images/${user?.picture}`
                 }
                 alt=""
-                className="rounded-full inline h-28 2xl:h-32 3xl:h-36 w-auto mt-4 my-2"
+                className="rounded-full inline w-28 2xl:w-32 3xl:w-36 h-auto mt-4 my-2"
               />
             ) : (
               <svg

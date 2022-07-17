@@ -20,7 +20,6 @@ function File({
   setCurrentFile,
   originalFileNames,
   small = false,
-  history,
 }) {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
@@ -72,11 +71,12 @@ function File({
 
   return (
     <div className={classes} onClick={onPostClick}>
-      <AiOutlineLeft
-        onClick={handleClick.bind(this, "left")}
-        className="pageChange absolute left-0 text-3xl top-[45%] bg-[rgba(0,0,0,0.5)] rounded text-white cursor-pointer"
-        hidden={files.length === 1 || currentFile === 0}
-      />
+      {files.length === 1 || currentFile === 0 ? null : (
+        <AiOutlineLeft
+          onClick={handleClick.bind(this, "left")}
+          className="pageChange absolute left-0 text-3xl top-[45%] bg-[rgba(0,0,0,0.5)] rounded text-white cursor-pointer"
+        />
+      )}
       <Swipe
         onSwipeLeft={handleClick.bind(this, "left")}
         onSwipeRight={handleClick.bind(this, "right")}
@@ -126,7 +126,9 @@ function File({
                   hidden={pageNumber === 1}
                   onClick={() => changePage(-1)}
                 />
+
                 <Page pageNumber={pageNumber} renderAnnotationLayer={false} />
+
                 <AiOutlineRight
                   className="pageChange absolute right-0 text-4xl inset-y-1/2 bg-[rgba(0,0,0,0.5)] rounded text-white cursor-pointer z-10"
                   hidden={pageNumber === numPages}
@@ -178,6 +180,7 @@ function File({
                     handleDownload(e, originalFileNames[i].name, file)
                   }
                   title="Download"
+                  aria-label="Download File"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -198,11 +201,12 @@ function File({
             )
         )}
       </Swipe>
-      <AiOutlineRight
-        onClick={handleClick.bind(this, "right")}
-        className="pageChange absolute right-0 top-[45%] bg-[rgba(0,0,0,0.5)] rounded text-3xl inset-y-1/2 text-white cursor-pointer"
-        hidden={files.length === 1 || currentFile === files.length - 1}
-      />
+      {files.length === 1 || currentFile === files.length - 1 ? null : (
+        <AiOutlineRight
+          onClick={handleClick.bind(this, "right")}
+          className="pageChange absolute right-0 top-[45%] bg-[rgba(0,0,0,0.5)] rounded text-3xl inset-y-1/2 text-white cursor-pointer"
+        />
+      )}
 
       {/* show current image number on the top right */}
       <span

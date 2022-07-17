@@ -149,7 +149,7 @@ function EventMedia({
     <div className="lg:col-span-2 2xl:col-span-3">
       {/* event doc */}
       <section className="text-center my-8 lg:w-2/3">
-        <h2 className="text-xl 2xl:text-3xl my-4 2xl:my-5 text-primary dark:text-primary-dark">
+        <h2 className="text-xl 2xl:text-3xl my-4 2xl:my-5 text-[#0268D4] dark:text-primary-dark">
           Information Document
         </h2>
 
@@ -205,7 +205,7 @@ function EventMedia({
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-7 2xl:w-8 2xl:w-9 stroke-primary-light"
+                  className="w-7 2xl:w-9 stroke-primary-light"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth={2}
@@ -239,6 +239,7 @@ function EventMedia({
             <button
               className="mt-4 2xl:mt-5 2xl:mb-2 block mx-auto hover:scale-125 transition-all"
               onClick={() => handleFileInput(docRef)}
+              aria-label="Add Document"
               hidden={!isModerator}
             >
               <svg
@@ -271,7 +272,7 @@ function EventMedia({
       {/* event video */}
       <section className="my-8 text-center lg:w-2/3">
         <div className="flex items-center justify-center">
-          <h2 className="text-xl 2xl:text-3xl my-4 2xl:my-5 text-primary dark:text-primary-dark">
+          <h2 className="text-xl 2xl:text-3xl my-4 2xl:my-5 text-[#0268D4] dark:text-primary-dark">
             Video
           </h2>
 
@@ -313,6 +314,7 @@ function EventMedia({
             <button
               className="mt-4 2xl:mt-5 2xl:mb-2 block mx-auto hover:scale-125 transition-all"
               onClick={() => handleFileInput(videoRef)}
+              aria-label="Add Video"
               hidden={!isModerator}
             >
               <svg
@@ -344,7 +346,7 @@ function EventMedia({
 
       {/* images */}
       <section className="my-8 text-center lg:w-2/3">
-        <h2 className="text-xl 2xl:text-3xl my-4 text-primary dark:text-primary-dark">
+        <h2 className="text-xl 2xl:text-3xl my-4 text-[#0268D4] dark:text-primary-dark">
           Images
         </h2>
 
@@ -386,6 +388,7 @@ function EventMedia({
         <div hidden={images.length === 5 || !isModerator}>
           <button
             className="mt-4 2xl:mt-5 2xl:mb-2 block mx-auto hover:scale-125 transition-all"
+            aria-label="Add Image"
             onClick={() => handleFileInput(imageRef)}
           >
             <svg

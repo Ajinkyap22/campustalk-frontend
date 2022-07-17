@@ -191,7 +191,7 @@ function ForumInfo({
         <div>
           <Link
             to="/create-post"
-            className="mx-auto text-center w-1/2 block p-2 py-1.5 my-5 text-xs md:text-sm 2xl:text-base border border-primary-light bg-primary-light text-white rounded-full hover:bg-blue-700"
+            className="mx-auto text-center w-1/2 block p-2 py-1.5 my-5 text-xs md:text-sm 2xl:text-base hover:scale-105 transition-transform border border-primary-light bg-primary-light text-white rounded-full hover:bg-blue-700"
           >
             Create Post
           </Link>
@@ -199,7 +199,7 @@ function ForumInfo({
           {isModerator && (
             <Link
               to="/create-event"
-              className="w-1/2 mx-auto text-center block py-1.5 my-5 text-xs md:text-sm 2xl:text-base border border-primary bg-primary text-white rounded-full hover:bg-blue-700 dark:hover:bg-primary-light"
+              className="w-1/2 mx-auto text-center block py-1.5 my-5 text-xs md:text-sm 2xl:text-base hover:scale-105 transition-transform border border-primary bg-primary text-white rounded-full hover:bg-blue-700 dark:hover:bg-primary-light"
             >
               Create Event
             </Link>
@@ -207,7 +207,7 @@ function ForumInfo({
 
           <button
             onClick={() => toggleModal("Leave")}
-            className="mx-auto w-1/2 block text-centr p-2 py-1.5 my-5 text-xs md:text-sm 2xl:text-base border border-red-500 bg-transparent text-red-500 dark:text-[#ff5656] rounded-full hover:bg-red-500 hover:text-white dark:hover:text-darkLight"
+            className="mx-auto w-1/2 block text-centr p-2 py-1.5 my-5 text-xs md:text-sm 2xl:text-base hover:scale-105 transition-transform border border-red-500 bg-transparent text-red-500 dark:text-[#ff5656] rounded-full hover:bg-red-500 hover:text-white dark:hover:text-darkLight"
           >
             Leave Forum
           </button>
@@ -215,7 +215,7 @@ function ForumInfo({
           {isModerator && (
             <button
               onClick={() => toggleModal("Delete")}
-              className="mx-auto w-1/2 block text-centr p-2 py-1.5 my-5 text-xs md:text-sm 2xl:text-base border border-red-500 bg-transparent text-red-500 dark:text-[#ff5656] rounded-full hover:bg-red-500 hover:text-white dark:hover:text-darkLight"
+              className="mx-auto w-1/2 block text-centr p-2 py-1.5 my-5 text-xs md:text-sm 2xl:text-base hover:scale-105 transition-transform border border-red-500 bg-transparent text-red-500 dark:text-[#ff5656] rounded-full hover:bg-red-500 hover:text-white dark:hover:text-darkLight"
             >
               Delete Forum
             </button>
@@ -234,7 +234,7 @@ function ForumInfo({
             <button
               onClick={joinForum}
               disabled={!user}
-              className="mx-auto w-1/2 block p-2 py-1.5 my-5 text-xs md:text-sm 2xl:text-base border border-primary-light bg-primary-light text-white rounded-full hover:bg-blue-700 disabled:opacity-70 disabled:hover:bg-primary-light"
+              className="mx-auto w-1/2 block p-2 py-1.5 my-5 text-xs md:text-sm 2xl:text-base hover:scale-105 transition-transform border border-primary-light bg-primary-light text-white rounded-full hover:bg-blue-700 disabled:opacity-70 disabled:hover:bg-primary-light"
             >
               Join Forum
             </button>

@@ -17,6 +17,7 @@ function InputButtons({
       {/* images */}
       <button
         type="button"
+        aria-label="Add images"
         ref={imageButton}
         className="mx-2"
         onClick={(e) => handleFileInput(e, imageInput)}
@@ -38,6 +39,7 @@ function InputButtons({
       {/* video */}
       <button
         type="button"
+        aria-label="Add video"
         ref={videoButton}
         className="mx-2"
         onClick={(e) => handleFileInput(e, videoInput)}
@@ -58,6 +60,7 @@ function InputButtons({
       {/* doc */}
       <button
         type="button"
+        aria-label="Add document"
         ref={docButton}
         className="mx-2"
         onClick={(e) => handleFileInput(e, docInput)}

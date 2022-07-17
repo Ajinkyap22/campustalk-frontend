@@ -192,7 +192,12 @@ function Notification({
         </p>
 
         {/* delete button */}
-        <button title="Delete" className="delete" onClick={handleDelete}>
+        <button
+          title="Delete"
+          aria-label="Delete notification"
+          className="delete"
+          onClick={handleDelete}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="w-4 md-w-5 lg:w-4 2xl:w-5 3xl:w-6 stroke-[#818181] dark:stroke-gray-300 delete"

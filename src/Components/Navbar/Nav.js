@@ -167,7 +167,7 @@ function Nav() {
                   : `https://campustalk-api.herokuapp.com/uploads/images/${user.picture}`
               }
               alt=""
-              className="rounded-full inline h-6 2xl:h-9 3xl:h-10 w-auto ml-1 dropDownToggle"
+              className="rounded-full inline w-6 2xl:h-9 3xl:w-10 h-auto ml-1 dropDownToggle"
             />
           ) : (
             <svg

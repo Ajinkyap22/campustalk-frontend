@@ -57,6 +57,8 @@ function PostFile({ post, handleBack }) {
       {/* back button */}
       <button
         onClick={handleBack}
+        aria-label="Back"
+        title="Back"
         className="absolute left-3 lg:left-5 top-3 lg:top-4 bg-[rgba(10,10,10,0.5)] lg:bg-[rgba(255,255,255,0.2)]  p-1 rounded-full"
       >
         <svg
@@ -76,6 +78,8 @@ function PostFile({ post, handleBack }) {
       {/* download button */}
       <button
         onClick={handleDownload}
+        aria-label="Download"
+        title="Download"
         className="absolute right-5 top-4 bg-[rgba(10,10,10,0.5)] lg:bg-[rgba(255,255,255,0.2)] p-1 rounded-full"
         hidden={!post.file.length}
       >
