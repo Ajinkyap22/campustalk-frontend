@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.1",
-    "@testing-library/react": "^12.1.2",
-    "@testing-library/user-event": "^13.5.0",
     "aos": "^2.3.4",
     "axios": "^0.24.0",
     "moment": "^2.29.1",
@@ -21,7 +18,6 @@
     "react-scripts": "^5.0.0",
     "reactour": "^1.18.7",
     "socket.io-client": "^4.4.1",
-    "source-map-explorer": "^2.5.2",
     "web-vitals": "^2.1.2"
   },
   "scripts": {
