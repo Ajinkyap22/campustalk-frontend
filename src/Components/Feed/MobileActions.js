@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import useOutsideAlerter from "../../Hooks/useOutsideAlerter";
 import LogoCropped from "../LogoCropped";
 
-function MobileActions() {
+function MobileActions({ isGuest = false }) {
   const [showActions, setShowActions] = useState(false);
   const [isModerator, setIsModerator] = useState(false);
   const [user] = useContext(UserContext);
@@ -89,12 +89,14 @@ function MobileActions() {
             {isModerator && <hr />}
 
             {/* create forum*/}
-            <li className="p-1 text-mxs md:p-1.5 md:text-sm dark:text-darkLight">
-              <Link to={`/create-forum`}>
-                <LogoCropped width="18" color="#818181" />
-                Create Forum
-              </Link>
-            </li>
+            {isGuest ? null : (
+              <li className="p-1 text-mxs md:p-1.5 md:text-sm dark:text-darkLight">
+                <Link to={`/create-forum`}>
+                  <LogoCropped width="18" color="#818181" />
+                  Create Forum
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
       )}

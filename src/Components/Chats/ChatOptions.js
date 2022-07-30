@@ -1,4 +1,6 @@
+import { GuestContext } from "../../Contexts/GuestContext";
 import { SocketContext } from "../../Contexts/SocketContext";
+import { demoChat } from "../../Config/guestConfig";
 import { useRef, useContext } from "react";
 import useOutsideAlerter from "../../Hooks/useOutsideAlerter";
 import axios from "axios";
@@ -14,64 +16,78 @@ function ChatOptions({
   receiver,
 }) {
   const [socket] = useContext(SocketContext);
+  const [isGuest] = useContext(GuestContext);
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef, setShowOptions);
 
   function deleteChat() {
-    let headers = {
-      headers: {
-        Authorization: `Bearer ${
-          JSON.parse(localStorage.getItem("user"))?.token
-        }`,
-      },
-    };
+    if (isGuest) {
+      setChats(chats.filter((c) => c._id !== chat._id));
+      setActiveChat(null);
+      setShowOptions(false);
+      demoChat.messages = [];
+    } else {
+      let headers = {
+        headers: {
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("user"))?.token
+          }`,
+        },
+      };
 
-    axios
-      .delete(
-        `https://campustalk-api.herokuapp.com/api/chats/delete-chat/${chat._id}`,
-        headers
-      )
-      .then((res) => {
-        setChats(chats.filter((c) => c._id !== chat._id));
-        setActiveChat(null);
-        setShowOptions(false);
+      axios
+        .delete(
+          `https://campustalk-api.herokuapp.com/api/chats/delete-chat/${chat._id}`,
+          headers
+        )
+        .then(() => {
+          setChats(chats.filter((c) => c._id !== chat._id));
+          setActiveChat(null);
+          setShowOptions(false);
 
-        socket.current.emit("deleteChat", {
-          chatId: chat._id,
-          receiverId: receiver._id,
+          socket.current.emit("deleteChat", {
+            chatId: chat._id,
+            receiverId: receiver._id,
+          });
+        })
+        .catch((err) => {
+          console.error(err);
         });
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    }
   }
 
   function clearChat() {
-    let headers = {
-      headers: {
-        Authorization: `Bearer ${
-          JSON.parse(localStorage.getItem("user"))?.token
-        }`,
-      },
-    };
+    if (isGuest) {
+      setMessages([]);
+      setShowOptions(false);
+      demoChat.messages = [];
+    } else {
+      let headers = {
+        headers: {
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("user"))?.token
+          }`,
+        },
+      };
 
-    axios
-      .delete(
-        `https://campustalk-api.herokuapp.com/api/chats/clear-chat/${chat._id}`,
-        headers
-      )
-      .then((res) => {
-        setMessages([]);
-        setShowOptions(false);
+      axios
+        .delete(
+          `https://campustalk-api.herokuapp.com/api/chats/clear-chat/${chat._id}`,
+          headers
+        )
+        .then((res) => {
+          setMessages([]);
+          setShowOptions(false);
 
-        socket.current.emit("clearChat", {
-          chatId: chat._id,
-          receiverId: receiver._id,
+          socket.current.emit("clearChat", {
+            chatId: chat._id,
+            receiverId: receiver._id,
+          });
+        })
+        .catch((err) => {
+          console.error(err);
         });
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    }
   }
 
   return (

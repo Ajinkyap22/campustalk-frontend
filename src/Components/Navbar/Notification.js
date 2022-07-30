@@ -96,7 +96,7 @@ function Notification({
 
   return (
     <div
-      className={`flex items-center justify-between p-2.5 2xl:p-3 dark:border-secondary cursor-pointer ${
+      className={`flex items-center justify-between p-2.5 2xl:p-3 dark:border-secondary cursor-pointer hover:bg-blue-100 dark:hover:bg-gray-600 ${
         !notification.hasSeen
           ? "bg-[#cfe2ff] dark:bg-dark"
           : "bg-[#f3f3f3] dark:bg-transparent"

@@ -6,6 +6,7 @@ function InputButtons({
   videoInput,
   docButton,
   docInput,
+  isGuest = false,
 }) {
   function handleFileInput(e, ref) {
     // trigger click on the ref
@@ -21,7 +22,7 @@ function InputButtons({
         ref={imageButton}
         className="mx-2"
         onClick={(e) => handleFileInput(e, imageInput)}
-        title="Add images"
+        title={isGuest ? "You must be logged in to post media" : "Add images"}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -43,7 +44,7 @@ function InputButtons({
         ref={videoButton}
         className="mx-2"
         onClick={(e) => handleFileInput(e, videoInput)}
-        title="Add a video"
+        title={isGuest ? "You must be logged in to post media" : "Add Videos"}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -64,7 +65,7 @@ function InputButtons({
         ref={docButton}
         className="mx-2"
         onClick={(e) => handleFileInput(e, docInput)}
-        title="Add a document"
+        title={isGuest ? "You must be logged in to post media" : "Add document"}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

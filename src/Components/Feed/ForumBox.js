@@ -2,8 +2,14 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import LogoCropped from "../LogoCropped";
 import ForumsList from "./ForumsList";
+import { demoForum } from "../../Config/guestConfig";
 
-function ForumBox({ user, fixed = true, onProfilePage = false }) {
+function ForumBox({
+  user,
+  fixed = true,
+  onProfilePage = false,
+  isGuest = false,
+}) {
   const [isModerator, setIsModerator] = useState(false);
 
   useEffect(() => {
@@ -39,6 +45,22 @@ function ForumBox({ user, fixed = true, onProfilePage = false }) {
 
       {/* forums list */}
       <div>
+        {isGuest && (
+          <div>
+            <ForumsList
+              forumName={demoForum.forumName}
+              forumId={demoForum._id}
+            />
+
+            <Link
+              to={`/forums/`}
+              className="block p-2.5 xl:p-3 text-primary dark:text-[#389fff] text-center text-mxs xl:text-sm 2xl:text-xl underline underline-offset-1 hover:bg-blue-100 dark:hover:bg-slate-800"
+            >
+              See all
+            </Link>
+          </div>
+        )}
+
         {user && user.forums.length ? (
           <div>
             {user.forums.map((forum, i) => {
@@ -57,7 +79,7 @@ function ForumBox({ user, fixed = true, onProfilePage = false }) {
               See all
             </Link>
           </div>
-        ) : (
+        ) : isGuest ? null : (
           <p className="block p-2.5 xl:p-3 text-center text-sm 2xl:text-xl text-slate-800 dark:text-gray-400 hover:bg-gray-100">
             You have not joined any forums yet.
           </p>

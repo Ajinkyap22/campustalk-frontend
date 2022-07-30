@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { GuestContext } from "../../../Contexts/GuestContext";
+import { useState, useEffect, useContext } from "react";
 import UserModal from "../../UserModal";
 import ReplyActions from "./ReplyActions";
 import ReplyOptions from "./ReplyOptions";
@@ -20,10 +21,11 @@ function Reply({
   const [hovering, setHovering] = useState(false);
   const [overName, setOverName] = useState(false);
   const [overModal, setOverModal] = useState(false);
+  const [isGuest] = useContext(GuestContext);
 
   useEffect(() => {
     // check if author is the same as user
-    if (user && user._id === reply.author._id) {
+    if ((user && user._id === reply.author._id) || isGuest) {
       setIsAuthor(true);
     } else {
       setIsAuthor(false);
@@ -32,7 +34,7 @@ function Reply({
     return () => {
       setIsAuthor(false);
     };
-  }, [user, reply.author]);
+  }, [user, reply.author, isGuest]);
 
   useEffect(() => {
     !overName && !overModal ? setHovering(false) : setHovering(true);
@@ -122,11 +124,13 @@ function Reply({
             user={user}
             isModerator={isModerator}
             setReplies={setReplies}
+            isAuthor={isAuthor}
             forumId={forumId}
             postId={postId}
             commentId={commentId}
             comments={comments}
             setComments={setComments}
+            isGuest={isGuest}
           />
         </div>
 
@@ -146,6 +150,7 @@ function Reply({
           forumId={forumId}
           postId={postId}
           commentId={commentId}
+          isGuest={isGuest}
         />
       </div>
 

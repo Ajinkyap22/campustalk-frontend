@@ -1,3 +1,6 @@
+import { GuestContext } from "../../../Contexts/GuestContext";
+import { PostContext } from "../../../Contexts/PostContext";
+import { guestUser } from "../../../Config/guestConfig";
 import { useContext, useState, useRef, useEffect } from "react";
 import FileInputs from "../Comment/FileInputs";
 import FilePreview from "../../Create Post/FilePreview";
@@ -20,10 +23,11 @@ function ReplyForm({
   const [file, setFile] = useState(null);
   const [text, setText] = useState("");
   const [originalFileName, setOriginalFileName] = useState();
-  const [isEditing, setIsEditing] = useState(false);
   const [enablePost, setEnablePost] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [fileType, setFileType] = useState(null);
+  const [isGuest] = useContext(GuestContext);
+  const [posts, setPosts] = useContext(PostContext);
 
   const imageInput = useRef();
   const videoInput = useRef();
@@ -35,16 +39,16 @@ function ReplyForm({
 
   useEffect(() => {
     // set enablepost to true if there is at least a text or a file, a forum, a mode and an author
-    if ((text || file) && user) {
+    if ((text || file) && (user || isGuest)) {
       setEnablePost(true);
     } else {
       setEnablePost(false);
     }
-  }, [file, text, user]);
+  }, [file, text, user, isGuest]);
 
   useEffect(() => {
     // if there is a file in the formdata
-    if (file && (file.length > 0 || file.name)) {
+    if (!isGuest && file && (file.length > 0 || file.name)) {
       // disable all input buttons
       imageButton.current.disabled = true;
       videoButton.current.disabled = true;
@@ -70,26 +74,52 @@ function ReplyForm({
       setDisabled(false);
       setFileType(null);
     }
-  }, [file]);
+  }, [file, isGuest]);
 
   function handleSubmit(e) {
     e.preventDefault();
 
     if (!enablePost) return;
 
-    let formData = new FormData();
+    if (isGuest) {
+      let reply = {
+        _id: "3e9g5f8x1f8f8f8f8f8l7k2g",
+        text,
+        postId,
+        commentId,
+        author: guestUser,
+        upvotes: [],
+        downvotes: [],
+        timestamp: new Date().toISOString(),
+      };
 
-    formData.append("text", text);
-    formData.append("authorId", user._id);
-    formData.append("commentId", commentId);
-    if (file) {
-      formData.append("file", file);
-      formData.append("originalFileName", JSON.stringify(originalFileName));
+      let originalComment = comments.find(
+        (comment) => comment._id === commentId
+      );
+
+      let comment = {
+        ...originalComment,
+        replies: [...originalComment.replies, reply],
+      };
+
+      setEnablePost(false);
+
+      onPostSuccess(comment, reply);
+    } else {
+      let formData = new FormData();
+
+      formData.append("text", text);
+      formData.append("authorId", user._id);
+      formData.append("commentId", commentId);
+      if (file) {
+        formData.append("file", file);
+        formData.append("originalFileName", JSON.stringify(originalFileName));
+      }
+
+      setEnablePost(false);
+
+      apiRequests(formData);
     }
-
-    setEnablePost(false);
-
-    apiRequests(formData);
   }
 
   function apiRequests(formData) {
@@ -109,7 +139,7 @@ function ReplyForm({
           headers
         )
         .then((res) => {
-          onPostSuccess(res.data, headers);
+          onPostSuccess(res.data.comment, res.data.reply, headers);
         });
     } else if (fileType === "video") {
       axios
@@ -119,7 +149,7 @@ function ReplyForm({
           headers
         )
         .then((res) => {
-          onPostSuccess(res.data, headers);
+          onPostSuccess(res.data.comment, res.data.reply, headers);
         });
     } else if (fileType === "doc") {
       axios
@@ -129,12 +159,12 @@ function ReplyForm({
           headers
         )
         .then((res) => {
-          onPostSuccess(res.data, headers);
+          onPostSuccess(res.data.comment, res.data.reply, headers);
         });
     }
   }
 
-  function onPostSuccess(res, headers) {
+  function onPostSuccess(comment, reply, headers) {
     setText("");
     setFile(null);
     setOriginalFileName("");
@@ -142,44 +172,65 @@ function ReplyForm({
     setEnablePost(true);
 
     // update comments
-    setComments(
-      comments.map((comment) =>
-        comment._id === res.comment._id ? res.comment : comment
-      )
-    );
+    setComments(comments.map((c) => (c._id === comment._id ? comment : c)));
 
     // update replies
-    setReplies([...replies, res.reply]);
+    setReplies([...replies, reply]);
 
-    let body = {
-      type: "reply",
-      from: user._id,
-      to: commentAuthorId,
-      post: postId,
-      forum: forumId,
-    };
-
-    axios
-      .post(
-        `https://campustalk-api.herokuapp.com/api/notifications/activityNotification`,
-        body,
+    if (isGuest) {
+      // update posts
+      setPosts(
+        posts.map((p) => {
+          if (p._id === postId) {
+            return {
+              ...p,
+              comments: p.comments.map((c) => {
+                if (c._id === comment._id) {
+                  return comment;
+                } else {
+                  return c;
+                }
+              }),
+            };
+          } else {
+            return p;
+          }
+        }),
         headers
-      )
-      .then(() => {
-        let body = {
-          author: `${user.firstName} ${user.lastName}`,
-          email: commentAuthorMail,
-          postId,
-          forumId,
-          name: commentAuthorName,
-          forumName,
-        };
+      );
+    }
 
-        sendMail(body);
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
+    if (!isGuest) {
+      let body = {
+        type: "reply",
+        from: user._id,
+        to: commentAuthorId,
+        post: postId,
+        forum: forumId,
+      };
+
+      axios
+        .post(
+          `https://campustalk-api.herokuapp.com/api/notifications/activityNotification`,
+          body,
+          headers
+        )
+        .then(() => {
+          let body = {
+            author: `${user.firstName} ${user.lastName}`,
+            email: commentAuthorMail,
+            postId,
+            forumId,
+            name: commentAuthorName,
+            forumName,
+          };
+
+          sendMail(body);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   }
 
   function sendMail(body) {
@@ -203,7 +254,7 @@ function ReplyForm({
   return (
     <div className="flex items-start p-1.5">
       {/* user picture */}
-      {!user.picture ? (
+      {!user?.picture ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="30"
@@ -219,8 +270,8 @@ function ReplyForm({
       ) : (
         <img
           src={
-            user.picture.includes("googleusercontent")
-              ? user.picture
+            user?.picture.includes("googleusercontent")
+              ? user?.picture
               : `https://campustalk-api.herokuapp.com/uploads/images/${user.picture}`
           }
           alt=""
@@ -253,6 +304,7 @@ function ReplyForm({
             setOriginalFileName={setOriginalFileName}
             disabled={disabled}
             small={true}
+            isGuest={isGuest}
           />
         </div>
 

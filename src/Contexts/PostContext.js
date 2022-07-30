@@ -20,11 +20,16 @@ export function PostProvider({ children }) {
           setPosts(
             res.data.sort((a, b) => -a.timestamp.localeCompare(b.timestamp))
           );
+
           setLoading(false);
         })
         .catch((err) => {
           console.error(err);
         });
+    } else {
+      setTimeout(() => {
+        setLoading(false);
+      }, 3000);
     }
   }, [user]);
 

@@ -88,9 +88,6 @@ function JoinForum({ title, forums, setForums, ...props }) {
 
     axios
       .post("https://campustalk-api.herokuapp.com/api/mail/requests", body)
-      .then((res) => {
-        console.log(res.data);
-      })
       .catch((err) => {
         console.error(err);
       });

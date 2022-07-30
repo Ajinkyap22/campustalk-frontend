@@ -13,6 +13,7 @@ function Options({
   setShowOptions,
   isAuthor,
   setForumPosts,
+  isGuest = false,
 }) {
   const wrapperRef = useRef(null);
   const [user, setUser] = useContext(UserContext);
@@ -21,6 +22,11 @@ function Options({
   useOutsideAlerter(wrapperRef, setShowOptions);
 
   function deletePost() {
+    if (isGuest) {
+      onDeleteSuccess();
+      return;
+    }
+
     let headers = {
       headers: {
         Authorization: `Bearer ${
@@ -35,31 +41,37 @@ function Options({
         headers
       )
       .then(() => {
-        // remove post from forum posts
-        let newForumPosts = forum.posts.filter((post) => post._id !== postId);
-
-        setForums((prev) =>
-          prev.map((f) =>
-            f._id === forum._id ? { ...f, posts: newForumPosts } : f
-          )
-        );
-
-        // remove post from user posts
-        let newUserPosts = user.posts.filter((post) => post !== postId);
-
-        setUser((prev) => ({ ...prev, posts: newUserPosts }));
-
-        // remove post from posts
-        setPosts(posts.filter((post) => post._id !== postId));
-        if (setForumPosts) {
-          setForumPosts((prev) => prev.filter((post) => post._id !== postId));
-        }
-
-        setShowOptions(false);
+        onDeleteSuccess();
       })
       .catch((err) => {
         console.error(err);
       });
+  }
+
+  function onDeleteSuccess() {
+    // remove post from forum posts
+    let newForumPosts = forum.posts.filter((post) => post._id !== postId);
+
+    setForums((prev) =>
+      prev.map((f) =>
+        f._id === forum._id ? { ...f, posts: newForumPosts } : f
+      )
+    );
+
+    if (!isGuest) {
+      // remove post from user posts
+      let newUserPosts = user.posts.filter((post) => post !== postId);
+
+      setUser((prev) => ({ ...prev, posts: newUserPosts }));
+    }
+
+    // remove post from posts
+    setPosts(posts.filter((post) => post._id !== postId));
+    if (setForumPosts) {
+      setForumPosts((prev) => prev.filter((post) => post._id !== postId));
+    }
+
+    setShowOptions(false);
   }
 
   return (
@@ -72,7 +84,7 @@ function Options({
         {/* edit post */}
         <li
           className="p-1 md:p-1.5 lg:p-1 xl:p-1.5 text-mxs md:text-sm lg:text-mxs xl:text-sm 2xl:text-base dark:text-darkLight"
-          hidden={!isAuthor}
+          hidden={!isAuthor || isGuest}
         >
           <Link to={`/forums/${forum._id}/posts/${postId}/edit-post`}>
             <svg
@@ -89,7 +101,7 @@ function Options({
             Edit Post
           </Link>
         </li>
-        <hr hidden={!isAuthor} />
+        <hr hidden={!isAuthor || isGuest} />
 
         {/* delete post */}
         <li

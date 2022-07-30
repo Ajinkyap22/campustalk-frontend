@@ -1,5 +1,7 @@
 import { ChatContext } from "../../Contexts/ChatContext";
 import { SocketContext } from "../../Contexts/SocketContext";
+import { GuestContext } from "../../Contexts/GuestContext";
+import { demoChat } from "../../Config/guestConfig";
 import { useState, useContext } from "react";
 import { withRouter } from "react-router-dom";
 import MemberActions from "./MemberActions";
@@ -19,38 +21,58 @@ function Member({
   const [showDropdown, setShowDropdown] = useState(false);
   const [chats, setChats, activeChat, setActiveChat] = useContext(ChatContext);
   const [socket] = useContext(SocketContext);
+  const [isGuest] = useContext(GuestContext);
 
   function toggleDropdown() {
     setShowDropdown(!showDropdown);
   }
 
   function newChat() {
-    let headers = {
-      headers: {
-        Authorization: `Bearer ${
-          JSON.parse(localStorage.getItem("user")).token
-        }`,
-      },
-    };
+    // check if chat already exists
+    let existingChat = chats.find((chat) => {
+      return chat.members.some((m) => m._id === member._id);
+    });
 
-    axios
-      .post(
-        "https://campustalk-api.herokuapp.com/api/chats/new-chat",
-        { members: [member._id, user._id] },
-        headers
-      )
-      .then((res) => {
-        setChats([...chats, res.data]);
-        setActiveChat(res.data);
-        socket.current.emit("newChat", {
-          chat: res.data,
-          receiverId: member._id,
-        });
+    if (existingChat) {
+      setActiveChat(existingChat);
+      history.push("/chats");
+    } else {
+      if (isGuest) {
+        // set chats
+        setChats([...chats, demoChat]);
+        // set active chat
+        setActiveChat(demoChat);
+        // redirect to chats
         history.push("/chats");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      } else {
+        let headers = {
+          headers: {
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("user")).token
+            }`,
+          },
+        };
+
+        axios
+          .post(
+            "https://campustalk-api.herokuapp.com/api/chats/new-chat",
+            { members: [member._id, user._id] },
+            headers
+          )
+          .then((res) => {
+            setChats([...chats, res.data]);
+            setActiveChat(res.data);
+            socket.current.emit("newChat", {
+              chat: res.data,
+              receiverId: member._id,
+            });
+            history.push("/chats");
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
+    }
   }
 
   return (
@@ -107,48 +129,49 @@ function Member({
       </div>
 
       {/* make moderator */}
-      {member._id !== user._id && (
-        <div className="flex items-center">
-          {/* remove member */}
-          <button
-            onClick={newChat}
-            className="p-1 px-1.5 md:px-2 2xl:px-2.5 3xl:px-3 rounded-full text-xsm md:text-mxs 2xl:text-sm 3xl:text-base text-white dark:text-darkLight mx-1 bg-primary-light hover:bg-primary hover:scale-105 transition-all "
-          >
-            Message
-          </button>
-
-          {/* remove member */}
-          {moderatorsList[user._id] && (
+      {member._id !== process.env.REACT_APP_GUEST_ID &&
+        member._id !== user?._id && (
+          <div className="flex items-center">
+            {/* remove member */}
             <button
-              className="bg-red-500 p-1 px-1.5 md:px-2 2xl:px-2.5 3xl:px-3 rounded-full text-xsm md:text-mxs 2xl:text-sm 3xl:text-base text-white dark:text-darkLight mx-1 hover:bg-red-600 hover:scale-105 transition-all"
-              onClick={() => removeMember(member)}
+              onClick={newChat}
+              className="p-1 px-1.5 md:px-2 2xl:px-2.5 3xl:px-3 rounded-full text-xsm md:text-mxs 2xl:text-sm 3xl:text-base text-white dark:text-darkLight mx-1 bg-primary-light hover:bg-primary hover:scale-105 transition-all "
             >
-              Remove
+              Message
             </button>
-          )}
 
-          {/* options */}
-          {moderatorsList[user._id] && member._id !== user._id && (
-            <button
-              className="dropDownToggle"
-              title="Options"
-              onClick={toggleDropdown}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="14"
-                className="fil-slate-400 inline dropDownToggle dark:fill-darkLight"
-                viewBox="0 0 16 16"
+            {/* remove member */}
+            {moderatorsList[user?._id] && (
+              <button
+                className="bg-red-500 p-1 px-1.5 md:px-2 2xl:px-2.5 3xl:px-3 rounded-full text-xsm md:text-mxs 2xl:text-sm 3xl:text-base text-white dark:text-darkLight mx-1 hover:bg-red-600 hover:scale-105 transition-all"
+                onClick={() => removeMember(member)}
               >
-                <path
-                  className="dropDownToggle"
-                  d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"
-                />
-              </svg>
-            </button>
-          )}
-        </div>
-      )}
+                Remove
+              </button>
+            )}
+
+            {/* options */}
+            {moderatorsList[user?._id] && member._id !== user?._id && (
+              <button
+                className="dropDownToggle"
+                title="Options"
+                onClick={toggleDropdown}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  className="fil-slate-400 inline dropDownToggle dark:fill-darkLight"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    className="dropDownToggle"
+                    d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"
+                  />
+                </svg>
+              </button>
+            )}
+          </div>
+        )}
 
       <MemberActions
         showDropdown={showDropdown}

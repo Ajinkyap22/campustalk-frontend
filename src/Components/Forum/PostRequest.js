@@ -6,13 +6,6 @@ import File from "../Post/File";
 function PostRequest({ post, ...props }) {
   const [currentFile, setCurrentFile] = useState(0);
 
-  // function onPostClick(e) {
-  //   // dont redirect if e.target contains a class with 'pageChange'
-  //   if (e.target.classList.contains("pageChange")) return;
-
-  //   props.history.push(`/forums/${post.forum._id}/posts/${post._id}`);
-  // }
-
   return (
     <div className="bg-white dark:bg-darkSecondary shadow-base py-2 lg:mt-8 w-full rounded">
       {/* user info */}

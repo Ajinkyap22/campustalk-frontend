@@ -11,26 +11,31 @@ function ChatList({
   chats,
   setChats,
   socket,
+  isGuest = false,
 }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let mounted = true;
     if (mounted) {
-      user &&
-        axios
-          .get(`https://campustalk-api.herokuapp.com/api/chats/${user?._id}`)
-          .then((res) => {
-            setChats(res.data);
+      if (isGuest) {
+        setLoading(false);
+      } else {
+        user &&
+          axios
+            .get(`https://campustalk-api.herokuapp.com/api/chats/${user?._id}`)
+            .then((res) => {
+              setChats(res.data);
 
-            setLoading(false);
-          })
-          .catch((err) => console.error(err));
+              setLoading(false);
+            })
+            .catch((err) => console.error(err));
 
-      // on new chat
-      socket.current?.on("newChat", ({ chat }) => {
-        setChats([...chats, chat]);
-      });
+        // on new chat
+        socket.current?.on("newChat", ({ chat }) => {
+          setChats([...chats, chat]);
+        });
+      }
     }
 
     return () => {
@@ -80,6 +85,7 @@ function ChatList({
             setActiveChat={setActiveChat}
             onlineUsers={onlineUsers}
             socket={socket.current}
+            isGuest={isGuest}
           />
         ))
       ) : (

@@ -10,7 +10,7 @@ function TabToggle({ tab, setTab, isModerator, postRequests, joinRequests }) {
         className={`p-2 2xl:p-2.5 3xl:p-3 px-5 shadow text-xs lg:text-sm 2xl:text-base 3xl:text-lg border-r border-light dark:border-zinc-700 rounded-l ${
           tab === "posts"
             ? "bg-primary-light text-white"
-            : "bg-white dark:bg-darkSecondary dark:text-darkLight"
+            : "bg-white dark:bg-darkSecondary dark:text-darkLight hover:bg-blue-100 dark:hover:bg-gray-600"
         }`}
         onClick={() => toggleTab("posts")}
       >
@@ -22,7 +22,7 @@ function TabToggle({ tab, setTab, isModerator, postRequests, joinRequests }) {
         className={`p-2 2xl:p-2.5 3xl:p-3 px-3 shadow text-xs lg:text-sm 2xl:text-base 3xl:text-lg border-x border-light dark:border-zinc-700  ${
           tab === "members"
             ? "bg-primary-light text-white"
-            : "bg-white dark:bg-darkSecondary dark:text-darkLight"
+            : "bg-white dark:bg-darkSecondary dark:text-darkLight hover:bg-blue-100 dark:hover:bg-gray-600"
         }`}
         onClick={() => toggleTab("members")}
       >
@@ -34,7 +34,7 @@ function TabToggle({ tab, setTab, isModerator, postRequests, joinRequests }) {
         className={`p-2 2xl:p-2.5 3xl:p-3 px-1 shadow text-xs lg:text-sm 2xl:text-base 3xl:text-lg border-x border-light dark:border-zinc-700  ${
           tab === "postRequests"
             ? "bg-primary-light text-white"
-            : "bg-white dark:bg-darkSecondary dark:text-darkLight"
+            : "bg-white dark:bg-darkSecondary dark:text-darkLight hover:bg-blue-100 dark:hover:bg-gray-600"
         }`}
         onClick={() => toggleTab("postRequests")}
         hidden={!isModerator}
@@ -52,7 +52,7 @@ function TabToggle({ tab, setTab, isModerator, postRequests, joinRequests }) {
         className={`p-2 2xl:p-2.5 3xl:p-3 px-1 shadow text-xs lg:text-sm 2xl:text-base 3xl:text-lg border-l border-light dark:border-zinc-700 rounded-r ${
           tab === "joinRequests"
             ? "bg-primary-light text-white"
-            : "bg-white dark:bg-darkSecondary dark:text-darkLight"
+            : "bg-white dark:bg-darkSecondary dark:text-darkLight hover:bg-blue-100 dark:hover:bg-gray-600"
         }`}
         onClick={() => toggleTab("joinRequests")}
         hidden={!isModerator}

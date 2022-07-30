@@ -151,7 +151,6 @@ function UserInfo({ title, ...props }) {
         headers
       )
       .catch((err) => {
-        console.log(err.response);
         console.error(err);
       });
   }

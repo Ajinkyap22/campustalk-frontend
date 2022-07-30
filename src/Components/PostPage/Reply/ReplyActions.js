@@ -1,109 +1,182 @@
-import { useState, useEffect } from "react";
+import { PostContext } from "../../../Contexts/PostContext";
+import { useState, useEffect, useContext } from "react";
 import moment from "moment";
 import axios from "axios";
 
-function ReplyActions({ reply, setReplies, forumId, postId, commentId, user }) {
+function ReplyActions({
+  reply,
+  setReplies,
+  forumId,
+  postId,
+  commentId,
+  user,
+  isGuest = false,
+}) {
   const [upvoted, setUpvoted] = useState(false);
   const [downvoted, setDownvoted] = useState(false);
+  const [posts, setPosts] = useContext(PostContext);
 
   useEffect(() => {
-    if (!user) return;
-    // check if post is upvoted
-    reply.upvotes.indexOf(user._id) !== -1
-      ? setUpvoted(true)
-      : setUpvoted(false);
+    if (!user && !isGuest) return;
 
-    // check if post is downvoted
-    reply.downvotes.indexOf(user._id) !== -1
-      ? setDownvoted(true)
-      : setDownvoted(false);
-  }, [user, reply.upvotes, reply.downvotes]);
+    if (isGuest) {
+      // check if reply is upvoted by guest
+      reply.upvotes.indexOf(process.env.REACT_APP_GUEST_ID) !== -1
+        ? setUpvoted(true)
+        : setUpvoted(false);
+
+      // check if reply is downvoted
+      reply.downvotes.indexOf(process.env.REACT_APP_GUEST_ID) !== -1
+        ? setDownvoted(true)
+        : setDownvoted(false);
+    } else {
+      // check if post is upvoted
+      reply.upvotes.indexOf(user._id) !== -1
+        ? setUpvoted(true)
+        : setUpvoted(false);
+
+      // check if post is downvoted
+      reply.downvotes.indexOf(user._id) !== -1
+        ? setDownvoted(true)
+        : setDownvoted(false);
+    }
+  }, [user, reply.upvotes, reply.downvotes, isGuest]);
 
   function handleUpvote() {
-    if (!user) return;
+    if (!user && !isGuest) return;
 
-    let headers = {
-      headers: {
-        Authorization: `Bearer ${
-          JSON.parse(localStorage.getItem("user"))?.token
-        }`,
-      },
-    };
+    if (isGuest) {
+      if (upvoted) {
+        let updatedReply = {
+          ...reply,
+          upvotes: reply.upvotes.filter(
+            (id) => id !== process.env.REACT_APP_GUEST_ID
+          ),
+        };
 
-    if (upvoted) {
-      axios
-        .put(
-          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${commentId}/replies/${reply._id}/unupvote`,
-          { id: user._id },
-          headers
-        )
-        .then((res) => {
-          updateReplies(res.data);
-          setUpvoted(false);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+        updateReplies(updatedReply);
+        setUpvoted(false);
+      } else {
+        let updatedReply = {
+          ...reply,
+          upvotes: [...reply.upvotes, process.env.REACT_APP_GUEST_ID],
+          downvotes: reply.downvotes.filter(
+            (id) => id !== process.env.REACT_APP_GUEST_ID
+          ),
+        };
+
+        updateReplies(updatedReply);
+        setUpvoted(true);
+      }
     } else {
-      axios
-        .put(
-          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${commentId}/replies/${reply._id}/upvote`,
-          {
-            id: user._id,
-          },
-          headers
-        )
-        .then((res) => {
-          updateReplies(res.data);
-          setUpvoted(true);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+      let headers = {
+        headers: {
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("user"))?.token
+          }`,
+        },
+      };
+
+      if (upvoted) {
+        axios
+          .put(
+            `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${commentId}/replies/${reply._id}/unupvote`,
+            { id: user._id },
+            headers
+          )
+          .then((res) => {
+            updateReplies(res.data);
+            setUpvoted(false);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      } else {
+        axios
+          .put(
+            `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${commentId}/replies/${reply._id}/upvote`,
+            {
+              id: user._id,
+            },
+            headers
+          )
+          .then((res) => {
+            updateReplies(res.data);
+            setUpvoted(true);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
     }
   }
 
   function handleDownvote() {
-    if (!user) return;
+    if (!user && !isGuest) return;
 
-    let headers = {
-      headers: {
-        Authorization: `Bearer ${
-          JSON.parse(localStorage.getItem("user"))?.token
-        }`,
-      },
-    };
+    if (isGuest) {
+      if (downvoted) {
+        let updatedReply = {
+          ...reply,
+          downvotes: reply.downvotes.filter(
+            (id) => id !== process.env.REACT_APP_GUEST_ID
+          ),
+        };
 
-    if (downvoted) {
-      axios
-        .put(
-          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${commentId}/replies/${reply._id}/undownvote`,
-          { id: user._id },
-          headers
-        )
-        .then((res) => {
-          updateReplies(res.data);
-          setDownvoted(false);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+        updateReplies(updatedReply);
+        setDownvoted(false);
+      } else {
+        let updatedReply = {
+          ...reply,
+          downvotes: [...reply.downvotes, process.env.REACT_APP_GUEST_ID],
+          upvotes: reply.upvotes.filter(
+            (id) => id !== process.env.REACT_APP_GUEST_ID
+          ),
+        };
+
+        updateReplies(updatedReply);
+        setDownvoted(true);
+      }
     } else {
-      axios
-        .put(
-          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${commentId}/replies/${reply._id}/downvote`,
-          {
-            id: user._id,
-          },
-          headers
-        )
-        .then((res) => {
-          updateReplies(res.data);
-          setDownvoted(true);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+      let headers = {
+        headers: {
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("user"))?.token
+          }`,
+        },
+      };
+
+      if (downvoted) {
+        axios
+          .put(
+            `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${commentId}/replies/${reply._id}/undownvote`,
+            { id: user._id },
+            headers
+          )
+          .then((res) => {
+            updateReplies(res.data);
+            setDownvoted(false);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      } else {
+        axios
+          .put(
+            `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${commentId}/replies/${reply._id}/downvote`,
+            {
+              id: user._id,
+            },
+            headers
+          )
+          .then((res) => {
+            updateReplies(res.data);
+            setDownvoted(true);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
     }
   }
 
@@ -111,6 +184,31 @@ function ReplyActions({ reply, setReplies, forumId, postId, commentId, user }) {
     setReplies((prevState) =>
       prevState.map((c) => (data._id === c._id ? data : c))
     );
+
+    if (isGuest) {
+      // update posts
+      setPosts((prevState) =>
+        prevState.map((p) => {
+          if (p._id === postId) {
+            return {
+              ...p,
+              comments: p.comments.map((c) => {
+                if (c._id === commentId) {
+                  return {
+                    ...c,
+                    replies: c.replies.map((r) =>
+                      data._id === r._id ? data : r
+                    ),
+                  };
+                }
+                return c;
+              }),
+            };
+          }
+          return p;
+        })
+      );
+    }
   }
 
   return (

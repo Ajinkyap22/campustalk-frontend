@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { GuestContext } from "../../Contexts/GuestContext";
+import { useState, useEffect, useContext } from "react";
 import PostActions from "../Post/PostActions";
 import PostInfo from "./PostInfo";
 import Comment from "./Comment/Comment";
@@ -8,9 +9,12 @@ import "./PostData.css";
 
 function PostData({ post }) {
   const [comments, setComments] = useState([]);
+  const [isGuest] = useContext(GuestContext);
 
   useEffect(() => {
-    if (post.comments) {
+    if (isGuest) {
+      setComments(post.comments);
+    } else if (post.comments) {
       axios
         .get(
           `https://campustalk-api.herokuapp.com/api/forums/${post.forum._id}/posts/${post._id}/comments`
@@ -28,10 +32,13 @@ function PostData({ post }) {
       <PostInfo post={post} />
 
       {/* caption */}
-      <p className="m-2 my-3 px-2 text-sm dark:text-darkLight">{post.text}</p>
+      <p className="m-2 my-3 px-2 text-sm dark:text-darkLight whitespace-pre-wrap !leading-relaxed">
+        {post.text}
+      </p>
 
       {/* actions */}
       <PostActions
+        post={post}
         id={post._id}
         forumId={post.forum._id}
         upvotes={post.upvotes}

@@ -2,6 +2,7 @@ import { UserContext } from "../../Contexts/UserContext";
 import { TabContext } from "../../Contexts/TabContext";
 import { PostContext } from "../../Contexts/PostContext";
 import { EventContext } from "../../Contexts/EventContext";
+import { GuestContext } from "../../Contexts/GuestContext";
 import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import Nav from "../Navbar/Nav";
@@ -55,6 +56,7 @@ function Feed({ title }) {
   const [posts, setPosts, loading] = useContext(PostContext);
   const [user, setUser] = useContext(UserContext);
   const [events] = useContext(EventContext);
+  const [isGuest, setIsGuest, tourSeen, setTourSeen] = useContext(GuestContext);
   const [tourOpen, setTourOpen] = useState(false);
   const isMobile = useCheckMobileScreen();
   const [steps, setSteps] = useState([]);
@@ -68,10 +70,14 @@ function Feed({ title }) {
   }, [activeTab]);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user && !isGuest) return;
 
-    setTourOpen(user.new);
-  }, [user]);
+    if (isGuest) {
+      setTourOpen(!tourSeen);
+    } else {
+      setTourOpen(user?.new);
+    }
+  }, [user, isGuest]);
 
   useEffect(() => {
     setSteps([
@@ -154,6 +160,8 @@ function Feed({ title }) {
   function onBeforeClose() {
     enableBodyScroll();
 
+    setTourSeen(true);
+
     if (!user) return;
 
     axios
@@ -210,43 +218,42 @@ function Feed({ title }) {
             ))}
 
           {/* if feed is empty */}
-          <div
-            hidden={posts.length || loading ? true : false}
-            className="my-12 text-gray-700 text-center"
-          >
-            {/* logo */}
-            <LogoCropped color="rgba(98, 98, 98, 0.9)" width="75" />
+          {posts.length || loading ? null : (
+            <div className="my-12 text-gray-700 text-center">
+              {/* logo */}
+              <LogoCropped color="rgba(98, 98, 98, 0.9)" width="75" />
 
-            {/* text */}
-            <p className="w-2/3 mx-auto my-4 dark:text-darkLight">
-              Your feed is empty, why not{" "}
-              <Link
-                to="/create-post"
-                className="text-primary dark:text-primary-dark underline underline-offset-1"
-              >
-                {" "}
-                create a post{" "}
-              </Link>{" "}
-              or{" "}
-              <Link
-                to="/forums"
-                className="text-primary dark:text-primary-dark underline underline-offset-1"
-              >
-                join more forums?
-              </Link>
-            </p>
-          </div>
+              {/* text */}
+              <p className="w-2/3 mx-auto my-4 dark:text-darkLight">
+                Your feed is empty, why not{" "}
+                <Link
+                  to="/create-post"
+                  className="text-primary dark:text-primary-dark underline underline-offset-1"
+                >
+                  {" "}
+                  create a post{" "}
+                </Link>{" "}
+                or{" "}
+                <Link
+                  to="/forums"
+                  className="text-primary dark:text-primary-dark underline underline-offset-1"
+                >
+                  join more forums?
+                </Link>
+              </p>
+            </div>
+          )}
         </div>
 
         <div className="sticky top-[5.5rem] 2xl:top-[6rem] 3xl:top-[6.5rem]">
           {/* home info box */}
-          <HomeBox user={user} />
+          <HomeBox user={user} isGuest={isGuest} />
 
           {/* forums joined box */}
-          <ForumBox user={user} />
+          <ForumBox user={user} isGuest={isGuest} />
         </div>
 
-        <MobileActions />
+        <MobileActions isGuest={isGuest} />
       </section>
 
       {/* tour */}

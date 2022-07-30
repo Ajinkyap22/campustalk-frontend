@@ -14,6 +14,7 @@ function Post({
 }) {
   const [showPost, setShowPost] = useState(true);
   const [currentFile, setCurrentFile] = useState(0);
+  const [showMore, setShowMore] = useState(false);
   const [files, setFiles] = useContext(FileContext);
 
   useEffect(() => {
@@ -76,6 +77,10 @@ function Post({
     });
   }, []);
 
+  function toggleShowMore() {
+    setShowMore(!showMore);
+  }
+
   function onPostClick(e) {
     // dont redirect if e.target contains a class with 'pageChange'
     if (
@@ -102,11 +107,44 @@ function Post({
         important={post.important}
         setForumPosts={setForumPosts}
       />
-
       {/* caption */}
-      <p className="m-2 my-3 2xl:my-4 px-1 md:px-1.5 xl:px-2 text-xs md:text-sm lg:text-xs xl:text-sm 2xl:text-xl dark:text-darkLight">
-        {post.text}
-      </p>
+      {/* if text length is less than desired length */}
+      {post.text.length < 256 && (
+        <p className="m-2 my-3 2xl:my-4 px-1 md:px-1.5 whitespace-pre-wrap xl:px-2 text-xs md:text-sm lg:text-xs xl:text-mxs 2xl:text-lg dark:text-darkLight !leading-relaxed">
+          {post.text}
+        </p>
+      )}
+
+      {/* if text length is greater than desired length & show more is true */}
+      {post.text.length > 256 && showMore && (
+        <div>
+          <p className="m-2 my-3 2xl:my-4 px-1 md:px-1.5 whitespace-pre-wrap xl:px-2 text-xs md:text-sm lg:text-xs xl:text-mxs 2xl:text-lg dark:text-darkLight !leading-relaxed">
+            {post.text}
+          </p>
+
+          <button
+            className="mx-2 px-1 md:px-4 text-xs md:text-sm lg:text-xs xl:text-mxs 2xl:text-lg text-gray-600 underline dark:text-darkLight"
+            onClick={toggleShowMore}
+          >
+            Show Less
+          </button>
+        </div>
+      )}
+
+      {/* if text length is greater than desired length & show more is false */}
+      {post.text.length > 256 && !showMore && (
+        <div>
+          <p className="m-2 my-3 2xl:my-4 px-1 md:px-1.5 whitespace-pre-wrap xl:px-2 text-xs md:text-sm lg:text-xs xl:text-mxs 2xl:text-lg dark:text-darkLight !leading-relaxed">
+            {post.text.substring(0, 256)}
+            <button
+              className="text-xs md:text-sm lg:text-xs xl:text-mxs 2xl:text-lg text-gray-600 underline dark:text-darkLight"
+              onClick={toggleShowMore}
+            >
+              ...Show More
+            </button>
+          </p>
+        </div>
+      )}
 
       {/* image */}
       {post.file.length ? (
@@ -119,9 +157,9 @@ function Post({
           originalFileNames={post?.originalFileNames}
         />
       ) : null}
-
       {/* actions */}
       <PostActions
+        post={post}
         id={post._id}
         forumId={post.forum._id}
         upvotes={post.upvotes}

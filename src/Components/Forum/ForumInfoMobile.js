@@ -55,9 +55,7 @@ function ForumInfoMobile({
             { forum: forum._id || forum, type: "joinRequest" },
             headers
           )
-          .catch((err) => {
-            console.log(err.response);
-          });
+          .catch((err) => {});
       })
       .catch((err) => {
         console.error(err);

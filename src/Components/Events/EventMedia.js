@@ -129,8 +129,6 @@ function EventMedia({
     axios
       .post(path, body, headers)
       .then((res) => {
-        console.log(res.data);
-
         setEvents((prevEvents) =>
           prevEvents.map((e) => (e._id === res.data._id ? res.data : e))
         );
@@ -140,7 +138,6 @@ function EventMedia({
         }
       })
       .catch((err) => {
-        console.log(err.response);
         console.error(err);
       });
   }
@@ -236,35 +233,38 @@ function EventMedia({
               There are no documents
             </span>
 
-            <button
-              className="mt-4 2xl:mt-5 2xl:mb-2 block mx-auto hover:scale-125 transition-all"
-              onClick={() => handleFileInput(docRef)}
-              aria-label="Add Document"
-              hidden={!isModerator}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-8 2xl:w-9 fill-[#818181] dark:fill-gray-300 mx-auto"
-                viewBox="0 0 16 16"
-              >
-                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
-              </svg>
-            </button>
+            {isModerator && (
+              <div>
+                <button
+                  className="mt-4 2xl:mt-5 2xl:mb-2 block mx-auto hover:scale-125 transition-all"
+                  onClick={() => handleFileInput(docRef)}
+                  aria-label="Add Document"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-8 2xl:w-9 fill-[#818181] dark:fill-gray-300 mx-auto"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+                  </svg>
+                </button>
 
-            <span className="mt-2 block text-secondary dark:text-gray-300 2xl:text-xl">
-              Click here to add a document
-            </span>
+                <span className="mt-2 block text-secondary dark:text-gray-300 2xl:text-xl">
+                  Click here to add a document
+                </span>
 
-            {/* docs input - accept only pdf|doc|docx|ppt|pptx|xls|xlsx */}
-            <input
-              onChange={(e) => uploadMedia(e, "document")}
-              ref={docRef}
-              type="file"
-              name="file"
-              accept="application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-              className="hidden"
-              data-max-size="10485760"
-            />
+                {/* docs input - accept only pdf|doc|docx|ppt|pptx|xls|xlsx */}
+                <input
+                  onChange={(e) => uploadMedia(e, "document")}
+                  ref={docRef}
+                  type="file"
+                  name="file"
+                  accept="application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                  className="hidden"
+                  data-max-size="10485760"
+                />
+              </div>
+            )}
           </div>
         )}
       </section>
@@ -311,35 +311,38 @@ function EventMedia({
               There are no videos
             </span>
 
-            <button
-              className="mt-4 2xl:mt-5 2xl:mb-2 block mx-auto hover:scale-125 transition-all"
-              onClick={() => handleFileInput(videoRef)}
-              aria-label="Add Video"
-              hidden={!isModerator}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-8 2xl:w-9 fill-[#818181] dark:fill-gray-300 mx-auto"
-                viewBox="0 0 16 16"
-              >
-                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
-              </svg>
-            </button>
+            {isModerator && (
+              <div>
+                <button
+                  className="mt-4 2xl:mt-5 2xl:mb-2 block mx-auto hover:scale-125 transition-all"
+                  onClick={() => handleFileInput(videoRef)}
+                  aria-label="Add Video"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-8 2xl:w-9 fill-[#818181] dark:fill-gray-300 mx-auto"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+                  </svg>
+                </button>
 
-            <span className="mt-2 block text-secondary dark:text-gray-300 2xl:text-xl">
-              Click here to add a video
-            </span>
+                <span className="mt-2 block text-secondary dark:text-gray-300 2xl:text-xl">
+                  Click here to add a video
+                </span>
 
-            {/* video inputm accept only videos */}
-            <input
-              onChange={(e) => uploadMedia(e, "video")}
-              ref={videoRef}
-              type="file"
-              name="file"
-              accept="video/*"
-              className="hidden"
-              data-max-size=" 10485760"
-            />
+                {/* video inputm accept only videos */}
+                <input
+                  onChange={(e) => uploadMedia(e, "video")}
+                  ref={videoRef}
+                  type="file"
+                  name="file"
+                  accept="video/*"
+                  className="hidden"
+                  data-max-size=" 10485760"
+                />
+              </div>
+            )}
           </div>
         )}
       </section>
@@ -385,39 +388,41 @@ function EventMedia({
           There are no images
         </span>
 
-        <div hidden={images.length === 5 || !isModerator}>
-          <button
-            className="mt-4 2xl:mt-5 2xl:mb-2 block mx-auto hover:scale-125 transition-all"
-            aria-label="Add Image"
-            onClick={() => handleFileInput(imageRef)}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-8 2xl:w-9 fill-[#818181] dark:fill-gray-300 mx-auto"
-              viewBox="0 0 16 16"
+        {images.length === 5 || !isModerator ? (
+          <div hidden={images.length === 5 || !isModerator}>
+            <button
+              className="mt-4 2xl:mt-5 2xl:mb-2 block mx-auto hover:scale-125 transition-all"
+              aria-label="Add Image"
+              onClick={() => handleFileInput(imageRef)}
             >
-              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
-            </svg>
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-8 2xl:w-9 fill-[#818181] dark:fill-gray-300 mx-auto"
+                viewBox="0 0 16 16"
+              >
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+              </svg>
+            </button>
 
-          <span className="mt-2 block text-secondary dark:text-gray-300 2xl:text-xl">
-            Click here to add images
-          </span>
-          <span className="mt-2 block text-sm text-secondary dark:text-gray-300 2xl:text-xl">
-            (You can add upto 5 images)
-          </span>
+            <span className="mt-2 block text-secondary dark:text-gray-300 2xl:text-xl">
+              Click here to add images
+            </span>
+            <span className="mt-2 block text-sm text-secondary dark:text-gray-300 2xl:text-xl">
+              (You can add upto 5 images)
+            </span>
 
-          <input
-            onChange={(e) => uploadMedia(e, "images")}
-            ref={imageRef}
-            type="file"
-            name="file"
-            accept="image/*"
-            multiple
-            className="hidden"
-            data-max-size="20971520"
-          />
-        </div>
+            <input
+              onChange={(e) => uploadMedia(e, "images")}
+              ref={imageRef}
+              type="file"
+              name="file"
+              accept="image/*"
+              multiple
+              className="hidden"
+              data-max-size="20971520"
+            />
+          </div>
+        ) : null}
       </section>
     </div>
   );

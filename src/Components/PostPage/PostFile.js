@@ -6,9 +6,9 @@ function PostFile({ post, handleBack }) {
   const [currentFile, setCurrentFile] = useState(0);
 
   useEffect(() => {
-    if (!post.file.length || post.originalFileNames.length) return;
+    if (!post.file.length || post?.originalFileNames.length) return;
 
-    if (post.originalFileNames[currentFile].type === "image") {
+    if (post?.originalFileNames[currentFile].type === "image") {
       setFolder("images");
     } else if (post.originalFileNames[currentFile].type === "video") {
       setFolder("videos");

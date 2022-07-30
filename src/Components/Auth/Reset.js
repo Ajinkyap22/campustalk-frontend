@@ -35,7 +35,6 @@ function Reset({ title, history, match }) {
         formData
       )
       .then((res) => {
-        console.log(res.data);
         setChanged(true);
         history.push("/login");
         showOverlay(false);

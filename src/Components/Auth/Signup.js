@@ -6,6 +6,7 @@ import Title from "./Title";
 import GoogleLogin from "react-google-login";
 import axios from "axios";
 import GoogleButton from "./GoogleButton";
+import GuestButton from "./GuestButton";
 import Input from "../FormControl/Input";
 import Password from "../FormControl/Password";
 import ActionButtons from "../FormControl/ActionButtons";
@@ -109,31 +110,39 @@ function Signup({ title, ...props }) {
 
       {/* form box */}
       <section className="bg-white dark:bg-darkSecondary rounded justify-center shadow-base w-[90%] md:w-2/3 lg:w-[40%] 2xl:w-[30%] md:my-2 lg:my-5 xl:my-8">
-        <h1 className="text-lg md:text-xl lg:text-2xl text-primary text-center mt-4">
+        <h1 className="text-base md:text-lg lg:text-xl text-primary mt-4 text-center">
           Create Your Account
         </h1>
 
-        {/* sign in */}
-        <div className="flex justify-center mt-6">
-          <GoogleLogin
-            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-            render={(renderProps) => <GoogleButton renderProps={renderProps} />}
-            buttonText="Sign in with Google"
-            onSuccess={handleSignIn}
-            onFailure={handleSignIn}
-            cookiePolicy={"single_host_origin"}
-          />
+        {/* other options */}
+        <div className="pb-6">
+          <div className="flex justify-center mt-6">
+            <GoogleLogin
+              clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+              render={(renderProps) => (
+                <GoogleButton renderProps={renderProps} />
+              )}
+              buttonText="Sign in with Google"
+              onSuccess={handleSignIn}
+              onFailure={handleSignIn}
+              cookiePolicy={"single_host_origin"}
+            />
+          </div>
+
+          <div className="flex justify-center mt-6">
+            <GuestButton />
+          </div>
         </div>
 
         {/* or */}
-        <div className="or w-full mt-5 2xl:mt-6 px-4 md:px-6">
+        <div className="or w-full px-4 md:px-6">
           <span className="text-center text-sm 2xl:text-lg dark:text-darkLight">
             OR
           </span>
         </div>
 
         {/* form */}
-        <form className="px-5 md:px-10 py-2" onSubmit={signupHandler}>
+        <form className="px-5 md:px-10 pb-2" onSubmit={signupHandler}>
           {/* Email */}
           <Input
             type="email"
@@ -186,14 +195,14 @@ function Signup({ title, ...props }) {
             <div className="mt-2 md:mt-0">
               <Link
                 to="/login"
-                className="text-xsm md:text-xs text-primary dark:text-primary-light block mb-1 md:mb-2 lg:mb-3"
+                className="text-xsm md:text-xs text-primary dark:text-primary-light block mb-1 md:mb-2 lg:mb-3 hover:underline transition-transform"
               >
                 Have an account?
               </Link>
 
               <Link
                 to="/forgot-password"
-                className="text-xsm md:text-xs text-primary dark:text-primary-light block mt-1 md:mt-2 lg:mt-3"
+                className="text-xsm md:text-xs text-primary dark:text-primary-light block mt-1 md:mt-2 lg:mt-3 hover:underline transition-transform "
               >
                 Forgot Password?
               </Link>

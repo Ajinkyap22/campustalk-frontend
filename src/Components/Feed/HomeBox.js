@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-function HomeBox({ user }) {
+function HomeBox({ user, isGuest = false }) {
   const [isModerator, setIsModerator] = useState(false);
 
   useEffect(() => {
@@ -61,12 +61,34 @@ function HomeBox({ user }) {
           </Link>
         )}
 
-        <Link
-          to="/create-forum"
-          className="w-1/2 mx-auto text-center block py-1.5 my-5 text-xs lg:text-sm 2xl:text-base border border-primary dark:border-[#389fff] bg-transparent text-primary dark:text-[#389fff] rounded-full hover:scale-105 transition-transform hover:bg-primary-light dark:hover:bg-primary hover:text-white dark:hover:text-white"
-        >
-          Create Forum
-        </Link>
+        {isGuest ? (
+          <button
+            disabled
+            title="You must be logged in to create a post"
+            className="w-1/2 mx-auto text-center block py-1.5 my-5 text-xs lg:text-sm 2xl:text-base border border-primary bg-blue-500 text-white rounded-full"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-4 inline mr-1"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                clipRule="evenodd"
+              />
+            </svg>
+            Create Forum
+          </button>
+        ) : (
+          <Link
+            to="/create-forum"
+            className="w-1/2 mx-auto text-center block py-1.5 my-5 text-xs lg:text-sm 2xl:text-base border border-primary dark:border-[#389fff] bg-transparent text-primary dark:text-[#389fff] rounded-full hover:scale-105 transition-transform hover:bg-primary-light dark:hover:bg-primary hover:text-white dark:hover:text-white"
+          >
+            Create Forum
+          </Link>
+        )}
       </div>
     </div>
   );

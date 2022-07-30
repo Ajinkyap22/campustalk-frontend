@@ -1,5 +1,7 @@
 import { UserContext } from "./UserContext";
+import { GuestContext } from "./GuestContext";
 import React, { useState, useEffect, useContext } from "react";
+import { demoForum } from "../Config/guestConfig";
 import axios from "axios";
 
 export const ForumContext = React.createContext();
@@ -7,18 +9,22 @@ export const ForumContext = React.createContext();
 export function ForumProvider({ children }) {
   const [forums, setForums] = useState([]);
   const [user] = useContext(UserContext);
+  const [isGuest] = useContext(GuestContext);
 
-  // fetch forum list
   useEffect(() => {
-    axios
-      .get("https://campustalk-api.herokuapp.com/api/forums/")
-      .then((res) => {
-        setForums(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, [user]);
+    if (isGuest) {
+      setForums([demoForum]);
+    } else {
+      axios
+        .get("https://campustalk-api.herokuapp.com/api/forums/")
+        .then((res) => {
+          setForums(res.data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [user, isGuest]);
 
   return (
     <ForumContext.Provider value={[forums, setForums]}>

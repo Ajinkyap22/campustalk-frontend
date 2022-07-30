@@ -1,19 +1,21 @@
-import { ModeContext } from "../../Contexts/ModeContext";
 import { SocketContext } from "../../Contexts/SocketContext";
 import { UserContext } from "../../Contexts/UserContext";
+import { GuestContext } from "../../Contexts/GuestContext";
 import { NavLink } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import Toggle from "./Toggle";
 import Logo from "../Logo";
 
 function MobileNav({ handleClick, activeTab, notificationCount }) {
   const [user, setUser] = useContext(UserContext);
   const [socket] = useContext(SocketContext);
+  const [isGuest, setIsGuest] = useContext(GuestContext);
 
   function logout() {
     localStorage.removeItem("user");
     setUser(undefined);
     socket.current.emit("logout", user._id);
+    setIsGuest(false);
   }
 
   return (

@@ -1,7 +1,8 @@
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { withRouter } from "react-router-dom";
+import { GuestContext } from "../../Contexts/GuestContext";
 import Swipe from "react-easy-swipe";
 import "./File.css";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -24,6 +25,7 @@ function File({
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [isPDF, setIsPDF] = useState(false);
+  const [isGuest] = useContext(GuestContext);
 
   useEffect(() => {
     // check if the file is a pdf
@@ -88,14 +90,19 @@ function File({
             ((file.endsWith(".jpg") ||
               file.endsWith(".jpeg") ||
               file.endsWith(".png") ||
+              file.endsWith(".svg") ||
               file.endsWith(".gif")) && (
               <img
-                src={`https://campustalk-api.herokuapp.com/uploads/images/${file}`}
+                src={
+                  isGuest
+                    ? file
+                    : `https://campustalk-api.herokuapp.com/uploads/images/${file}`
+                }
                 key={i}
                 alt=""
                 className={`mx-auto ${
-                  !fullScreen ? "w-full h-full" : "h-screen"
-                } object-cover`}
+                  !fullScreen ? "w-full h-full" : "w-screen"
+                } ${isGuest && "bg-white dark:bg-darkSecondary"} object-cover`}
                 hidden={i !== currentFile}
               />
             )) ||

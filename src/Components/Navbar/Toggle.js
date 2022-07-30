@@ -29,7 +29,7 @@ function Toggle() {
       aria-label={
         mode === "light" ? "Switch to dark mode" : "Switch to light mode"
       }
-      className="mb-1.5 md:mb-2 lg:mb-0 mx-1.5 md:mx-3"
+      className="mb-1.5 md:mb-2 lg:mb-0 mx-1.5 md:mx-3 hover:scale-110 transition-transform"
       onClick={toggleMode}
     >
       {mode === "light" ? (

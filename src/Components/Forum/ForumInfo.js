@@ -17,6 +17,7 @@ function ForumInfo({
   setJoinRequests,
   isModerator,
   setAction,
+  isGuest,
   ...props
 }) {
   const [user] = useContext(UserContext);
@@ -59,9 +60,7 @@ function ForumInfo({
           .then(() => {
             sendMail(forum._id);
           })
-          .catch((err) => {
-            console.log(err.response);
-          });
+          .catch((err) => {});
       })
       .catch((err) => {
         console.error(err);
@@ -187,7 +186,8 @@ function ForumInfo({
       </div>
 
       {/* buttons */}
-      {user && user.forums.some((userForum) => userForum._id === forum._id) ? (
+      {(user && user.forums.some((userForum) => userForum._id === forum._id)) ||
+      isGuest ? (
         <div>
           <Link
             to="/create-post"
@@ -205,12 +205,34 @@ function ForumInfo({
             </Link>
           )}
 
-          <button
-            onClick={() => toggleModal("Leave")}
-            className="mx-auto w-1/2 block text-centr p-2 py-1.5 my-5 text-xs md:text-sm 2xl:text-base hover:scale-105 transition-transform border border-red-500 bg-transparent text-red-500 dark:text-[#ff5656] rounded-full hover:bg-red-500 hover:text-white dark:hover:text-darkLight"
-          >
-            Leave Forum
-          </button>
+          {isGuest ? (
+            <button
+              disabled
+              title="You must be logged in to perform this action"
+              className="mx-auto w-1/2 block text-centr p-2 py-1.5 my-5 text-xs md:text-sm 2xl:text-base border border-red-500 rounded-full bg-red-500 text-white dark:text-darkLight"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-4 inline mr-2"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Leave Forum
+            </button>
+          ) : (
+            <button
+              onClick={() => toggleModal("Leave")}
+              className="mx-auto w-1/2 block text-centr p-2 py-1.5 my-5 text-xs md:text-sm 2xl:text-base hover:scale-105 transition-transform border border-red-500 bg-transparent text-red-500 dark:text-[#ff5656] rounded-full hover:bg-red-500 hover:text-white dark:hover:text-darkLight"
+            >
+              Leave Forum
+            </button>
+          )}
 
           {isModerator && (
             <button

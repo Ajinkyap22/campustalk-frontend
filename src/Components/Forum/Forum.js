@@ -1,6 +1,8 @@
 import { ForumContext } from "../../Contexts/ForumContext";
 import { TabContext } from "../../Contexts/TabContext";
 import { UserContext } from "../../Contexts/UserContext";
+import { GuestContext } from "../../Contexts/GuestContext";
+import { PostContext } from "../../Contexts/PostContext";
 import { useState, useEffect, useContext } from "react";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
@@ -24,6 +26,8 @@ function Forum({ forum, title, defaultTab = "posts", history }) {
   const [activeTab, setActiveTab] = useContext(TabContext);
   const [user, setUser] = useContext(UserContext);
   const [forums, setForums] = useContext(ForumContext);
+  const [isGuest] = useContext(GuestContext);
+  const [posts] = useContext(PostContext);
   const [activeFilter, setActiveFilter] = useState("latest");
   const [dateRange, setDateRange] = useState("Today");
   const [forumPosts, setForumPosts] = useState([]);
@@ -62,25 +66,30 @@ function Forum({ forum, title, defaultTab = "posts", history }) {
       // get all posts in the forum
       setTab(defaultTab);
 
-      // get posts
-      axios
-        .get(
-          `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/posts`
-        )
-        .then((res) => {
-          setForumPosts(res.data);
-          setLoading(false);
-        });
+      if (isGuest) {
+        setForumPosts(posts);
+        setLoading(false);
+      } else {
+        // get posts
+        axios
+          .get(
+            `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/posts`
+          )
+          .then((res) => {
+            setForumPosts(res.data);
+            setLoading(false);
+          });
 
-      // get post requests
-      axios
-        .get(
-          `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/posts/postRequests`
-        )
-        .then((res) => {
-          setPostRequests(res.data);
-          setPostRequestLoading(false);
-        });
+        // get post requests
+        axios
+          .get(
+            `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/posts/postRequests`
+          )
+          .then((res) => {
+            setPostRequests(res.data);
+            setPostRequestLoading(false);
+          });
+      }
     }
 
     return () => {
@@ -184,7 +193,6 @@ function Forum({ forum, title, defaultTab = "posts", history }) {
         headers
       )
       .then((res) => {
-        console.log(res.data, forums);
         let newForums = [...forums];
         newForums = newForums.map((f) =>
           f._id === forum._id ? { ...forum, moderators: res.data } : f
@@ -260,8 +268,9 @@ function Forum({ forum, title, defaultTab = "posts", history }) {
           />
 
           {/* if user exists & is a member of the forum */}
-          {user &&
-          user.forums.some((userForum) => userForum._id === forum._id) ? (
+          {(user &&
+            user.forums.some((userForum) => userForum._id === forum._id)) ||
+          isGuest ? (
             <div>
               {/* posts */}
               <div hidden={tab !== "posts"}>
@@ -390,6 +399,7 @@ function Forum({ forum, title, defaultTab = "posts", history }) {
             joinRequests={joinRequests}
             setJoinRequests={setJoinRequests}
             isModerator={isModerator}
+            isGuest={isGuest}
           />
 
           {/* rules */}

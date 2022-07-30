@@ -1,4 +1,5 @@
 import { UserContext } from "../../../Contexts/UserContext";
+import { GuestContext } from "../../../Contexts/GuestContext";
 import { useState, useContext, useEffect } from "react";
 import CommentOptions from "./CommentOptions";
 import CommentFile from "./CommentFile";
@@ -20,6 +21,7 @@ function Comment({
   const [showOptions, setShowOptions] = useState(false);
   const [isAuthor, setIsAuthor] = useState(false);
   const [user, setUser] = useContext(UserContext);
+  const [isGuest] = useContext(GuestContext);
   const [isModerator, setIsModerator] = useState(false);
   const [hovering, setHovering] = useState(false);
   const [overName, setOverName] = useState(false);
@@ -29,7 +31,7 @@ function Comment({
 
   useEffect(() => {
     // check if author is the same as user
-    if (user && user._id === comment.author._id) {
+    if ((user && user._id === comment.author._id) || isGuest) {
       setIsAuthor(true);
     } else {
       setIsAuthor(false);
@@ -38,10 +40,10 @@ function Comment({
     return () => {
       setIsAuthor(false);
     };
-  }, [user, comment.author]);
+  }, [user, comment.author, isGuest]);
 
   useEffect(() => {
-    if (moderators.includes(user._id)) {
+    if (moderators.includes(user?._id)) {
       setIsModerator(true);
     } else {
       setIsModerator(false);
@@ -56,16 +58,20 @@ function Comment({
     // get replies
     if (!comment.replies.length) return;
 
-    axios
-      .get(
-        `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${comment._id}/replies`
-      )
-      .then((res) => {
-        setReplies(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    if (isGuest) {
+      setReplies(comment.replies);
+    } else {
+      axios
+        .get(
+          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${comment._id}/replies`
+        )
+        .then((res) => {
+          setReplies(res.data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   }, []);
 
   function toggleOptions() {
@@ -162,6 +168,7 @@ function Comment({
             user={user}
             setUser={setUser}
             isModerator={isModerator}
+            isGuest={isGuest}
           />
         </div>
 
@@ -180,6 +187,8 @@ function Comment({
           comment={comment}
           setComments={setComments}
           toggleReplies={toggleReplies}
+          isGuest={isGuest}
+          postId={postId}
         />
 
         {/* view reply button */}

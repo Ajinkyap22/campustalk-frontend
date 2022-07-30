@@ -29,7 +29,7 @@ function Input({
         value={value}
         onChange={(e) => (setState ? callback(e.target.value) : callback(e))}
         placeholder={placeholder}
-        className="mt-2 block w-full px-3 py-1.5 border dark:text-darkLight border-gray-300 dark:border-[#3e3d3d] bg-[#f6f6f6] dark:bg-[#3e3d3d] rounded-md text-xs lg:text-sm 2xl:text-base shadow-sm placeholder-[#818181] 
+        className="mt-2 block w-full px-3 py-2 border dark:text-darkLight border-gray-300 dark:border-[#3e3d3d] bg-[#f6f6f6] dark:bg-[#3e3d3d] rounded-md text-xs lg:text-sm 2xl:text-base shadow-sm placeholder-[#818181] 
               focus:outline-none focus:border-sky-500"
         minLength={minLength}
         required={required}

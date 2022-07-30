@@ -1,4 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import { GuestContext } from "../../Contexts/GuestContext";
+import { demoChat, guestUser } from "../../Config/guestConfig";
+import { useState, useRef, useEffect, useContext } from "react";
 import axios from "axios";
 import FileInputs from "../PostPage/Comment/FileInputs";
 
@@ -22,7 +24,51 @@ function MessageInput({
   const [originalFileName, setOriginalFileName] = useState();
   const [enableSend, setEnableSend] = useState(false);
   const [fileType, setFileType] = useState(null);
+  const [isGuest] = useContext(GuestContext);
   const formRef = useRef(null);
+
+  useEffect(() => {
+    // if there is a file in the formdata
+    if (isGuest) {
+      // disable all input buttons
+      imageButton.current.disabled = true;
+      videoButton.current.disabled = true;
+      docButton.current.disabled = true;
+
+      // disable all input refs
+      imageInput.current.disabled = true;
+      videoInput.current.disabled = true;
+      docInput.current.disabled = true;
+    } else {
+      // enable all input buttons
+      imageButton.current.disabled = false;
+      videoButton.current.disabled = false;
+      docButton.current.disabled = false;
+
+      // enable all input refs
+      imageInput.current.disabled = false;
+      videoInput.current.disabled = false;
+      docInput.current.disabled = false;
+
+      setFileType(null);
+    }
+  }, [isGuest]);
+
+  useEffect(() => {
+    if (text && (user || isGuest)) {
+      setEnableSend(true);
+    } else {
+      setEnableSend(false);
+    }
+  }, [text, user, isGuest]);
+
+  useEffect(() => {
+    if (!file) return;
+
+    formRef.current?.dispatchEvent(
+      new Event("submit", { cancelable: true, bubbles: true })
+    );
+  }, [file]);
 
   function handleChange(e) {
     setText(e.target.value);
@@ -47,58 +93,31 @@ function MessageInput({
 
       apiRequest(fileType, formData);
     } else {
-      formData = {
-        text,
-        sender: user._id,
-        receiver: receiver._id,
-        chat: chat._id,
-        currentUnReadCount: chat.unReadCounts,
-      };
+      if (isGuest) {
+        let msg = {
+          _id:
+            Math.random().toString(36).substring(2, 15) +
+            Math.random().toString(36).substring(2, 15),
+          text,
+          sender: guestUser,
+          receiver,
+          chat,
+          timestamp: new Date().toISOString(),
+        };
 
-      apiRequest("text", formData);
+        onSuccess(msg, "text");
+      } else {
+        formData = {
+          text,
+          sender: user._id,
+          receiver: receiver._id,
+          chat: chat._id,
+          currentUnReadCount: chat.unReadCounts,
+        };
+
+        apiRequest("text", formData);
+      }
     }
-  }
-
-  function onSuccess(res, type) {
-    setMessages((messages) => [...messages, res]);
-    setText("");
-    setFile(null);
-    setOriginalFileName("");
-    setFileType("");
-    setEnableSend(false);
-
-    let newUnReadCount = chat.unReadCounts[receiver._id] + 1;
-
-    setChats(
-      chats.map((c) => {
-        if (c._id === chat._id) {
-          c.unReadCounts[receiver._id] = newUnReadCount;
-        }
-
-        return c;
-      })
-    );
-
-    if (type === "text") {
-      socket.emit("sendMessage", {
-        senderId: user._id,
-        receiverId: receiver._id,
-        text,
-      });
-    } else {
-      socket.emit("sendFile", {
-        senderId: user._id,
-        receiverId: receiver._id,
-        file: res.file,
-        fileType: res.fileType,
-        originalFileName: res.originalFileName,
-      });
-    }
-
-    socket.emit("newUnreadCount", {
-      receiverId: receiver._id,
-      chatId: chat._id,
-    });
   }
 
   function apiRequest(type, formData) {
@@ -139,21 +158,52 @@ function MessageInput({
     }
   }
 
-  useEffect(() => {
-    if (text && user) {
-      setEnableSend(true);
-    } else {
-      setEnableSend(false);
-    }
-  }, [text, user]);
+  function onSuccess(res, type) {
+    setMessages((messages) => [...messages, res]);
+    setText("");
+    setFile(null);
+    setOriginalFileName("");
+    setFileType("");
+    setEnableSend(false);
 
-  useEffect(() => {
-    if (!file) return;
+    let newUnReadCount = chat.unReadCounts[receiver._id] + 1;
 
-    formRef.current?.dispatchEvent(
-      new Event("submit", { cancelable: true, bubbles: true })
+    setChats(
+      chats.map((c) => {
+        if (c._id === chat._id) {
+          c.unReadCounts[receiver._id] = newUnReadCount;
+        }
+
+        return c;
+      })
     );
-  }, [file]);
+
+    if (isGuest) {
+      demoChat.messages = [...demoChat.messages, res];
+      return;
+    }
+
+    if (type === "text") {
+      socket.emit("sendMessage", {
+        senderId: user._id,
+        receiverId: receiver._id,
+        text,
+      });
+    } else {
+      socket.emit("sendFile", {
+        senderId: user._id,
+        receiverId: receiver._id,
+        file: res.file,
+        fileType: res.fileType,
+        originalFileName: res.originalFileName,
+      });
+    }
+
+    socket.emit("newUnreadCount", {
+      receiverId: receiver._id,
+      chatId: chat._id,
+    });
+  }
 
   return (
     <div className="w-full p-2.5 row-span-1 bg-white dark:bg-dark shadow-base fixed bottom-0">
@@ -169,6 +219,7 @@ function MessageInput({
           setFileType={setFileType}
           setOriginalFileName={setOriginalFileName}
           isChatting={true}
+          isGuest={isGuest}
         />
 
         {/* input field */}

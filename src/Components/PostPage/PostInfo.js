@@ -76,7 +76,7 @@ function PostInfo({ post }) {
           <span
             className={`text-sm dark:text-darkLight ${
               !post.anonymous &&
-              post.author._id !== user._id &&
+              post.author._id !== user?._id &&
               "hover:underline"
             }`}
             onMouseEnter={handleHover}

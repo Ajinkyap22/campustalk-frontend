@@ -7,6 +7,7 @@ function ChatPreview({
   activeChat,
   setActiveChat,
   onlineUsers,
+  isGuest = false,
 }) {
   const [receiver, setReceiver] = useState(null);
   const [online, setOnline] = useState(false);
@@ -42,7 +43,15 @@ function ChatPreview({
   }, []);
 
   useEffect(() => {
-    let r = chat.members.find((member) => member._id !== user._id);
+    let r;
+    if (isGuest) {
+      r = chat.members.find(
+        (member) => member._id !== process.env.REACT_APP_GUEST_ID
+      );
+    } else {
+      r = chat.members.find((member) => member._id !== user._id);
+    }
+
     setReceiver(r);
 
     if (onlineUsers[r._id]) {
@@ -57,7 +66,8 @@ function ChatPreview({
 
     if (receiver) {
       newUnReadCount = {
-        [user._id]: chat.unReadCounts[user._id],
+        [user?._id || process.env.REACT_APP_GUEST_ID]:
+          chat.unReadCounts[user?._id || process.env.REACT_APP_GUEST_ID],
         [receiver._id]: chat.unReadCounts[receiver._id],
       };
 
@@ -71,7 +81,7 @@ function ChatPreview({
     setActiveChat(chat);
     if (receiver) {
       newUnReadCount = {
-        [user._id]: 0,
+        [user?._id || process.env.REACT_APP_GUEST_ID]: 0,
         [receiver._id]: chat.unReadCounts[receiver._id],
       };
 

@@ -30,7 +30,7 @@ function FAQ({ faqData }) {
       <div>
         {/* if data is not undefined map over date else map over faqData */}
         {faqData.map((data, index) => (
-          <div key={index}>
+          <div key={index} className="hover:bg-blue-100 dark:hover:bg-gray-600">
             <div className="py-3" onClick={() => handleFaq(index)}>
               <div className="flex items-center justify-between text-xs xl:text-sm 2xl:text-lg cursor-pointer">
                 {/* text */}

@@ -33,7 +33,7 @@ function Nav() {
         let newNotifications = res.data;
         let count = 0;
 
-        newNotifications.map((notification) => {
+        newNotifications.forEach((notification) => {
           if (notification.seen.indexOf(user._id) === -1) {
             notification.hasSeen = false;
             count++;
@@ -77,10 +77,10 @@ function Nav() {
         <NavLink
           to={"/feed"}
           onClick={() => handleClick("feed")}
-          className={`mx-4 text-sm 2xl:text-lg py-3 2xl:py-2.5 3xl:text-xl 3xl:py-3 px-2 ${
+          className={`mx-4 text-sm 2xl:text-lg py-3 2xl:py-2.5 3xl:text-xl 3xl:py-3 px-2 rounded-t-lg ${
             activeTab === "feed"
               ? "border-b-[3px] border-primary text-primary dark:text-primary-dark"
-              : "dark:text-darkLight"
+              : "dark:text-darkLight hover:bg-blue-100 dark:hover:bg-gray-600"
           }`}
         >
           Feed
@@ -90,10 +90,10 @@ function Nav() {
         <NavLink
           to={"/chats"}
           onClick={() => handleClick("chats")}
-          className={`mx-4 text-sm 2xl:text-lg py-3 2xl:py-2.5 3xl:text-xl 3xl:py-3 px-2 ${
+          className={`mx-4 text-sm 2xl:text-lg py-3 2xl:py-2.5 3xl:text-xl 3xl:py-3 px-2 rounded-t-lg ${
             activeTab === "chats"
               ? "border-b-[3px] border-primary text-primary dark:text-primary-dark"
-              : "dark:text-darkLight"
+              : "dark:text-darkLight hover:bg-blue-100 dark:hover:bg-gray-600"
           }`}
         >
           Chats
@@ -103,10 +103,10 @@ function Nav() {
         <NavLink
           to={"/forums"}
           onClick={() => handleClick("forums")}
-          className={`mx-4 text-sm 2xl:text-lg py-3 2xl:py-2.5 3xl:text-xl 3xl:py-3 px-2 ${
+          className={`mx-4 text-sm 2xl:text-lg py-3 2xl:py-2.5 3xl:text-xl 3xl:py-3 px-2 rounded-t-lg ${
             activeTab === "forums"
               ? "border-b-[3px] border-primary text-primary dark:text-primary-dark"
-              : "dark:text-darkLight"
+              : "dark:text-darkLight hover:bg-blue-100 dark:hover:bg-gray-600"
           }`}
         >
           Forums
@@ -116,10 +116,10 @@ function Nav() {
         <NavLink
           to={"/events"}
           onClick={() => handleClick("events")}
-          className={`mx-4 text-sm 2xl:text-lg py-3 2xl:py-2.5 3xl:text-xl 3xl:py-3 px-2 ${
+          className={`mx-4 text-sm 2xl:text-lg py-3 2xl:py-2.5 3xl:text-xl 3xl:py-3 px-2 rounded-t-lg ${
             activeTab === "events"
               ? "border-b-[3px] border-primary text-primary dark:text-primary-dark"
-              : "dark:text-darkLight"
+              : "dark:text-darkLight hover:bg-blue-100 dark:hover:bg-gray-600"
           }`}
         >
           Events
@@ -131,7 +131,7 @@ function Nav() {
         {/* notifications */}
         <button
           aria-label="Notifications"
-          className="h-auto relative notifications mx-2"
+          className="h-auto relative notifications mx-2 hover:scale-110 transition-transform"
           onClick={toggleNotifications}
         >
           <svg
@@ -155,7 +155,7 @@ function Nav() {
         {/* profile */}
         <button
           aria-label="Profile Options"
-          className="mx-2 2xl:mx-3 dropDownToggle profile"
+          className="mx-2 2xl:mx-3 dropDownToggle profile hover:scale-110 transition-transform"
           onClick={() => setShowDropdown(!showDropdown)}
         >
           {/* avatar */}

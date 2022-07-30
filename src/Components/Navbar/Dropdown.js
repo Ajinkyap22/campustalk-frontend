@@ -4,6 +4,7 @@ import { PostContext } from "../../Contexts/PostContext";
 import { EventContext } from "../../Contexts/EventContext";
 import { NotificationContext } from "../../Contexts/NotificationContext";
 import { SocketContext } from "../../Contexts/SocketContext";
+import { GuestContext } from "../../Contexts/GuestContext";
 import { NavLink } from "react-router-dom";
 import { useContext, useRef } from "react";
 import useOutsideAlerter from "../../Hooks/useOutsideAlerter";
@@ -15,6 +16,7 @@ function Dropdown({ showDropdown, setShowDropdown }) {
   const [events, setEvents] = useContext(EventContext);
   const [notifications, setNotifications] = useContext(NotificationContext);
   const [socket] = useContext(SocketContext);
+  const [isGuest, setIsGuest] = useContext(GuestContext);
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef, setShowDropdown);
 
@@ -26,11 +28,12 @@ function Dropdown({ showDropdown, setShowDropdown }) {
     handleClick();
     localStorage.removeItem("user");
     setUser(undefined);
-    socket.current.emit("logout", user._id);
+    user && socket.current.emit("logout", user?._id);
     setForums([]);
     setPosts([]);
     setEvents([]);
     setNotifications([]);
+    setIsGuest(false);
   }
 
   return (
@@ -45,20 +48,38 @@ function Dropdown({ showDropdown, setShowDropdown }) {
           className="p-2 2xl:p-2.5 text-sm 2xl:text-lg 3xl:p-3 3xl:text-xl dark:text-darkLight"
           onClick={handleClick}
         >
-          <NavLink to="/profile">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="inline mr-2 fill-[#818181] dark:fill-darkLight w-4 2xl:w-5 3xl:w-6"
-              viewBox="0 0 16 18"
-            >
-              <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-              <path
-                fillRule="evenodd"
-                d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
-              />
-            </svg>
-            Profile
-          </NavLink>
+          {isGuest ? (
+            <button disabled title="You must be logged in to view your profile">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="inline mr-2 fill-[#818181] dark:fill-darkLight w-4 2xl:w-5 3xl:w-6"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Profile
+            </button>
+          ) : (
+            <NavLink to="/profile">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="inline mr-2 fill-[#818181] dark:fill-darkLight w-4 2xl:w-5 3xl:w-6"
+                viewBox="0 0 16 18"
+              >
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                <path
+                  fillRule="evenodd"
+                  d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
+                />
+              </svg>
+              Profile
+            </NavLink>
+          )}
         </li>
         <hr />
 

@@ -1,7 +1,5 @@
-import { useEffect, useRef, useContext, useState } from "react";
-import { UserContext } from "../../../Contexts/UserContext";
+import { useRef, useContext } from "react";
 import { PostContext } from "../../../Contexts/PostContext";
-import { Link } from "react-router-dom";
 import useOutsideAlerter from "../../../Hooks/useOutsideAlerter";
 import axios from "axios";
 
@@ -17,6 +15,7 @@ function CommentOptions({
   user,
   setUser,
   isModerator,
+  isGuest = false,
 }) {
   const wrapperRef = useRef(null);
   const [posts, setPosts] = useContext(PostContext);
@@ -24,41 +23,64 @@ function CommentOptions({
   useOutsideAlerter(wrapperRef, setShowOptions);
 
   function deleteComment() {
-    let headers = {
-      headers: {
-        Authorization: `Bearer ${
-          JSON.parse(localStorage.getItem("user")).token
-        }`,
-      },
-    };
+    if (isGuest) {
+      // updates posts
+      setPosts([
+        ...posts.map((post) => {
+          if (post._id === postId) {
+            return {
+              ...post,
+              comments: post.comments.filter(
+                (comment) => comment._id !== commentId
+              ),
+            };
+          } else {
+            return post;
+          }
+        }),
+      ]);
 
-    axios
-      .delete(
-        `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${commentId}/delete-comment`,
-        headers
-      )
-      .then((res) => {
-        // update user's comments
-        setUser({
-          ...user,
-          comments: user.comments.filter(
-            (comment) => comment._id !== commentId
-          ),
+      // update comments
+      setComments(comments.filter((comment) => comment._id !== commentId));
+
+      setShowOptions(false);
+    } else {
+      let headers = {
+        headers: {
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("user")).token
+          }`,
+        },
+      };
+
+      axios
+        .delete(
+          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${commentId}/delete-comment`,
+          headers
+        )
+        .then((res) => {
+          // update user's comments
+          setUser({
+            ...user,
+            comments: user.comments.filter(
+              (comment) => comment._id !== commentId
+            ),
+          });
+
+          // updates posts
+          setPosts(
+            posts.map((post) => (post._id === postId ? res.data.post : post))
+          );
+
+          // update comments
+          setComments(comments.filter((comment) => comment._id !== commentId));
+
+          setShowOptions(false);
+        })
+        .catch((err) => {
+          console.error(err);
         });
-
-        // updates posts
-        setPosts(
-          posts.map((post) => (post._id === postId ? res.data.post : post))
-        );
-
-        // update comments
-        setComments(comments.filter((comment) => comment._id !== commentId));
-
-        setShowOptions(false);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    }
   }
 
   return (

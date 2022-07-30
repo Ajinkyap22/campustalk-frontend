@@ -3,7 +3,7 @@ function GoogleButton({ renderProps }) {
     <button
       onClick={renderProps.onClick}
       disabled={renderProps.disabled}
-      className="px-5 py-2 text-xs md:text-sm lg:text-base border shadow bg-white dark:bg-darkLight"
+      className="px-5 py-2 text-xs md:text-sm lg:text-base border shadow bg-white dark:bg-darkLight w-3/4 md:w-2/3 hover:scale-105 transition-transform"
     >
       <img
         alt="Google sign-in"

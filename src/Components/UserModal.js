@@ -3,12 +3,15 @@ import { SocketContext } from "../Contexts/SocketContext";
 import { UserContext } from "../Contexts/UserContext";
 import { withRouter } from "react-router-dom";
 import { useContext } from "react";
+import { GuestContext } from "../Contexts/GuestContext";
+import { demoChat } from "../Config/guestConfig";
 import axios from "axios";
 
 function UserModal({ receiver, hovering, setOverModal, history }) {
   const [chats, setChats, activeChat, setActiveChat] = useContext(ChatContext);
   const [socket] = useContext(SocketContext);
   const [user] = useContext(UserContext);
+  const [isGuest] = useContext(GuestContext);
 
   function handleHover() {
     setOverModal(true);
@@ -21,38 +24,57 @@ function UserModal({ receiver, hovering, setOverModal, history }) {
   }
 
   function newChat() {
-    let headers = {
-      headers: {
-        Authorization: `Bearer ${
-          JSON.parse(localStorage.getItem("user")).token
-        }`,
-      },
-    };
+    // check if chat already exists
+    let existingChat = chats.find((chat) => {
+      return chat.members.some((member) => member._id === receiver._id);
+    });
 
-    axios
-      .post(
-        "https://campustalk-api.herokuapp.com/api/chats/new-chat",
-        { members: [receiver._id, user._id] },
-        headers
-      )
-      .then((res) => {
-        setChats([...chats, res.data]);
-        setActiveChat(res.data);
-        socket.current.emit("newChat", {
-          chat: res.data,
-          receiverId: receiver._id,
-        });
+    if (existingChat) {
+      setActiveChat(existingChat);
+      history.push("/chats");
+    } else {
+      if (isGuest) {
+        // set chats
+        setChats([...chats, demoChat]);
+        // set active chat
+        setActiveChat(demoChat);
+        // redirect to chats
         history.push("/chats");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      } else {
+        let headers = {
+          headers: {
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("user")).token
+            }`,
+          },
+        };
+
+        axios
+          .post(
+            "https://campustalk-api.herokuapp.com/api/chats/new-chat",
+            { members: [receiver._id, user._id] },
+            headers
+          )
+          .then((res) => {
+            setChats([...chats, res.data]);
+            setActiveChat(res.data);
+            socket.current.emit("newChat", {
+              chat: res.data,
+              receiverId: receiver._id,
+            });
+            history.push("/chats");
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
+    }
   }
 
   return (
     <div
       className="absolute top-8 -left-1.5 p-2 z-20 bg-white dark:bg-[#3e3d3d] shadow-base rounded"
-      hidden={!hovering || receiver._id === user._id}
+      hidden={!hovering || receiver._id === user?._id}
       onMouseEnter={handleHover}
       onMouseLeave={handleLeave}
     >

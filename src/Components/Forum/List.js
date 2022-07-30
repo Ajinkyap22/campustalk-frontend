@@ -3,12 +3,14 @@ import { useContext } from "react";
 import Row from "./Row";
 import LogoCropped from "../LogoCropped";
 
-function List({ forums, forumsTab }) {
+function List({ forums, forumsTab, isGuest = false }) {
   const [user] = useContext(UserContext);
 
   return (
     <div>
-      {forumsTab === "userForums" && (!user || user?.forums.length === 0) ? (
+      {forumsTab === "userForums" &&
+      !isGuest &&
+      (!user || user?.forums.length === 0) ? (
         <div className="text-center py-4">
           <LogoCropped color="rgba(98, 98, 98, 0.9)" width="100" />
           <p className="text-center my-3 text-gray-700 dark:text-gray-300">

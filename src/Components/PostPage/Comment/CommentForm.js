@@ -1,5 +1,7 @@
 import { UserContext } from "../../../Contexts/UserContext";
 import { PostContext } from "../../../Contexts/PostContext";
+import { GuestContext } from "../../../Contexts/GuestContext";
+import { guestUser } from "../../../Config/guestConfig";
 import { useContext, useState, useRef, useEffect } from "react";
 import axios from "axios";
 import FileInputs from "./FileInputs";
@@ -17,11 +19,11 @@ function CommentForm({
 }) {
   const [user, setUser] = useContext(UserContext);
   const [posts, setPosts] = useContext(PostContext);
+  const [isGuest] = useContext(GuestContext);
 
   const [file, setFile] = useState(null);
   const [text, setText] = useState("");
   const [originalFileName, setOriginalFileName] = useState();
-  const [isEditing, setIsEditing] = useState(false);
   const [enablePost, setEnablePost] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [fileType, setFileType] = useState(null);
@@ -36,16 +38,16 @@ function CommentForm({
 
   useEffect(() => {
     // set enablepost to true if there is at least a text or a file, a forum, a mode and an author
-    if ((text || file) && user) {
+    if ((text || file) && (user || isGuest)) {
       setEnablePost(true);
     } else {
       setEnablePost(false);
     }
-  }, [file, text, user]);
+  }, [file, text, user, isGuest]);
 
   useEffect(() => {
     // if there is a file in the formdata
-    if (file && (file.length > 0 || file.name)) {
+    if (isGuest || (file && (file.length > 0 || file.name))) {
       // disable all input buttons
       imageButton.current.disabled = true;
       videoButton.current.disabled = true;
@@ -71,9 +73,9 @@ function CommentForm({
       setDisabled(false);
       setFileType(null);
     }
-  }, [file]);
+  }, [file, isGuest]);
 
-  function handleRemoveFile(e, index) {
+  function handleRemoveFile() {
     setFile(null);
     setOriginalFileName("");
 
@@ -86,19 +88,36 @@ function CommentForm({
   function handleSubmit(e) {
     e.preventDefault();
 
-    let formData = new FormData();
+    if (isGuest) {
+      let comment = {
+        _id: "3e9g5f8x1f8f8f8f8f8l7k2g",
+        text,
+        postId,
+        author: guestUser,
+        upvotes: [],
+        downvotes: [],
+        replies: [],
+        timestamp: new Date().toISOString(),
+      };
 
-    formData.append("text", text);
-    formData.append("postId", postId);
-    formData.append("authorId", user._id);
-    if (file) {
-      formData.append("file", file);
-      formData.append("originalFileName", JSON.stringify(originalFileName));
+      setEnablePost(false);
+
+      onPostSuccess(comment);
+    } else {
+      let formData = new FormData();
+
+      formData.append("text", text);
+      formData.append("postId", postId);
+      formData.append("authorId", user._id);
+      if (file) {
+        formData.append("file", file);
+        formData.append("originalFileName", JSON.stringify(originalFileName));
+      }
+
+      setEnablePost(false);
+
+      apiRequests(formData);
     }
-
-    setEnablePost(false);
-
-    apiRequests(formData);
   }
 
   function apiRequests(formData) {
@@ -118,7 +137,7 @@ function CommentForm({
           headers
         )
         .then((res) => {
-          onPostSuccess(res.data, headers);
+          onPostSuccess(res.data.comment, headers);
         });
     } else if (fileType === "video") {
       axios
@@ -128,7 +147,7 @@ function CommentForm({
           headers
         )
         .then((res) => {
-          onPostSuccess(res.data, headers);
+          onPostSuccess(res.data.comment, headers);
         });
     } else if (fileType === "doc") {
       axios
@@ -138,12 +157,12 @@ function CommentForm({
           headers
         )
         .then((res) => {
-          onPostSuccess(res.data, headers);
+          onPostSuccess(res.data.comment, headers);
         });
     }
   }
 
-  function onPostSuccess(res, headers) {
+  function onPostSuccess(comment, headers) {
     setText("");
     setFile(null);
     setOriginalFileName("");
@@ -151,10 +170,12 @@ function CommentForm({
     setEnablePost(true);
 
     // update user's comments
-    setUser({
-      ...user,
-      comments: [...user.comments, res.comment],
-    });
+    if (!isGuest) {
+      setUser({
+        ...user,
+        comments: [...user.comments, comment],
+      });
+    }
 
     // updates posts
     setPosts([
@@ -162,7 +183,7 @@ function CommentForm({
         if (post._id === postId) {
           return {
             ...post,
-            comments: [...post.comments, res.comment],
+            comments: [...post.comments, comment],
           };
         } else {
           return post;
@@ -171,37 +192,39 @@ function CommentForm({
     ]);
 
     // update comments
-    setComments([...comments, res.comment]);
+    setComments([...comments, comment]);
 
-    let body = {
-      type: "comment",
-      from: user._id,
-      to: postAuthorId,
-      post: postId,
-      forum: forumId,
-    };
+    if (!isGuest) {
+      let body = {
+        type: "comment",
+        from: user._id,
+        to: postAuthorId,
+        post: postId,
+        forum: forumId,
+      };
 
-    axios
-      .post(
-        `https://campustalk-api.herokuapp.com/api/notifications/activityNotification`,
-        body,
-        headers
-      )
-      .then(() => {
-        let body = {
-          author: `${user.firstName} ${user.lastName}`,
-          email: postAuthorMail,
-          postId,
-          forumId,
-          name: postAuthorName,
-          forumName,
-        };
+      axios
+        .post(
+          `https://campustalk-api.herokuapp.com/api/notifications/activityNotification`,
+          body,
+          headers
+        )
+        .then(() => {
+          let body = {
+            author: `${user.firstName} ${user.lastName}`,
+            email: postAuthorMail,
+            postId,
+            forumId,
+            name: postAuthorName,
+            forumName,
+          };
 
-        sendMail(body);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+          sendMail(body);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   }
 
   function sendMail(body) {
@@ -215,7 +238,7 @@ function CommentForm({
   return (
     <div className="flex items-start p-1.5 sticky bottom-0 bg-white dark:bg-darkSecondary z-10 shadow-inner">
       {/* user picture */}
-      {!user.picture ? (
+      {!user?.picture ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="30"
@@ -264,6 +287,7 @@ function CommentForm({
           setFileType={setFileType}
           setOriginalFileName={setOriginalFileName}
           disabled={disabled}
+          isGuest={isGuest}
         />
 
         {/* file preview */}

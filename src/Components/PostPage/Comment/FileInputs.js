@@ -11,6 +11,7 @@ function FileInputs({
   disabled,
   isChatting = false,
   small = false,
+  isGuest = false,
 }) {
   function handleFileInput(e, ref) {
     // trigger click on the ref
@@ -156,14 +157,16 @@ function FileInputs({
         onClick={(e) => handleFileInput(e, imageInput)}
         type="button"
         className={isChatting ? "mx-2" : small ? "mx-0.5" : "mx-1"}
-        title="Add images"
+        title={isGuest ? "You must be logged in to post media" : "Add images"}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className={`inline ${
             small ? "w-4 2xl:w-5 3xl:w-6" : "w-5 2xl:w-6 3xl:w-7"
           } ${
-            disabled ? "fill-[#ababab]" : "fill-[#818181] dark:fill-gray-300"
+            disabled || isGuest
+              ? "fill-[#ababab]"
+              : "fill-[#818181] dark:fill-gray-300"
           }`}
           viewBox="0 0 16 16"
         >
@@ -178,14 +181,16 @@ function FileInputs({
         onClick={(e) => handleFileInput(e, videoInput)}
         type="button"
         className={isChatting ? "mx-2" : small ? "mx-0.5" : "mx-1"}
-        title="Add a video"
+        title={isGuest ? "You must be logged in to post media" : "Add video"}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className={`inline ${
             small ? "w-4 2xl:w-5 3xl:w-6" : "w-5 2xl:w-6 3xl:w-7"
           } ${
-            disabled ? "fill-[#ababab]" : "fill-[#818181] dark:fill-gray-300"
+            disabled || isGuest
+              ? "fill-[#ababab]"
+              : "fill-[#818181] dark:fill-gray-300"
           }`}
           viewBox="0 0 16 16"
         >
@@ -199,12 +204,14 @@ function FileInputs({
         onClick={(e) => handleFileInput(e, docInput)}
         type="button"
         className={isChatting ? "mx-2" : small ? "mx-0.5" : "mx-1"}
-        title="Add a document"
+        title={isGuest ? "You must be logged in to post media" : "Add document"}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className={`inline ${
-            disabled ? "fill-[#ababab]" : "fill-[#818181] dark:fill-gray-300"
+            disabled || isGuest
+              ? "fill-[#ababab]"
+              : "fill-[#818181] dark:fill-gray-300"
           } ${small ? "w-4 2xl:w-5 3xl:w-6" : "w-5 2xl:w-6 3xl:w-7"} `}
           viewBox="0 0 16 16"
         >

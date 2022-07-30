@@ -2,7 +2,8 @@ import { UserContext } from "../../Contexts/UserContext";
 import { TabContext } from "../../Contexts/TabContext";
 import { SocketContext } from "../../Contexts/SocketContext";
 import { ChatContext } from "../../Contexts/ChatContext";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
+import { GuestContext } from "../../Contexts/GuestContext";
 import Nav from "../Navbar/Nav";
 import ChatList from "./ChatList";
 import ChatPage from "./ChatPage";
@@ -12,6 +13,7 @@ function Chats({ title }) {
   const [socket, onlineUsers] = useContext(SocketContext);
   const [activeTab, setActiveTab] = useContext(TabContext);
   const [chats, setChats, activeChat, setActiveChat] = useContext(ChatContext);
+  const [isGuest] = useContext(GuestContext);
 
   useEffect(() => {
     if (!user) {
@@ -51,6 +53,7 @@ function Chats({ title }) {
           chats={chats}
           setChats={setChats}
           socket={socket}
+          isGuest={isGuest}
         />
 
         {/* messages */}

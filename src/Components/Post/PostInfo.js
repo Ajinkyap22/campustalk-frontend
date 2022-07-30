@@ -1,4 +1,5 @@
 import { UserContext } from "../../Contexts/UserContext";
+import { GuestContext } from "../../Contexts/GuestContext";
 import { Link } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import moment from "moment";
@@ -15,6 +16,7 @@ function PostInfo({
   setForumPosts,
 }) {
   const [user] = useContext(UserContext);
+  const [isGuest] = useContext(GuestContext);
   const [showOptions, setShowOptions] = useState(false);
   const [isAuthor, setIsAuthor] = useState(false);
   const [isModerator, setIsModerator] = useState(false);
@@ -32,15 +34,15 @@ function PostInfo({
 
   useEffect(() => {
     // check if author is the same as user
-    if (user && user._id === author._id) {
+    if ((user && user._id === author._id) || isGuest) {
       setIsAuthor(true);
     } else {
       setIsAuthor(false);
     }
-  }, [user, author]);
+  }, [user, author, isGuest]);
 
   useEffect(() => {
-    if (forum.moderators?.includes(user._id)) {
+    if (forum.moderators?.includes(user?._id)) {
       setIsModerator(true);
     } else {
       setIsModerator(false);
@@ -101,7 +103,7 @@ function PostInfo({
         <span
           className={`text-xs md:text-sm lg:text-xs xl:text-sm 2xl:text-xl dark:text-darkLight ${
             !anonymous &&
-            author._id !== user._id &&
+            author._id !== user?._id &&
             "hover:underline transition-all"
           }`}
           onMouseEnter={handleHover}
@@ -164,6 +166,7 @@ function PostInfo({
           postId={postId}
           forum={forum}
           setForumPosts={setForumPosts}
+          isGuest={isGuest}
         />
 
         {/* date */}

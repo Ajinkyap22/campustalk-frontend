@@ -1,21 +1,16 @@
 import { FileContext } from "../../Contexts/FileContext";
+import { GuestContext } from "../../Contexts/GuestContext";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import ChatTitle from "./ChatTitle";
 import MessageInput from "./MessageInput";
 import Loading from "../Loading";
 import Messages from "./Messages";
+import { demoChat } from "../../Config/guestConfig";
 
-function ChatPage({
-  chat,
-  user,
-  socket,
-  setActiveChat,
-  chats,
-  setChats,
-  setShowOverlay,
-}) {
+function ChatPage({ chat, user, socket, setActiveChat, chats, setChats }) {
   const [files, setFiles] = useContext(FileContext);
+  const [isGuest] = useContext(GuestContext);
   const [receiver, setReceiver] = useState(null);
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,61 +21,78 @@ function ChatPage({
 
     if (isMounted) {
       chat &&
-        setReceiver(chat.members.find((member) => member._id !== user?._id));
+        setReceiver(
+          chat.members.find(
+            (member) =>
+              member._id !== user?._id &&
+              member._id !== process.env.REACT_APP_GUEST_ID
+          )
+        );
 
-      // get files
-      axios
-        .get(`https://campustalk-api.herokuapp.com/api/chats/${chat._id}/files`)
-        .then((res) => {
-          setFiles([...files, ...res.data]);
-        })
-        .catch((err) => console.error(err));
+      if (!isGuest) {
+        // get files
+        axios
+          .get(
+            `https://campustalk-api.herokuapp.com/api/chats/${chat._id}/files`
+          )
+          .then((res) => {
+            setFiles([...files, ...res.data]);
+          })
+          .catch((err) => console.error(err));
 
-      // listen for new messages
-      socket?.on("message", (message) => {
-        setNewMessage({
-          sender: message.senderId,
-          text: message.text,
-          receiver: user?._id,
-          timestamp: Date.now(),
+        // listen for new messages
+        socket?.on("message", (message) => {
+          setNewMessage({
+            sender: message.senderId,
+            text: message.text,
+            receiver: user?._id,
+            timestamp: Date.now(),
+          });
         });
-      });
 
-      // listen for file messages
-      socket?.on("fileMessage", (message) => {
-        setNewMessage({
-          sender: message.senderId,
-          file: message.file,
-          fileType: message.fileType,
-          originalFileName: message.originalFileName,
-          receiver: user._id,
-          timestamp: Date.now(),
+        // listen for file messages
+        socket?.on("fileMessage", (message) => {
+          setNewMessage({
+            sender: message.senderId,
+            file: message.file,
+            fileType: message.fileType,
+            originalFileName: message.originalFileName,
+            receiver: user._id,
+            timestamp: Date.now(),
+          });
         });
-      });
 
-      // listen for clear chat
-      socket?.on("clearChat", (message) => {
-        setMessages([]);
-      });
+        // listen for clear chat
+        socket?.on("clearChat", (message) => {
+          setMessages([]);
+        });
+      }
     }
 
     return () => {
       isMounted = false;
     };
-  }, [user, chat]);
+  }, [user, chat, isGuest]);
 
   useEffect(() => {
-    // get messages
-    axios
-      .get(
-        `https://campustalk-api.herokuapp.com/api/chats/messages/${chat._id}/${user?._id}`
-      )
-      .then((res) => {
-        setMessages(res.data);
-        setLoading(false);
-      })
-      .catch((err) => console.error(err));
-  }, [chat]);
+    if (!user && !isGuest) return;
+
+    if (isGuest) {
+      setLoading(false);
+      setMessages(demoChat.messages);
+    } else {
+      // get messages
+      axios
+        .get(
+          `https://campustalk-api.herokuapp.com/api/chats/messages/${chat._id}/${user?._id}`
+        )
+        .then((res) => {
+          setMessages(res.data);
+          setLoading(false);
+        })
+        .catch((err) => console.error(err));
+    }
+  }, [chat, user, isGuest]);
 
   useEffect(() => {
     newMessage &&

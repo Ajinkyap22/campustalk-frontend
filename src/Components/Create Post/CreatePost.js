@@ -1,4 +1,6 @@
 import { UserContext } from "../../Contexts/UserContext";
+import { GuestContext } from "../../Contexts/GuestContext";
+import { demoForum } from "../../Config/guestConfig";
 import { useEffect, useContext, useState } from "react";
 import { withRouter } from "react-router-dom";
 import AuthorInfo from "./AuthorInfo";
@@ -40,6 +42,7 @@ const faqData = [
 
 function CreatePost({ title, post, ...props }) {
   const [user, setUser] = useContext(UserContext);
+  const [isGuest] = useContext(GuestContext);
   const [forum, setForum] = useState(null);
   const [file, setFile] = useState(null);
   const [text, setText] = useState("");
@@ -63,15 +66,19 @@ function CreatePost({ title, post, ...props }) {
 
     if (mounted) {
       // redirect to the previus page if there is no user or if the user is not the author of the post
-      if (!user || (post && post.author._id !== user._id)) {
+      if (!user && !isGuest) {
         props.history.goBack();
+      } else if (isGuest) {
+        post &&
+          post.author._id !== "5e9f8f8f8f8f8f8f8f8f8f8e" &&
+          props.history.goBack();
       }
     }
 
     return () => {
       mounted = false;
     };
-  }, [user, post]);
+  }, [user, post, isGuest, props.history]);
 
   useEffect(() => {
     let mounted = true;
@@ -101,7 +108,7 @@ function CreatePost({ title, post, ...props }) {
 
       {/* dropdowns */}
       <Dropdowns
-        forums={user?.forums || []}
+        forums={isGuest ? [demoForum] : user.forums ? user.forums : []}
         forum={post?.forum || forum}
         setForum={setForum}
         anonymous={anonymous}
@@ -117,9 +124,9 @@ function CreatePost({ title, post, ...props }) {
           picture={user?.picture}
           forum={forum}
           authorForums={user?.forums || []}
-          firstName={user?.firstName}
+          firstName={isGuest ? "Guest" : user?.firstName}
+          lastName={isGuest ? "User" : user?.lastName}
           anonymous={anonymous}
-          lastName={user?.lastName}
           important={important}
           setImportant={setImportant}
         />
@@ -144,6 +151,7 @@ function CreatePost({ title, post, ...props }) {
           isEditing={isEditing}
           setIsEditing={setIsEditing}
           postId={post?._id}
+          isGuest={isGuest}
         />
       </div>
 

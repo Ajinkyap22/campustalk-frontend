@@ -35,8 +35,6 @@ function AddRules({ forumRules, forumId, title, history }) {
         headers
       )
       .then((res) => {
-        console.log(res.data);
-
         // update forums
         setForums(
           forums.map((f) => (f._id === forumId ? { ...f, rules: res.data } : f))
@@ -46,7 +44,6 @@ function AddRules({ forumRules, forumId, title, history }) {
       })
       .catch((err) => {
         console.error(err);
-        console.log(err.response);
       });
   }
 

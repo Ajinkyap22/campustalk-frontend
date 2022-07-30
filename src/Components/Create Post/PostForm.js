@@ -1,5 +1,6 @@
 import { ForumContext } from "../../Contexts/ForumContext";
 import { PostContext } from "../../Contexts/PostContext";
+import { demoForum, guestUser } from "../../Config/guestConfig";
 import { Link } from "react-router-dom";
 import { useRef, useEffect, useState, useContext } from "react";
 import { withRouter } from "react-router-dom";
@@ -28,6 +29,7 @@ function PostForm({
   isEditing,
   setIsEditing,
   postId,
+  isGuest = false,
   ...props
 }) {
   // refs for image input, video input & doc input
@@ -48,7 +50,7 @@ function PostForm({
 
   useEffect(() => {
     // if there is a file in the formdata
-    if (file && (file.length > 0 || file.name)) {
+    if (isGuest || (file && (file.length > 0 || file.name))) {
       // disable all input buttons
       imageButton.current.disabled = true;
       videoButton.current.disabled = true;
@@ -70,16 +72,16 @@ function PostForm({
       setDisabled(false);
       setFileType(null);
     }
-  }, [file]);
+  }, [file, isGuest]);
 
   useEffect(() => {
     // set enablepost to true if there is at least a text or a file, a forum, a mode and an author
-    if ((text || file) && forum && user) {
+    if ((text || file) && forum && (user || isGuest)) {
       setEnablePost(true);
     } else {
       setEnablePost(false);
     }
-  }, [file, text, forum, user]);
+  }, [file, text, forum, user, isGuest]);
 
   useEffect(() => {
     let mounted = true;
@@ -109,99 +111,62 @@ function PostForm({
   function handleSubmit(e) {
     e.preventDefault();
 
-    let headers = {
-      headers: {
-        Authorization: `Bearer ${
-          JSON.parse(localStorage.getItem("user")).token
-        }`,
-      },
-      onUploadProgress: (data) => {
-        setProgress(Math.round((100 * data.loaded) / data.total));
-      },
-    };
+    if (isGuest) {
+      let post = {
+        _id:
+          Math.random().toString(36).substring(2, 15) +
+          Math.random().toString(36).substring(2, 15),
+        text,
+        anonymous,
+        important,
+        forum: demoForum,
+        author: guestUser,
+        file: [],
+        originalFileNames: [],
+        comments: [],
+        upvotes: [],
+        downvotes: [],
+        timestamp: new Date().toISOString(),
+      };
 
-    setEnablePost(false);
+      setEnablePost(false);
 
-    const formData = new FormData();
-    formData.append("text", text);
-    formData.append("anonymous", anonymous);
-    formData.append("important", important);
-    formData.append("forumId", forum || forum?._id);
-    formData.append("authorId", user._id);
-    // if file is an array, add each file to formData
-    if (file instanceof Array) {
-      file.forEach((file) => {
-        formData.append("file", file);
-      });
+      onSuccess(post);
     } else {
-      formData.append("file", file);
-    }
+      let headers = {
+        headers: {
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("user")).token
+          }`,
+        },
+        onUploadProgress: (data) => {
+          setProgress(Math.round((100 * data.loaded) / data.total));
+        },
+      };
 
-    originalFileNames.forEach((originalFile, i) => {
-      formData.append("originalFileNames", JSON.stringify(originalFile));
-    });
+      setEnablePost(false);
 
-    apiRequests(formData, headers);
-  }
-
-  function onSuccess(res, headers) {
-    // reset form data
-    setFile(null);
-    setText("");
-    setFileType(null);
-    setEnablePost(false);
-    setAnonymous(false);
-    setImportant(false);
-    setDisabled(false);
-    setOriginalFileNames([]);
-
-    // reset file type
-    setFileType(null);
-
-    // redirect to feed
-    props.history.push("/feed");
-
-    if (isEditing) {
-      onEditingSuccess(res);
-    } else {
-      axios
-        .post(
-          `https://campustalk-api.herokuapp.com/api/notifications/requestNotification`,
-          { forum: forum || forum?._id, type: "postRequest" },
-          headers
-        )
-        .then((res) => {
-          props.history.push("/feed");
-          sendMail(forum);
-        })
-        .catch((err) => {
-          console.error(err);
+      const formData = new FormData();
+      formData.append("text", text);
+      formData.append("anonymous", anonymous);
+      formData.append("important", important);
+      formData.append("forumId", forum || forum?._id);
+      formData.append("authorId", user._id);
+      // if file is an array, add each file to formData
+      if (file instanceof Array) {
+        file.forEach((file) => {
+          formData.append("file", file);
         });
+      } else {
+        formData.append("file", file);
+      }
+
+      originalFileNames.forEach((originalFile, i) => {
+        formData.append("originalFileNames", JSON.stringify(originalFile));
+      });
+
+      apiRequests(formData, headers);
     }
-
-    setIsEditing(false);
-  }
-
-  function onEditingSuccess(res) {
-    // update post in user's posts
-    setUser({
-      ...user,
-      posts: user.posts.map((post) => {
-        if (post._id === res._id) {
-          return res;
-        } else {
-          return post;
-        }
-      }),
-    });
-
-    // update post in forum's posts
-    setForums(
-      forums.map((forum) => (forum._id === res.forum._id ? res.forum : forum))
-    );
-
-    // update post in posts
-    setPosts(posts.map((post) => (post._id === res._id ? res : post)));
   }
 
   function apiRequests(formData, headers) {
@@ -304,6 +269,81 @@ function PostForm({
     }
   }
 
+  function onSuccess(res, headers) {
+    // reset form data
+    setFile(null);
+    setText("");
+    setFileType(null);
+    setEnablePost(false);
+    setAnonymous(false);
+    setImportant(false);
+    setDisabled(false);
+    setOriginalFileNames([]);
+
+    // reset file type
+    setFileType(null);
+
+    if (isGuest) {
+      // update forum
+      let newForum = demoForum;
+      newForum.posts.push(res);
+      newForum.posts.sort((a, b) => -a.timestamp.localeCompare(b.timestamp));
+      setForums([newForum]);
+
+      // update posts
+      let newPosts = [...posts, res];
+      newPosts.sort((a, b) => -a.timestamp.localeCompare(b.timestamp));
+      setPosts(newPosts);
+      props.history.push("/feed");
+      return;
+    }
+
+    // redirect to feed
+    props.history.push("/feed");
+
+    if (isEditing) {
+      onEditingSuccess(res);
+    } else {
+      axios
+        .post(
+          `https://campustalk-api.herokuapp.com/api/notifications/requestNotification`,
+          { forum: forum || forum?._id, type: "postRequest" },
+          headers
+        )
+        .then((res) => {
+          props.history.push("/feed");
+          sendMail(forum);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+
+    setIsEditing(false);
+  }
+
+  function onEditingSuccess(res) {
+    // update post in user's posts
+    setUser({
+      ...user,
+      posts: user.posts.map((post) => {
+        if (post._id === res._id) {
+          return res;
+        } else {
+          return post;
+        }
+      }),
+    });
+
+    // update post in forum's posts
+    setForums(
+      forums.map((forum) => (forum._id === res.forum._id ? res.forum : forum))
+    );
+
+    // update post in posts
+    setPosts(posts.map((post) => (post._id === res._id ? res : post)));
+  }
+
   function sendMail(f) {
     let forum = forums.find((forum) => forum._id === f);
 
@@ -381,6 +421,7 @@ function PostForm({
         videoInput={videoInput}
         docInput={docInput}
         disabled={disabled}
+        isGuest={isGuest}
       />
 
       {/* form actions */}

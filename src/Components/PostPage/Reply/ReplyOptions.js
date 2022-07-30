@@ -1,4 +1,5 @@
-import { useRef, useEffect } from "react";
+import { PostContext } from "../../../Contexts/PostContext";
+import { useRef, useContext } from "react";
 import useOutsideAlerter from "../../../Hooks/useOutsideAlerter";
 import axios from "axios";
 
@@ -13,51 +14,80 @@ function ReplyOptions({
   setComments,
   setReplies,
   isAuthor,
-  user,
   isModerator,
+  isGuest = false,
 }) {
+  const [posts, setPosts] = useContext(PostContext);
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef, setShowOptions);
 
   function deleteReply() {
-    let headers = {
-      headers: {
-        Authorization: `Bearer ${
-          JSON.parse(localStorage.getItem("user")).token
-        }`,
-      },
-    };
+    if (isGuest) {
+      // update replies
+      setReplies((replies) => replies.filter((reply) => reply._id !== replyId));
 
-    axios
-      .delete(
-        `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${commentId}/replies/${replyId}/delete-reply`,
-        headers
-      )
-      .then((res) => {
-        // update replies
-        setReplies((replies) =>
-          replies.filter((reply) => reply._id !== replyId)
-        );
+      setShowOptions(false);
 
-        setShowOptions(false);
+      // update posts
+      setPosts(
+        posts.map((post) =>
+          post._id === postId
+            ? {
+                ...post,
+                comments: post.comments.map((comment) =>
+                  comment._id === commentId
+                    ? {
+                        ...comment,
+                        replies: comment.replies.filter(
+                          (reply) => reply._id !== replyId
+                        ),
+                      }
+                    : comment
+                ),
+              }
+            : post
+        )
+      );
+    } else {
+      let headers = {
+        headers: {
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("user")).token
+          }`,
+        },
+      };
 
-        // update comments
-        setComments(
-          comments.map((comment) =>
-            comment._id === commentId
-              ? {
-                  ...comment,
-                  replies: comment.replies.filter(
-                    (reply) => reply._id !== replyId
-                  ),
-                }
-              : comment
-          )
-        );
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+      axios
+        .delete(
+          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${commentId}/replies/${replyId}/delete-reply`,
+          headers
+        )
+        .then(() => {
+          // update replies
+          setReplies((replies) =>
+            replies.filter((reply) => reply._id !== replyId)
+          );
+
+          setShowOptions(false);
+
+          // update comments
+          setComments(
+            comments.map((comment) =>
+              comment._id === commentId
+                ? {
+                    ...comment,
+                    replies: comment.replies.filter(
+                      (reply) => reply._id !== replyId
+                    ),
+                  }
+                : comment
+            )
+          );
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   }
 
   return (

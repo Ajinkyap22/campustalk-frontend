@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../../../Contexts/UserContext";
+import { PostContext } from "../../../Contexts/PostContext";
 import moment from "moment";
 import axios from "axios";
 
@@ -9,109 +10,173 @@ function CommentActions({
   forumId,
   postId,
   toggleReplies,
+  isGuest = false,
 }) {
   const [upvoted, setUpvoted] = useState(false);
   const [downvoted, setDownvoted] = useState(false);
   const [user] = useContext(UserContext);
+  const [posts, setPosts] = useContext(PostContext);
 
   useEffect(() => {
-    if (!user) return;
-    // check if post is upvoted
-    comment.upvotes.indexOf(user._id) !== -1
-      ? setUpvoted(true)
-      : setUpvoted(false);
-    // check if post is downvoted
-    comment.downvotes.indexOf(user._id) !== -1
-      ? setDownvoted(true)
-      : setDownvoted(false);
-  }, [user, comment.upvotes, comment.downvotes]);
+    if (!user && !isGuest) return;
+
+    if (isGuest) {
+      // check if comment is upvoted by guest
+      comment.upvotes.indexOf(process.env.REACT_APP_GUEST_ID) !== -1
+        ? setUpvoted(true)
+        : setUpvoted(false);
+
+      // check if comment is downvoted
+      comment.downvotes.indexOf(process.env.REACT_APP_GUEST_ID) !== -1
+        ? setDownvoted(true)
+        : setDownvoted(false);
+    } else {
+      // check if comment is upvoted
+      comment.upvotes.indexOf(user._id) !== -1
+        ? setUpvoted(true)
+        : setUpvoted(false);
+      // check if comment is downvoted
+      comment.downvotes.indexOf(user._id) !== -1
+        ? setDownvoted(true)
+        : setDownvoted(false);
+    }
+  }, [user, comment.upvotes, comment.downvotes, isGuest]);
 
   function handleUpvote() {
-    if (!user) return;
+    if (!user && !isGuest) return;
 
-    let headers = {
-      headers: {
-        Authorization: `Bearer ${
-          JSON.parse(localStorage.getItem("user"))?.token
-        }`,
-      },
-    };
+    if (isGuest) {
+      if (upvoted) {
+        let updatedComment = {
+          ...comment,
+          upvotes: comment.upvotes.filter(
+            (id) => id !== process.env.REACT_APP_GUEST_ID
+          ),
+        };
 
-    if (upvoted) {
-      axios
-        .put(
-          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${comment._id}/unupvote`,
-          { id: user._id },
-          headers
-        )
-        .then((res) => {
-          updateComments(res.data);
-          setUpvoted(false);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+        updateComments(updatedComment);
+        setUpvoted(false);
+      } else {
+        let updatedComment = {
+          ...comment,
+          upvotes: [...comment.upvotes, process.env.REACT_APP_GUEST_ID],
+          downvotes: comment.downvotes.filter(
+            (id) => id !== process.env.REACT_APP_GUEST_ID
+          ),
+        };
+
+        updateComments(updatedComment);
+        setUpvoted(true);
+      }
     } else {
-      axios
-        .put(
-          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${comment._id}/upvote`,
-          {
-            id: user._id,
-          },
-          headers
-        )
-        .then((res) => {
-          updateComments(res.data);
-          setUpvoted(true);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+      let headers = {
+        headers: {
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("user"))?.token
+          }`,
+        },
+      };
+
+      if (upvoted) {
+        axios
+          .put(
+            `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${comment._id}/unupvote`,
+            { id: user._id },
+            headers
+          )
+          .then((res) => {
+            updateComments(res.data);
+            setUpvoted(false);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      } else {
+        axios
+          .put(
+            `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${comment._id}/upvote`,
+            {
+              id: user._id,
+            },
+            headers
+          )
+          .then((res) => {
+            updateComments(res.data);
+            setUpvoted(true);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
     }
   }
 
   function handleDownvote() {
-    if (!user) return;
+    if (!user && !isGuest) return;
 
-    let headers = {
-      headers: {
-        Authorization: `Bearer ${
-          JSON.parse(localStorage.getItem("user"))?.token
-        }`,
-      },
-    };
+    if (isGuest) {
+      if (downvoted) {
+        let updatedComment = {
+          ...comment,
+          downvotes: comment.downvotes.filter(
+            (id) => id !== process.env.REACT_APP_GUEST_ID
+          ),
+        };
 
-    if (downvoted) {
-      axios
-        .put(
-          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${comment._id}/undownvote`,
-          { id: user._id },
-          headers
-        )
-        .then((res) => {
-          updateComments(res.data);
-          setDownvoted(false);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+        updateComments(updatedComment);
+        setDownvoted(false);
+      } else {
+        let updatedComment = {
+          ...comment,
+          downvotes: [...comment.downvotes, process.env.REACT_APP_GUEST_ID],
+          upvotes: comment.upvotes.filter(
+            (id) => id !== process.env.REACT_APP_GUEST_ID
+          ),
+        };
+
+        updateComments(updatedComment);
+        setDownvoted(true);
+      }
     } else {
-      axios
-        .put(
-          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${comment._id}/downvote`,
-          {
-            id: user._id,
-          },
-          headers
-        )
-        .then((res) => {
-          console.log(res.data);
-          updateComments(res.data);
-          setDownvoted(true);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+      let headers = {
+        headers: {
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("user"))?.token
+          }`,
+        },
+      };
+
+      if (downvoted) {
+        axios
+          .put(
+            `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${comment._id}/undownvote`,
+            { id: user._id },
+            headers
+          )
+          .then((res) => {
+            updateComments(res.data);
+            setDownvoted(false);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      } else {
+        axios
+          .put(
+            `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${comment._id}/downvote`,
+            {
+              id: user._id,
+            },
+            headers
+          )
+          .then((res) => {
+            updateComments(res.data);
+            setDownvoted(true);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
     }
   }
 
@@ -119,6 +184,20 @@ function CommentActions({
     setComments((prevState) =>
       prevState.map((c) => (data._id === c._id ? data : c))
     );
+
+    if (isGuest) {
+      setPosts((prevState) =>
+        prevState.map((p) => {
+          if (p._id === postId) {
+            return {
+              ...p,
+              comments: p.comments.map((c) => (data._id === c._id ? data : c)),
+            };
+          }
+          return p;
+        })
+      );
+    }
   }
 
   return (
