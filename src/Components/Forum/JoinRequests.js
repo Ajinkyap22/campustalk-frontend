@@ -21,7 +21,7 @@ function JoinRequests({
 
     axios
       .put(
-        `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/approve_join`,
+        `${process.env.REACT_APP_API_URL}/api/forums/${forum._id}/approve_join`,
         { id: request._id },
         headers
       )
@@ -58,7 +58,7 @@ function JoinRequests({
 
     axios
       .put(
-        `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/reject_join`,
+        `${process.env.REACT_APP_API_URL}/api/forums/${forum._id}/reject_join`,
         { id: request._id },
         headers
       )
@@ -92,7 +92,7 @@ function JoinRequests({
 
     axios
       .post(
-        "https://campustalk-api.herokuapp.com/api/notifications/join-request-approved",
+        `${process.env.REACT_APP_API_URL}/api/notifications/join-request-approved`,
         body,
         headers
       )
@@ -111,7 +111,7 @@ function JoinRequests({
 
     axios
       .post(
-        "https://campustalk-api.herokuapp.com/api/mail/join-request-approved",
+        `${process.env.REACT_APP_API_URL}/api/mail/join-request-approved`,
         body
       )
       .catch((err) => {
@@ -151,7 +151,7 @@ function JoinRequests({
                       src={
                         joinRequest.picture.includes("googleusercontent")
                           ? joinRequest.picture
-                          : `https://campustalk-api.herokuapp.com/uploads/images/${joinRequest.picture}`
+                          : `${process.env.REACT_APP_API_KEY}/uploads/images/${joinRequest.picture}`
                       }
                       className="rounded-full object-cover w-8 md:w-10 h-auto inline mx-1 md:mx-2"
                       alt=""

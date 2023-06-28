@@ -8,7 +8,7 @@ export function SocketProvider({ children }) {
   const [onlineUsers, setOnlineUsers] = useState({});
 
   useEffect(() => {
-    const url = "https://campustalk-app.herokuapp.com/";
+    const url = process.env.REACT_APP_API_URL;
 
     socket.current = io(url);
 

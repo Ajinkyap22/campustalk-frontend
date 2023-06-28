@@ -89,7 +89,7 @@ function EventForm({ event, history, setShowOverlay }) {
   function createRequest(formData, headers) {
     axios
       .post(
-        "https://campustalk-api.herokuapp.com/api/events/create-event",
+        `${process.env.REACT_APP_API_URL}/api/events/create-event`,
         formData,
         headers
       )
@@ -108,7 +108,7 @@ function EventForm({ event, history, setShowOverlay }) {
   function editRequest(formData, headers) {
     axios
       .put(
-        `https://campustalk-api.herokuapp.com/api/events/${event._id}/update-event`,
+        `${process.env.REACT_APP_API_URL}/api/events/${event._id}/update-event`,
         formData,
         headers
       )

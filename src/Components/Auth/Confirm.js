@@ -16,9 +16,7 @@ function Confirm({ title, history }) {
       history.push("/login");
     } else {
       axios
-        .put(
-          `https://campustalk-api.herokuapp.com/api/users/confirm/${user._id}`
-        )
+        .put(`${process.env.REACT_APP_API_URL}/api/users/confirm/${user._id}`)
         .then((res) => {
           setUser({ ...user, active: true });
         })

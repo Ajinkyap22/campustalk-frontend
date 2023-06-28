@@ -51,7 +51,7 @@ function Notifications({
 
     axios
       .put(
-        `https://campustalk-api.herokuapp.com/api/notifications/${user._id}/clear`,
+        `${process.env.REACT_APP_API_URL}/api/notifications/${user._id}/clear`,
         {},
         headers
       )

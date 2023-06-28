@@ -132,7 +132,7 @@ function MessageInput({
     if (type === "text") {
       axios
         .post(
-          `https://campustalk-api.herokuapp.com/api/chats/send-message`,
+          `${process.env.REACT_APP_API_URL}/api/chats/send-message`,
           formData,
           headers
         )
@@ -145,7 +145,7 @@ function MessageInput({
     } else {
       axios
         .post(
-          `https://campustalk-api.herokuapp.com/api/chats/send-${type}`,
+          `${process.env.REACT_APP_API_URL}/api/chats/send-${type}`,
           formData,
           headers
         )

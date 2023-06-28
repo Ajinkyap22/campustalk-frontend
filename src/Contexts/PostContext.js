@@ -14,7 +14,7 @@ export function PostProvider({ children }) {
     if (user) {
       axios
         .get(
-          `https://campustalk-api.herokuapp.com/api/forums/userPosts/${user._id}`
+          `${process.env.REACT_APP_API_URL}/api/forums/userPosts/${user._id}`
         )
         .then((res) => {
           setPosts(

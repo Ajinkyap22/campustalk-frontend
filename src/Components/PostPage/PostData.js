@@ -17,7 +17,7 @@ function PostData({ post }) {
     } else if (post.comments) {
       axios
         .get(
-          `https://campustalk-api.herokuapp.com/api/forums/${post.forum._id}/posts/${post._id}/comments`
+          `${process.env.REACT_APP_API_URL}/api/forums/${post.forum._id}/posts/${post._id}/comments`
         )
         .then((res) => {
           // only keep the comments that in the post's comments array

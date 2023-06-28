@@ -58,7 +58,7 @@ function File({
   function handleDownload(e, name, file) {
     e.stopPropagation();
 
-    fetch(`https://campustalk-api.herokuapp.com/uploads/docs/${file}`).then(
+    fetch(`${process.env.REACT_APP_API_KEY}/uploads/docs/${file}`).then(
       (response) => {
         response.blob().then((blob) => {
           let url = window.URL.createObjectURL(blob);
@@ -96,7 +96,7 @@ function File({
                 src={
                   isGuest
                     ? file
-                    : `https://campustalk-api.herokuapp.com/uploads/images/${file}`
+                    : `${process.env.REACT_APP_API_KEY}/uploads/images/${file}`
                 }
                 key={i}
                 alt=""
@@ -111,7 +111,7 @@ function File({
               file.endsWith(".mkv") ||
               file.endsWith(".mpeg-4")) && (
               <video
-                src={`https://campustalk-api.herokuapp.com/uploads/videos/${file}`}
+                src={`${process.env.REACT_APP_API_KEY}/uploads/videos/${file}`}
                 key={i}
                 alt=""
                 className="mx-auto w-full h-full object-cover"
@@ -122,7 +122,7 @@ function File({
             // if file is a pdf
             (file.endsWith(".pdf") && (
               <Document
-                file={`https://campustalk-api.herokuapp.com/uploads/docs/${file}`}
+                file={`${process.env.REACT_APP_API_KEY}/uploads/docs/${file}`}
                 onLoadSuccess={onDocumentLoadSuccess}
                 options={options}
                 key={i}

@@ -175,7 +175,7 @@ function PostForm({
       if (fileType === "image" || !fileType) {
         axios
           .put(
-            `https://campustalk-api.herokuapp.com/api/forums/${
+            `${process.env.REACT_APP_API_URL}/api/forums/${
               forum || forum?._id
             }/posts/update/${postId}`,
             formData,
@@ -190,7 +190,7 @@ function PostForm({
       } else if (fileType === "video") {
         axios
           .put(
-            `https://campustalk-api.herokuapp.com/api/forums/${
+            `${process.env.REACT_APP_API_URL}/api/forums/${
               forum || forum?._id
             }/posts/update-vid-post/${postId}`,
             formData,
@@ -205,7 +205,7 @@ function PostForm({
       } else if (fileType === "doc") {
         axios
           .put(
-            `https://campustalk-api.herokuapp.com/api/forums/${
+            `${process.env.REACT_APP_API_URL}/api/forums/${
               forum || forum?._id
             }/posts/update-doc-post/${postId}`,
             formData,
@@ -223,7 +223,7 @@ function PostForm({
       if (fileType === "image" || !fileType) {
         axios
           .post(
-            `https://campustalk-api.herokuapp.com/api/forums/${
+            `${process.env.REACT_APP_API_URL}/api/forums/${
               forum || forum?._id
             }/posts/create-post`,
             formData,
@@ -238,7 +238,7 @@ function PostForm({
       } else if (fileType === "video") {
         axios
           .post(
-            `https://campustalk-api.herokuapp.com/api/forums/${
+            `${process.env.REACT_APP_API_URL}/api/forums/${
               forum || forum?._id
             }/posts/create-vid-post`,
             formData,
@@ -253,7 +253,7 @@ function PostForm({
       } else if (fileType === "doc") {
         axios
           .post(
-            `https://campustalk-api.herokuapp.com/api/forums/${
+            `${process.env.REACT_APP_API_URL}/api/forums/${
               forum || forum?._id
             }/posts/create-doc-post`,
             formData,
@@ -306,7 +306,7 @@ function PostForm({
     } else {
       axios
         .post(
-          `https://campustalk-api.herokuapp.com/api/notifications/requestNotification`,
+          `${process.env.REACT_APP_API_URL}/api/notifications/requestNotification`,
           { forum: forum || forum?._id, type: "postRequest" },
           headers
         )
@@ -362,7 +362,7 @@ function PostForm({
     };
 
     axios
-      .post("https://campustalk-api.herokuapp.com/api/mail/requests", body)
+      .post(`${process.env.REACT_APP_API_URL}/api/mail/requests`, body)
       .catch((err) => {
         console.error(err);
       });

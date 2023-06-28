@@ -44,7 +44,7 @@ function AuthorInfo({
         </svg>
       ) : (
         <img
-          src={`https://campustalk-api.herokuapp.com/uploads/images/${picture}`}
+          src={`${process.env.REACT_APP_API_KEY}/uploads/images/${picture}`}
           alt=""
           className="rounded-full inline h-10 mx-1"
         />

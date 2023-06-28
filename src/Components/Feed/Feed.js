@@ -165,7 +165,7 @@ function Feed({ title }) {
     if (!user) return;
 
     axios
-      .put(`https://campustalk-api.herokuapp.com/api/users/${user?._id}/unmark`)
+      .put(`${process.env.REACT_APP_API_URL}/api/users/${user?._id}/unmark`)
       .then(() => {
         setUser({ ...user, new: false });
       })

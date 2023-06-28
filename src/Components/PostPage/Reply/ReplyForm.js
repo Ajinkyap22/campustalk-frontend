@@ -134,7 +134,7 @@ function ReplyForm({
     if (fileType === "image" || !fileType) {
       axios
         .post(
-          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${commentId}/replies/create-reply`,
+          `${process.env.REACT_APP_API_URL}/api/forums/${forumId}/posts/${postId}/comments/${commentId}/replies/create-reply`,
           formData,
           headers
         )
@@ -144,7 +144,7 @@ function ReplyForm({
     } else if (fileType === "video") {
       axios
         .post(
-          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${commentId}/replies/create-vid-reply`,
+          `${process.env.REACT_APP_API_URL}/api/forums/${forumId}/posts/${postId}/comments/${commentId}/replies/create-vid-reply`,
           formData,
           headers
         )
@@ -154,7 +154,7 @@ function ReplyForm({
     } else if (fileType === "doc") {
       axios
         .post(
-          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${commentId}/replies/create-doc-reply`,
+          `${process.env.REACT_APP_API_URL}/api/forums/${forumId}/posts/${postId}/comments/${commentId}/replies/create-doc-reply`,
           formData,
           headers
         )
@@ -211,7 +211,7 @@ function ReplyForm({
 
       axios
         .post(
-          `https://campustalk-api.herokuapp.com/api/notifications/activityNotification`,
+          `${process.env.REACT_APP_API_URL}/api/notifications/activityNotification`,
           body,
           headers
         )
@@ -235,7 +235,7 @@ function ReplyForm({
 
   function sendMail(body) {
     axios
-      .post("https://campustalk-api.herokuapp.com/api/mail/reply", body)
+      .post(`${process.env.REACT_APP_API_URL}/api/mail/reply`, body)
       .catch((err) => {
         console.error(err);
       });
@@ -272,7 +272,7 @@ function ReplyForm({
           src={
             user?.picture.includes("googleusercontent")
               ? user?.picture
-              : `https://campustalk-api.herokuapp.com/uploads/images/${user.picture}`
+              : `${process.env.REACT_APP_API_KEY}/uploads/images/${user.picture}`
           }
           alt=""
           className="rounded-full inline h-6 mx-1 mt-0.5"

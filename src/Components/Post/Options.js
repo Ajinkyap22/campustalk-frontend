@@ -37,7 +37,7 @@ function Options({
 
     axios
       .delete(
-        `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/posts/delete/${postId}`,
+        `${process.env.REACT_APP_API_URL}/api/forums/${forum._id}/posts/delete/${postId}`,
         headers
       )
       .then(() => {

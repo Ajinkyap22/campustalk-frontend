@@ -70,7 +70,7 @@ function ForumForm({ forum, setShowOverlay, history }) {
   function createRequest(formData, headers) {
     axios
       .post(
-        `https://campustalk-api.herokuapp.com/api/forums/create-forum`,
+        `${process.env.REACT_APP_API_URL}/api/forums/create-forum`,
         formData,
         headers
       )
@@ -94,7 +94,7 @@ function ForumForm({ forum, setShowOverlay, history }) {
   function editRequest(formData, headers) {
     axios
       .put(
-        `https://campustalk-api.herokuapp.com/api/forums/update/${forum._id}`,
+        `${process.env.REACT_APP_API_URL}/api/forums/update/${forum._id}`,
         formData,
         headers
       )

@@ -37,7 +37,7 @@ function ForumInfoMobile({
 
     axios
       .post(
-        `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/join`,
+        `${process.env.REACT_APP_API_URL}/api/forums/${forum._id}/join`,
         body,
         headers
       )
@@ -51,7 +51,7 @@ function ForumInfoMobile({
 
         axios
           .post(
-            `https://campustalk-api.herokuapp.com/api/notifications/requestNotification`,
+            `${process.env.REACT_APP_API_URL}/api/notifications/requestNotification`,
             { forum: forum._id || forum, type: "joinRequest" },
             headers
           )

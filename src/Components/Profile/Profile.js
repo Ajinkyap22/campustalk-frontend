@@ -37,7 +37,7 @@ function Profile({ ...props }) {
 
   useEffect(() => {
     axios
-      .get(`https://campustalk-api.herokuapp.com/api/users/${user?._id}/posts`)
+      .get(`${process.env.REACT_APP_API_URL}/api/users/${user?._id}/posts`)
       .then((res) => {
         setPosts(res.data);
         setLoading(false);
@@ -57,7 +57,7 @@ function Profile({ ...props }) {
                 src={
                   user?.picture.includes("googleusercontent")
                     ? user?.picture
-                    : `https://campustalk-api.herokuapp.com/uploads/images/${user?.picture}`
+                    : `${process.env.REACT_APP_API_KEY}/uploads/images/${user?.picture}`
                 }
                 alt=""
                 className="rounded-full inline w-28 2xl:w-32 3xl:w-36 h-auto mt-4 my-2"

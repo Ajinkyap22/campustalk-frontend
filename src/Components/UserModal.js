@@ -51,7 +51,7 @@ function UserModal({ receiver, hovering, setOverModal, history }) {
 
         axios
           .post(
-            "https://campustalk-api.herokuapp.com/api/chats/new-chat",
+            `${process.env.REACT_APP_API_URL}/api/chats/new-chat`,
             { members: [receiver._id, user._id] },
             headers
           )
@@ -99,7 +99,7 @@ function UserModal({ receiver, hovering, setOverModal, history }) {
             src={
               receiver.picture.includes("googleusercontent")
                 ? receiver.picture
-                : `https://campustalk-api.herokuapp.com/uploads/images/${receiver.picture}`
+                : `${process.env.REACT_APP_API_KEY}/uploads/images/${receiver.picture}`
             }
             alt=""
             className="rounded-full inline lg:h-8 xl:h-10 2xl:h-12 mx-1"

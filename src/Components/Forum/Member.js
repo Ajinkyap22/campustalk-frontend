@@ -55,7 +55,7 @@ function Member({
 
         axios
           .post(
-            "https://campustalk-api.herokuapp.com/api/chats/new-chat",
+            `${process.env.REACT_APP_API_URL}/api/chats/new-chat`,
             { members: [member._id, user._id] },
             headers
           )
@@ -88,7 +88,7 @@ function Member({
             src={
               member.picture.includes("googleusercontent")
                 ? member.picture
-                : `https://campustalk-api.herokuapp.com/uploads/images/${member.picture}`
+                : `${process.env.REACT_APP_API_KEY}/uploads/images/${member.picture}`
             }
             className="rounded-full object-cover w-8 md:w-10 2xl:w-12 3xl:w-14 h-auto inline mx-1 md:mx-2"
             alt=""

@@ -64,7 +64,7 @@ function PostInfo({ post }) {
             src={
               post.author.picture.includes("googleusercontent")
                 ? post.author.picture
-                : `https://campustalk-api.herokuapp.com/uploads/images/${post.author.picture}`
+                : `${process.env.REACT_APP_API_KEY}/uploads/images/${post.author.picture}`
             }
             alt=""
             className="rounded-full inline h-10 mx-1"

@@ -23,7 +23,7 @@ function ChatList({
       } else {
         user &&
           axios
-            .get(`https://campustalk-api.herokuapp.com/api/chats/${user?._id}`)
+            .get(`${process.env.REACT_APP_API_URL}/api/chats/${user?._id}`)
             .then((res) => {
               setChats(res.data);
 

@@ -99,7 +99,7 @@ function UserInfo({ title, ...props }) {
 
     axios
       .put(
-        `https://campustalk-api.herokuapp.com/api/users/profile/${user._id}`,
+        `${process.env.REACT_APP_API_URL}/api/users/profile/${user._id}`,
         formData,
         headers
       )
@@ -146,7 +146,7 @@ function UserInfo({ title, ...props }) {
 
     axios
       .post(
-        "https://campustalk-api.herokuapp.com/api/mail/verification",
+        `${process.env.REACT_APP_API_URL}/api/mail/verification`,
         body,
         headers
       )
@@ -177,7 +177,7 @@ function UserInfo({ title, ...props }) {
                 user.picture && user.picture.includes("googleusercontent")
                   ? user.picture
                   : user.picture
-                  ? `https://campustalk-api.herokuapp.com/uploads/images/${user.picture}`
+                  ? `${process.env.REACT_APP_API_KEY}/uploads/images/${user.picture}`
                   : avatar
               }
               alt="Profile pic upload"

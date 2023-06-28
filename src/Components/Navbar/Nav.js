@@ -28,7 +28,7 @@ function Nav() {
     if (!user) return;
 
     axios
-      .get(`https://campustalk-api.herokuapp.com/api/notifications/${user._id}`)
+      .get(`${process.env.REACT_APP_API_URL}/api/notifications/${user._id}`)
       .then((res) => {
         let newNotifications = res.data;
         let count = 0;
@@ -164,7 +164,7 @@ function Nav() {
               src={
                 user.picture.includes("googleusercontent")
                   ? user.picture
-                  : `https://campustalk-api.herokuapp.com/uploads/images/${user.picture}`
+                  : `${process.env.REACT_APP_API_KEY}/uploads/images/${user.picture}`
               }
               alt=""
               className="rounded-full inline w-6 2xl:h-9 3xl:w-10 h-auto ml-1 dropDownToggle"

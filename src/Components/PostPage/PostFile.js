@@ -19,7 +19,7 @@ function PostFile({ post, handleBack }) {
 
   function handleDownload() {
     fetch(
-      `https://campustalk-api.herokuapp.com/uploads/${folder}/${post.file[currentFile]}`
+      `${process.env.REACT_APP_API_KEY}/uploads/${folder}/${post.file[currentFile]}`
     ).then((response) => {
       response.blob().then((blob) => {
         let url = window.URL.createObjectURL(blob);

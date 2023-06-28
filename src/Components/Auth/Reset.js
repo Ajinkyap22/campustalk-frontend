@@ -31,7 +31,7 @@ function Reset({ title, history, match }) {
 
     axios
       .post(
-        "https://campustalk-api.herokuapp.com/api/users/reset-password",
+        `${process.env.REACT_APP_API_URL}/api/users/reset-password`,
         formData
       )
       .then((res) => {

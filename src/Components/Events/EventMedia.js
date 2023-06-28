@@ -27,7 +27,7 @@ function EventMedia({
   }
 
   function handleDownload() {
-    fetch(`https://campustalk-api.herokuapp.com/uploads/docs/${doc}`).then(
+    fetch(`${process.env.REACT_APP_API_KEY}/uploads/docs/${doc}`).then(
       (response) => {
         response.blob().then((blob) => {
           let url = window.URL.createObjectURL(blob);
@@ -92,7 +92,7 @@ function EventMedia({
 
     axios
       .post(
-        `https://campustalk-api.herokuapp.com/api/events/${id}/upload-event-${type}`,
+        `${process.env.REACT_APP_API_URL}/api/events/${id}/upload-event-${type}`,
         formData,
         headers
       )
@@ -123,8 +123,8 @@ function EventMedia({
 
     let path =
       type === "image"
-        ? `https://campustalk-api.herokuapp.com/api/events/${id}/delete-event-image`
-        : `https://campustalk-api.herokuapp.com/api/events/${id}/delete-event-media`;
+        ? `${process.env.REACT_APP_API_URL}/api/events/${id}/delete-event-image`
+        : `${process.env.REACT_APP_API_URL}/api/events/${id}/delete-event-media`;
 
     axios
       .post(path, body, headers)
@@ -301,7 +301,7 @@ function EventMedia({
 
         {video ? (
           <video
-            src={`https://campustalk-api.herokuapp.com/uploads/videos/${video}`}
+            src={`${process.env.REACT_APP_API_KEY}/uploads/videos/${video}`}
             controls
             className="w-[90%] mx-auto lg:w-full 2xl:w-[90%] h-full"
           />
@@ -361,7 +361,7 @@ function EventMedia({
                 className="relative w-full h-full dark:text-gray-300"
               >
                 <img
-                  src={`https://campustalk-api.herokuapp.com/uploads/images/${image}`}
+                  src={`${process.env.REACT_APP_API_KEY}/uploads/images/${image}`}
                   alt={image}
                   onClick={() => handleImageClick(i)}
                   className="m-2 cursor-pointer w-[90%] lg:w-full 2xl:w-[90%] 2xl:text-xl"

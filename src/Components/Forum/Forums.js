@@ -27,7 +27,7 @@ function Forums({ title }) {
       setForums([demoForum]);
     } else {
       axios
-        .get("https://campustalk-api.herokuapp.com/api/forums/")
+        .get(`${process.env.REACT_APP_API_URL}/api/forums/`)
         .then((res) => {
           setForums(res.data);
         })

@@ -30,7 +30,7 @@ function AddRules({ forumRules, forumId, title, history }) {
 
     axios
       .put(
-        `https://campustalk-api.herokuapp.com/api/forums/${forumId}/rules`,
+        `${process.env.REACT_APP_API_URL}/api/forums/${forumId}/rules`,
         body,
         headers
       )

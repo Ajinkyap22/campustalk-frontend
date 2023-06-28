@@ -27,7 +27,7 @@ function Forget({ title, history }) {
     setShowOverlay(true);
 
     axios
-      .post("https://campustalk-api.herokuapp.com/api/mail/reset-password", {
+      .post(`${process.env.REACT_APP_API_URL}/api/mail/reset-password`, {
         email,
       })
       .then(() => {

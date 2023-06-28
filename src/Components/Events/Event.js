@@ -71,7 +71,7 @@ function Event({ event, title, events, setEvents, history }) {
 
     axios
       .delete(
-        `https://campustalk-api.herokuapp.com/api/events/${event._id}`,
+        `${process.env.REACT_APP_API_URL}/api/events/${event._id}`,
         headers
       )
       .then((res) => {

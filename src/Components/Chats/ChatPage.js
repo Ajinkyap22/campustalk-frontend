@@ -32,9 +32,7 @@ function ChatPage({ chat, user, socket, setActiveChat, chats, setChats }) {
       if (!isGuest) {
         // get files
         axios
-          .get(
-            `https://campustalk-api.herokuapp.com/api/chats/${chat._id}/files`
-          )
+          .get(`${process.env.REACT_APP_API_URL}/api/chats/${chat._id}/files`)
           .then((res) => {
             setFiles([...files, ...res.data]);
           })
@@ -84,7 +82,7 @@ function ChatPage({ chat, user, socket, setActiveChat, chats, setChats }) {
       // get messages
       axios
         .get(
-          `https://campustalk-api.herokuapp.com/api/chats/messages/${chat._id}/${user?._id}`
+          `${process.env.REACT_APP_API_URL}/api/chats/messages/${chat._id}/${user?._id}`
         )
         .then((res) => {
           setMessages(res.data);
@@ -111,7 +109,7 @@ function ChatPage({ chat, user, socket, setActiveChat, chats, setChats }) {
 
     axios
       .post(
-        `https://campustalk-api.herokuapp.com/api/chats/${chat._id}/update-unreadcount`,
+        `${process.env.REACT_APP_API_URL}/api/chats/${chat._id}/update-unreadcount`,
         body
       )
       .then(() => {

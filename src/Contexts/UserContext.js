@@ -15,7 +15,7 @@ export function UserProvider({ children }) {
       let user = JSON.parse(localStorage.getItem("user")).user;
 
       axios
-        .get(`https://campustalk-api.herokuapp.com/api/users/${user._id}`)
+        .get(`${process.env.REACT_APP_API_URL}/api/users/${user._id}`)
         .then((res) => {
           setUser(res.data);
           socket.current.emit("join", res.data._id);

@@ -29,17 +29,17 @@ function FileView({ file, name, type, title, history }) {
   }
 
   function handleDownload() {
-    fetch(
-      `https://campustalk-api.herokuapp.com/uploads/${folder}/${file}`
-    ).then((response) => {
-      response.blob().then((blob) => {
-        let url = window.URL.createObjectURL(blob);
-        let a = document.createElement("a");
-        a.href = url;
-        a.download = name;
-        a.click();
-      });
-    });
+    fetch(`${process.env.REACT_APP_API_KEY}/uploads/${folder}/${file}`).then(
+      (response) => {
+        response.blob().then((blob) => {
+          let url = window.URL.createObjectURL(blob);
+          let a = document.createElement("a");
+          a.href = url;
+          a.download = name;
+          a.click();
+        });
+      }
+    );
   }
 
   useEffect(() => {
@@ -59,13 +59,13 @@ function FileView({ file, name, type, title, history }) {
         {/* image */}
         {type === "image" ? (
           <img
-            src={`https://campustalk-api.herokuapp.com/uploads/images/${file}`}
+            src={`${process.env.REACT_APP_API_KEY}/uploads/images/${file}`}
             alt=""
             className="mx-auto max-h-screen object-cover"
           />
         ) : type === "doc" ? (
           <Document
-            file={`https://campustalk-api.herokuapp.com/uploads/docs/${file}`}
+            file={`${process.env.REACT_APP_API_KEY}/uploads/docs/${file}`}
             onLoadSuccess={onDocumentLoadSuccess}
             options={options}
           >
@@ -84,7 +84,7 @@ function FileView({ file, name, type, title, history }) {
         ) : (
           <div>
             <iframe
-              src={`https://view.officeapps.live.com/op/embed.aspx?src=https://campustalk-app.herokuapp.com/publichttps://campustalk-api.herokuapp.com/uploads/docs/${file}`}
+              src={`https://view.officeapps.live.com/op/embed.aspx?src=${process.env.REACT_APP_API_URL}/public${process.env.REACT_APP_API_KEY}/uploads/docs/${file}`}
               title={name}
               width="1366px"
               height="623px"

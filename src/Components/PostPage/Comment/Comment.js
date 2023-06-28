@@ -63,7 +63,7 @@ function Comment({
     } else {
       axios
         .get(
-          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/${comment._id}/replies`
+          `${process.env.REACT_APP_API_URL}/api/forums/${forumId}/posts/${postId}/comments/${comment._id}/replies`
         )
         .then((res) => {
           setReplies(res.data);
@@ -102,7 +102,7 @@ function Comment({
           src={
             comment.author.picture.includes("googleusercontent")
               ? comment.author.picture
-              : `https://campustalk-api.herokuapp.com/uploads/images/${comment.author.picture}`
+              : `${process.env.REACT_APP_API_KEY}/uploads/images/${comment.author.picture}`
           }
           alt=""
           className="rounded-full inline w-8 h-auto mx-1"

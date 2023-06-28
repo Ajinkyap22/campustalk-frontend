@@ -72,9 +72,7 @@ function Forum({ forum, title, defaultTab = "posts", history }) {
       } else {
         // get posts
         axios
-          .get(
-            `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/posts`
-          )
+          .get(`${process.env.REACT_APP_API_URL}/api/forums/${forum._id}/posts`)
           .then((res) => {
             setForumPosts(res.data);
             setLoading(false);
@@ -83,7 +81,7 @@ function Forum({ forum, title, defaultTab = "posts", history }) {
         // get post requests
         axios
           .get(
-            `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/posts/postRequests`
+            `${process.env.REACT_APP_API_URL}/api/forums/${forum._id}/posts/postRequests`
           )
           .then((res) => {
             setPostRequests(res.data);
@@ -119,7 +117,7 @@ function Forum({ forum, title, defaultTab = "posts", history }) {
       // get all join requests
       axios
         .get(
-          `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/join_requests`
+          `${process.env.REACT_APP_API_URL}/api/forums/${forum._id}/join_requests`
         )
         .then((res) => {
           setJoinRequests(res.data);
@@ -154,7 +152,7 @@ function Forum({ forum, title, defaultTab = "posts", history }) {
 
     axios
       .post(
-        `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/members/delete`,
+        `${process.env.REACT_APP_API_URL}/api/forums/${forum._id}/members/delete`,
         body,
         headers
       )
@@ -188,7 +186,7 @@ function Forum({ forum, title, defaultTab = "posts", history }) {
 
     axios
       .post(
-        `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/moderators/make`,
+        `${process.env.REACT_APP_API_URL}/api/forums/${forum._id}/moderators/make`,
         body,
         headers
       )
@@ -222,7 +220,7 @@ function Forum({ forum, title, defaultTab = "posts", history }) {
 
     axios
       .post(
-        `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/moderators/dismiss`,
+        `${process.env.REACT_APP_API_URL}/api/forums/${forum._id}/moderators/dismiss`,
         body,
         headers
       )

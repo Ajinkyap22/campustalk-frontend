@@ -37,7 +37,7 @@ function ChatOptions({
 
       axios
         .delete(
-          `https://campustalk-api.herokuapp.com/api/chats/delete-chat/${chat._id}`,
+          `${process.env.REACT_APP_API_URL}/api/chats/delete-chat/${chat._id}`,
           headers
         )
         .then(() => {
@@ -72,7 +72,7 @@ function ChatOptions({
 
       axios
         .delete(
-          `https://campustalk-api.herokuapp.com/api/chats/clear-chat/${chat._id}`,
+          `${process.env.REACT_APP_API_URL}/api/chats/clear-chat/${chat._id}`,
           headers
         )
         .then((res) => {

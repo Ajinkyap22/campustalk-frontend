@@ -92,7 +92,7 @@ function PostInfo({
           src={
             author.picture?.includes("googleusercontent")
               ? author.picture
-              : `https://campustalk-api.herokuapp.com/uploads/images/${author.picture}`
+              : `${process.env.REACT_APP_API_KEY}/uploads/images/${author.picture}`
           }
           alt=""
           className="rounded-full inline h-8 md:h-9 lg:h-8 xl:h-10 2xl:h-12 mx-1"

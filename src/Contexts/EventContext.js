@@ -29,7 +29,7 @@ export function EventProvider({ children }) {
 
       axios
         .get(
-          `https://campustalk-api.herokuapp.com/api/events/${newUser._id}/user-events`
+          `${process.env.REACT_APP_API_URL}/api/events/${newUser._id}/user-events`
         )
         .then((res) => {
           setEvents(res.data);

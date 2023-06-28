@@ -30,7 +30,7 @@ function PostRequests({
 
     axios
       .put(
-        `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/posts/approve/${post._id}`,
+        `${process.env.REACT_APP_API_URL}/api/forums/${forum._id}/posts/approve/${post._id}`,
         { authorId: post.author._id },
         headers
       )
@@ -79,7 +79,7 @@ function PostRequests({
 
     axios
       .put(
-        `https://campustalk-api.herokuapp.com/api/forums/${forum._id}/posts/reject/${post._id}`,
+        `${process.env.REACT_APP_API_URL}/api/forums/${forum._id}/posts/reject/${post._id}`,
         {},
         headers
       )

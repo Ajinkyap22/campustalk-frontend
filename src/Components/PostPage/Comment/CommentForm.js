@@ -132,7 +132,7 @@ function CommentForm({
     if (fileType === "image" || !fileType) {
       axios
         .post(
-          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/create-comment`,
+          `${process.env.REACT_APP_API_URL}/api/forums/${forumId}/posts/${postId}/comments/create-comment`,
           formData,
           headers
         )
@@ -142,7 +142,7 @@ function CommentForm({
     } else if (fileType === "video") {
       axios
         .post(
-          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/create-vid-comment`,
+          `${process.env.REACT_APP_API_URL}/api/forums/${forumId}/posts/${postId}/comments/create-vid-comment`,
           formData,
           headers
         )
@@ -152,7 +152,7 @@ function CommentForm({
     } else if (fileType === "doc") {
       axios
         .post(
-          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/posts/${postId}/comments/create-doc-comment`,
+          `${process.env.REACT_APP_API_URL}/api/forums/${forumId}/posts/${postId}/comments/create-doc-comment`,
           formData,
           headers
         )
@@ -205,7 +205,7 @@ function CommentForm({
 
       axios
         .post(
-          `https://campustalk-api.herokuapp.com/api/notifications/activityNotification`,
+          `${process.env.REACT_APP_API_URL}/api/notifications/activityNotification`,
           body,
           headers
         )
@@ -229,7 +229,7 @@ function CommentForm({
 
   function sendMail(body) {
     axios
-      .post("https://campustalk-api.herokuapp.com/api/mail/comment", body)
+      .post(`${process.env.REACT_APP_API_URL}/api/mail/comment`, body)
       .catch((err) => {
         console.error(err);
       });
@@ -256,7 +256,7 @@ function CommentForm({
           src={
             user.picture.includes("googleusercontent")
               ? user.picture
-              : `https://campustalk-api.herokuapp.com/uploads/images/${user.picture}`
+              : `${process.env.REACT_APP_API_KEY}/uploads/images/${user.picture}`
           }
           alt=""
           className="rounded-full inline h-8 mx-1"

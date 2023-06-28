@@ -25,7 +25,7 @@ function Notification({
 
       axios
         .put(
-          `https://campustalk-api.herokuapp.com/api/notifications/${notification._id}/mark`,
+          `${process.env.REACT_APP_API_URL}/api/notifications/${notification._id}/mark`,
           { userId: user._id },
           headers
         )
@@ -81,7 +81,7 @@ function Notification({
 
     axios
       .delete(
-        `https://campustalk-api.herokuapp.com/api/notifications/${notification._id}`,
+        `${process.env.REACT_APP_API_URL}/api/notifications/${notification._id}`,
         headers
       )
       .then((res) => {
@@ -111,7 +111,7 @@ function Notification({
               src={
                 notification.from.picture.includes("googleusercontent")
                   ? notification.from.picture
-                  : `https://campustalk-api.herokuapp.com/uploads/images/${notification.from.picture}`
+                  : `${process.env.REACT_APP_API_KEY}/uploads/images/${notification.from.picture}`
               }
               className="rounded-full object-cover w-10 3xl:w-11 h-auto inline mx-2 md:mx-2.5 lg:mx-2"
               alt=""

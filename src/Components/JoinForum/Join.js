@@ -20,7 +20,7 @@ function JoinForum({ title, forums, setForums, ...props }) {
 
   useEffect(() => {
     axios
-      .get("https://campustalk-api.herokuapp.com/api/forums/")
+      .get(`${process.env.REACT_APP_API_URL}/api/forums/`)
       .then((res) => {
         setForums(res.data);
         setLoading(false);
@@ -56,7 +56,7 @@ function JoinForum({ title, forums, setForums, ...props }) {
     joinList.forEach((forumId) => {
       axios
         .post(
-          `https://campustalk-api.herokuapp.com/api/forums/${forumId}/join`,
+          `${process.env.REACT_APP_API_URL}/api/forums/${forumId}/join`,
           body,
           headers
         )
@@ -87,7 +87,7 @@ function JoinForum({ title, forums, setForums, ...props }) {
     };
 
     axios
-      .post("https://campustalk-api.herokuapp.com/api/mail/requests", body)
+      .post(`${process.env.REACT_APP_API_URL}/api/mail/requests`, body)
       .catch((err) => {
         console.error(err);
       });
